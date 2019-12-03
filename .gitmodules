@@ -1,0 +1,6 @@
+[submodule "lain"]
+	path = lain
+	url = https://github.com/lcpz/lain.git
+[submodule "themes/ayu"]
+	path = themes/ayu
+	url = https://github.com/MArpogaus/awesome-ayu.git
