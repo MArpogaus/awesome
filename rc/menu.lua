@@ -5,8 +5,8 @@
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ changelog ] ---------------------------------------------------------------
--- @Last Modified by:   marcel
--- @Last Modified time: 2019-12-03 15:06:19
+-- @Last Modified by:   Marcel Arpogaus
+-- @Last Modified time: 2019-12-04 08:54:26
 -- @Changes: 
 -- 		- newly written
 -- 		- ...
@@ -65,7 +65,7 @@ module.mainmenu = freedesktop.menu.build({
         -- other triads can be put here
     }
 })
-module.myexitmenu = awful.widget.launcher({
+module.exitmenu = awful.widget.launcher({
 	image = beautiful.exitmenu_icon,
     menu = awful.menu({
        icon_size = 32,
