@@ -5,11 +5,14 @@
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ changelog ] ---------------------------------------------------------------
+-- @Last Modified by:   Marcel Arpogaus
+-- @Last Modified time: 2019-12-05 19:01:42
+-- @Changes: 
+-- 		- use new helper functions to switch colorscheme
 -- @Last Modified by:   marcel
 -- @Last Modified time: 2019-12-03 15:27:35
 -- @Changes: 
--- 		- newly written
--- 		- ...
+--    - newly written
 --------------------------------------------------------------------------------
 
 -- [ module imports ] ----------------------------------------------------------
@@ -162,11 +165,11 @@ module.global_keys = gears.table.join(
               {description = "show the menubar", group = "launcher"}),
 
     -- Theme
-    awful.key({ modkey, altkey, "Control"}, "l", function () set_cs("light") end,
+    awful.key({ modkey, altkey, "Control"}, "l", set_light,
               {description = "set light colorscheme", group = "theme"}),
-    awful.key({ modkey, altkey, "Control"}, "m", function () set_cs("mirage") end,
+    awful.key({ modkey, altkey, "Control"}, "m", set_mirage,
               {description = "set mirage colorscheme", group = "theme"}),
-    awful.key({ modkey, altkey, "Control"}, "d", function () set_cs("dark") end,
+    awful.key({ modkey, altkey, "Control"}, "d", set_dark,
               {description = "set dark colorscheme", group = "theme"}),
     awful.key({ modkey, altkey, "Control"}, "+", 
       function ()
