@@ -4,3 +4,6 @@
 [submodule "themes/ayu"]
 	path = themes/ayu
 	url = https://github.com/MArpogaus/awesome-ayu.git
+[submodule "revelation"]
+	path = revelation
+	url = https://github.com/guotsuan/awesome-revelation

@@ -6,7 +6,7 @@
 -- ...
 -- [ changelog ] ---------------------------------------------------------------
 -- @Last Modified by:   Marcel Arpogaus
--- @Last Modified time: 2019-12-03 16:06:22
+-- @Last Modified time: 2020-03-16 18:08:55
 -- @Changes: 
 --    - newly written
 --    - ...
@@ -23,6 +23,9 @@ local lain  = require("lain")
 local beautiful = require("beautiful")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
+
+-- Mac OSX like 'Expose' view of all clients.
+local revelation = require("revelation")
 
 -- ensure that there's always a client that has focus
 require("awful.autofocus")
@@ -52,6 +55,9 @@ beautiful.init(
   chosen_theme)
 )
 beautiful.icon_theme = "Papirus"
+
+-- Initialize revelation
+revelation.init()
 
 -- This is used later as the default terminal and editor to run.
 browser = "exo-open --launch WebBrowser" or "firefox"

@@ -36,9 +36,10 @@ if (command -v system-config-printer-applet && ! pgrep applet.py ); then
   system-config-printer-applet &
 fi
 
-run compton --shadow-exclude '!focused'
+#run compton --shadow-exclude '!focused'
+run picom --unredir-if-possible --experimental-backends
 run blueman-applet
 run msm_notifier
 run nextcloud
-
+run xbindkeys
 # mount -t vboxsf -o gid=vboxsf dev ~/dev

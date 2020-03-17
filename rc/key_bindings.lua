@@ -6,7 +6,7 @@
 -- ...
 -- [ changelog ] ---------------------------------------------------------------
 -- @Last Modified by:   Marcel Arpogaus
--- @Last Modified time: 2019-12-05 19:01:42
+-- @Last Modified time: 2020-03-16 19:27:51
 -- @Changes: 
 -- 		- use new helper functions to switch colorscheme
 -- @Last Modified by:   marcel
@@ -29,6 +29,8 @@ local menubar = require("menubar")
 -- hotkeys widget
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
+local revelation = require("revelation")
+
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
@@ -44,6 +46,15 @@ module.global_keys = gears.table.join(
               {description = "view next", group = "tag"}),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
+
+    -- Mac OSX like 'Expose' view
+    awful.key({ modkey,           }, "e",      revelation),
+    awful.key({ modkey, "Shift"   }, "e", function ()
+      tag = awful.screen.focused().selected_tag
+      if tag.name == revelation.tag_name then
+        root.fake_input("key_press", "Escape")
+      end
+    end),
 
     -- Non-empty tag browsing
     awful.key({ altkey }, "Left", function () lain.util.tag_view_nonempty(-1) end,
@@ -124,8 +135,7 @@ module.global_keys = gears.table.join(
               {description = "launch Browser", group = "launcher"}),
     awful.key({ modkey,           }, "space", function () awful.spawn("/usr/bin/rofi -show drun -modi drun") end,
               {description = "launch rofi", group = "launcher"}),
-    awful.key({ modkey,           }, "e", function () awful.spawn(filemanager)            end,
-              {description = "launch filemanager", group = "launcher"}),
+
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(1)                       end,
               {description = "select previous", group = "layout"}),
     awful.key({                   }, "Print", function () awful.spawn.with_shell("sleep 0.1 && /usr/bin/i3-scrot -d")   end,
