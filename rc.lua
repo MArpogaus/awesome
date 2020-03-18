@@ -6,10 +6,13 @@
 -- ...
 -- [ changelog ] ---------------------------------------------------------------
 -- @Last Modified by:   Marcel Arpogaus
--- @Last Modified time: 2020-03-16 18:08:55
+-- @Last Modified time: 2020-03-18 14:22:21
+-- @Changes: 
+--    - added lock_command
+-- @Last Modified by:   Marcel Arpogaus
+-- @Last Modified time: 2019-12-03 16:06:22
 -- @Changes: 
 --    - newly written
---    - ...
 --------------------------------------------------------------------------------
 
 -- [ required modules ] --------------------------------------------------------
@@ -62,8 +65,9 @@ revelation.init()
 -- This is used later as the default terminal and editor to run.
 browser = "exo-open --launch WebBrowser" or "firefox"
 filemanager = "exo-open --launch FileManager" or "thunar"
-gui_editor = "mousepad"
+gui_editor = "subl"
 terminal = os.getenv("TERMINAL") or "lxterminal"
+lock_command = "light-locker-command -l"
 
 -- Default modkey.
 modkey = "Mod4"

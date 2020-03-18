@@ -6,9 +6,14 @@
 -- ...
 -- [ changelog ] ---------------------------------------------------------------
 -- @Last Modified by:   Marcel Arpogaus
--- @Last Modified time: 2020-03-16 19:27:51
+-- @Last Modified time: 2020-03-18 14:23:51
 -- @Changes: 
--- 		- use new helper functions to switch colorscheme
+-- 		- `mod + q` to lock screen
+--    - restructured
+-- @Last Modified by:   Marcel Arpogaus
+-- @Last Modified time: 2019-12-05 19:01:42
+-- @Changes:
+--    - use new helper functions to switch colorscheme
 -- @Last Modified by:   marcel
 -- @Last Modified time: 2019-12-03 15:27:35
 -- @Changes: 
@@ -29,6 +34,7 @@ local menubar = require("menubar")
 -- hotkeys widget
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 
+-- Mac OSX like 'Exposé' view
 local revelation = require("revelation")
 
 -- [ local objects ] -----------------------------------------------------------
@@ -36,8 +42,39 @@ local module = {}
 
 -- [ module objects ] ----------------------------------------------------------
 module.global_keys = gears.table.join(
+    -- awesome
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
+    awful.key({ modkey, "Control" }, "r", awesome.restart,
+              {description = "reload awesome", group = "awesome"}),
+    awful.key({ modkey            }, "q", function () awful.spawn(lock_command) end,
+              {description = "lock screen", group = "awesome"}),
+    awful.key({ modkey, "Shift"   }, "q", awesome.quit,
+              {description = "quit awesome", group = "awesome"}),
+    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
+              {description = "show main menu", group = "awesome"}),
+    awful.key({ modkey, "Shift"   }, "b",
+              function ()
+                  for s in screen do
+                      s.mytopwibar.visible = not s.mytopwibar.visible
+                      s.mybottomwibar.visible = not s.mybottomwibar.visible
+                  end
+              end,
+              {description = "toggle wibox", group = "awesome"}),
+    awful.key({ modkey,           }, "e", revelation,
+              {description = "Mac OSX like 'Exposé' view", group = "awesome"}),
+    awful.key({ modkey            }, "r", function () awful.screen.focused().mypromptbox:run() end,
+              {description = "run prompt", group = "awesome"}),
+    awful.key({ modkey            }, "ö",
+              function ()
+                  awful.prompt.run {
+                    prompt       = "Run Lua code: ",
+                    textbox      = awful.screen.focused().mypromptbox.widget,
+                    exe_callback = awful.util.eval,
+                    history_path = awful.util.get_cache_dir() .. "/history_eval"
+                  }
+              end,
+              {description = "lua execute prompt", group = "awesome"}),
     
     -- Tag browsing
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
@@ -47,14 +84,6 @@ module.global_keys = gears.table.join(
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
 
-    -- Mac OSX like 'Expose' view
-    awful.key({ modkey,           }, "e",      revelation),
-    awful.key({ modkey, "Shift"   }, "e", function ()
-      tag = awful.screen.focused().selected_tag
-      if tag.name == revelation.tag_name then
-        root.fake_input("key_press", "Escape")
-      end
-    end),
 
     -- Non-empty tag browsing
     awful.key({ altkey }, "Left", function () lain.util.tag_view_nonempty(-1) end,
@@ -74,22 +103,7 @@ module.global_keys = gears.table.join(
     awful.key({ modkey, "Shift" }, "d", function () lain.util.delete_tag() end,
               {description = "delete tag", group = "tag"}),
 
-    awful.key({ modkey,           }, "j",
-        function ()
-            awful.client.focus.byidx( 1)
-        end,
-        {description = "focus next by index", group = "client"}
-    ),
-    awful.key({ modkey,           }, "k",
-        function ()
-            awful.client.focus.byidx(-1)
-        end,
-        {description = "focus previous by index", group = "client"}
-    ),
-    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
-
-    -- Layout manipulation
+    -- client
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
@@ -101,24 +115,45 @@ module.global_keys = gears.table.join(
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
     awful.key({ modkey,           }, "Tab",
-        function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end,
-        {description = "go back", group = "client"}),
+              function ()
+                  awful.client.focus.history.previous()
+                  if client.focus then
+                      client.focus:raise()
+                  end
+              end,
+              {description = "go back", group = "client"}),
+    awful.key({ modkey,           }, "j",
+              function ()
+                  awful.client.focus.byidx( 1)
+              end,
+              {description = "focus next by index", group = "client"} ),
+    awful.key({ modkey,           }, "k",
+              function ()
+                  awful.client.focus.byidx(-1)
+              end,
+              {description = "focus previous by index", group = "client"} ),
+    awful.key({ modkey, "Control" }, "n",
+              function ()
+                  local c = awful.client.restore()
+                  -- Focus restored client
+                  if c then
+                      client.focus = c
+                      c:raise()
+                  end
+              end,
+              {description = "restore minimized", group = "client"}),
 
-    -- Standard program
+    -- launcher
+    awful.key({ modkey            }, "p",      function() menubar.show() end,
+              {description = "show the menubar", group = "launcher"}),
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
-    awful.key({ modkey,           }, "z", function () awful.spawn(terminal) end,
-              {description = "open a terminal", group = "launcher"}),
-    awful.key({ modkey, "Control" }, "r", awesome.restart,
-              {description = "reload awesome", group = "awesome"}),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit,
-              {description = "quit awesome", group = "awesome"}),
+    awful.key({ modkey,           }, "space",  function () awful.spawn("/usr/bin/rofi -show drun -modi drun") end,
+              {description = "launch rofi", group = "launcher"}),
+    awful.key({ modkey            }, "b",      function () awful.spawn(browser) end,
+              {description = "launch Browser", group = "launcher"}),
 
+    -- layout
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)                 end,
               {description = "increase master width factor", group = "layout"}),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)                 end,
@@ -131,13 +166,10 @@ module.global_keys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)           end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey     }, "b", function () awful.spawn(browser)          end,
-              {description = "launch Browser", group = "launcher"}),
-    awful.key({ modkey,           }, "space", function () awful.spawn("/usr/bin/rofi -show drun -modi drun") end,
-              {description = "launch rofi", group = "launcher"}),
-
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(1)                       end,
               {description = "select previous", group = "layout"}),
+
+    -- screenshot
     awful.key({                   }, "Print", function () awful.spawn.with_shell("sleep 0.1 && /usr/bin/i3-scrot -d")   end,
               {description = "capture a screenshot", group = "screenshot"}),
     awful.key({"Control"          }, "Print", function () awful.spawn.with_shell("sleep 0.1 && /usr/bin/i3-scrot -w")   end,
@@ -145,36 +177,7 @@ module.global_keys = gears.table.join(
     awful.key({"Shift"            }, "Print", function () awful.spawn.with_shell("sleep 0.1 && /usr/bin/i3-scrot -s")   end,
               {description = "capture a screenshot of selection", group = "screenshot"}),
 
-    awful.key({ modkey, "Control" }, "n",
-              function ()
-                  local c = awful.client.restore()
-                  -- Focus restored client
-                  if c then
-                      client.focus = c
-                      c:raise()
-                  end
-              end,
-              {description = "restore minimized", group = "client"}),
-
-    -- Prompt
-    awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"}),
-
-    awful.key({ modkey }, "ö",
-              function ()
-                  awful.prompt.run {
-                    prompt       = "Run Lua code: ",
-                    textbox      = awful.screen.focused().mypromptbox.widget,
-                    exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
-                  }
-              end,
-              {description = "lua execute prompt", group = "awesome"}),
-    -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"}),
-
-    -- Theme
+    -- theme
     awful.key({ modkey, altkey, "Control"}, "l", set_light,
               {description = "set light colorscheme", group = "theme"}),
     awful.key({ modkey, altkey, "Control"}, "m", set_mirage,
@@ -182,28 +185,19 @@ module.global_keys = gears.table.join(
     awful.key({ modkey, altkey, "Control"}, "d", set_dark,
               {description = "set dark colorscheme", group = "theme"}),
     awful.key({ modkey, altkey, "Control"}, "+", 
-      function ()
-                    for s in screen do
-           s.dpi=s.dpi+10
-            end
-      end,
+              function ()
+                  for s in screen do
+                    s.dpi=s.dpi+10
+                  end
+              end,
               {description = "increase dpi", group = "theme"}),
     awful.key({ modkey, altkey, "Control"}, "-", 
-      function ()
-                    for s in screen do
-           s.dpi=s.dpi-10
-            end
-      end,
-              {description = "decrease dpi", group = "theme"}),
-
-        -- Show/Hide Wibox
-    awful.key({ modkey, "Shift" }, "b", function ()
-            for s in screen do
-                s.mytopwibar.visible = not s.mytopwibar.visible
-                s.mybottomwibar.visible = not s.mybottomwibar.visible
-            end
-        end,
-    {description = "toggle wibox", group = "awesome"})
+              function ()
+                  for s in screen do
+                    s.dpi=s.dpi-10
+                  end
+              end,
+              {description = "decrease dpi", group = "theme"})
 )
 
 module.client_keys = gears.table.join(

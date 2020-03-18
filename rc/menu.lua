@@ -6,7 +6,7 @@
 -- ...
 -- [ changelog ] ---------------------------------------------------------------
 -- @Last Modified by:   Marcel Arpogaus
--- @Last Modified time: 2019-12-04 08:54:26
+-- @Last Modified time: 2020-03-18 13:13:49
 -- @Changes: 
 -- 		- newly written
 -- 		- ...
@@ -36,6 +36,7 @@ local myawesomemenu = {
 }
 local myexitmenu = {
     { "log out", function() awesome.quit() end, menubar.utils.lookup_icon("system-log-out") },
+    { "lock screen", lock_command, menubar.utils.lookup_icon("system-lock-screen") },
     { "suspend", "systemctl suspend", menubar.utils.lookup_icon("system-suspend") },
     { "hibernate", "systemctl hibernate", menubar.utils.lookup_icon("system-suspend-hibernate") },
     { "reboot", "systemctl reboot", menubar.utils.lookup_icon("system-reboot") },
