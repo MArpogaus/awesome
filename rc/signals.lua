@@ -5,11 +5,14 @@
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ changelog ] ---------------------------------------------------------------
+-- @Last Modified by:   Marcel Arpogaus
+-- @Last Modified time: 2020-03-19 10:27:10
+-- @Changes: 
+-- 		- fixed crash, when is not yet ready
 -- @Last Modified by:   marcel
 -- @Last Modified time: 2019-12-03 15:32:37
 -- @Changes: 
--- 		- newly written
--- 		- ...
+--    - newly written
 --------------------------------------------------------------------------------
 
 -- [ module imports ] ----------------------------------------------------------
@@ -93,8 +96,8 @@ client.connect_signal("mouse::enter", function(c)
         client.focus = c
     end
 
-    if not awesome.startup then
-        focused_screen = awful.screen.focused()
+    focused_screen = awful.screen.focused()
+    if not awesome.startup and focused_screen.systray then
         focused_screen.systray:set_screen (focused_screen)
     end
 end)
@@ -102,8 +105,8 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 client.connect_signal("property::screen", function(c)
-    if not awesome.startup then
-        focused_screen = awful.screen.focused()
+    focused_screen = awful.screen.focused()
+    if not awesome.startup and focused_screen.systray then
         focused_screen.systray:set_screen (focused_screen)
     end
 end)
