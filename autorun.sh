@@ -7,6 +7,8 @@ function run {
    fi
 }
 
+run xbindkeys
+
 ## run (only once) processes which spawn with different name
 if (command -v gnome-keyring-daemon && ! pgrep gnome-keyring-d); then
     gnome-keyring-daemon --daemonize --login &
@@ -36,10 +38,10 @@ if (command -v system-config-printer-applet && ! pgrep applet.py ); then
   system-config-printer-applet &
 fi
 
-#run compton --shadow-exclude '!focused'
 run picom --unredir-if-possible --experimental-backends
 run blueman-applet
 run msm_notifier
 run nextcloud
-run xbindkeys
+run fusuma -d
+run redshift-gtk
 # mount -t vboxsf -o gid=vboxsf dev ~/dev
