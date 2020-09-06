@@ -7,7 +7,7 @@ function run {
    fi
 }
 
-run xbindkeys
+#run xbindkeys
 
 ## run (only once) processes which spawn with different name
 if (command -v gnome-keyring-daemon && ! pgrep gnome-keyring-d); then
@@ -38,7 +38,7 @@ if (command -v system-config-printer-applet && ! pgrep applet.py ); then
   system-config-printer-applet &
 fi
 
-run picom --unredir-if-possible --experimental-backends
+run picom --unredir-if-possible #--experimental-backends
 run blueman-applet
 run msm_notifier
 run nextcloud
