@@ -6,6 +6,10 @@
 -- ...
 -- [ changelog ] ---------------------------------------------------------------
 -- @Last Modified by:   Marcel Arpogaus
+-- @Last Modified time: 2020-09-26 16:09:37
+-- @Changes: 
+--      - removed module: lain
+-- @Last Modified by:   Marcel Arpogaus
 -- @Last Modified time: 2020-03-18 14:22:21
 -- @Changes: 
 --    - added lock_command
@@ -19,9 +23,10 @@
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
+
 -- Widget and layout library
 local wibox = require("wibox")
-local lain  = require("lain")
+
 -- Theme handling library
 local beautiful = require("beautiful")
 local menubar = require("menubar")

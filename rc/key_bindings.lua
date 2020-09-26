@@ -6,9 +6,13 @@
 -- ...
 -- [ changelog ] ---------------------------------------------------------------
 -- @Last Modified by:   Marcel Arpogaus
+-- @Last Modified time: 2020-09-26 16:09:08
+-- @Changes: 
+-- 		- removed module: lain
+-- @Last Modified by:   Marcel Arpogaus
 -- @Last Modified time: 2020-04-15 09:14:58
 -- @Changes: 
--- 		- modified non-empty tag browsing
+--    - modified non-empty tag browsing
 --    - reformatted
 -- @Last Modified by:   Marcel Arpogaus
 -- @Last Modified time: 2020-03-18 14:23:51
@@ -29,9 +33,6 @@
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
-
--- Widget and layout library
-local lain  = require("lain")
 
 -- Theme handling library
 local menubar = require("menubar")
@@ -99,28 +100,21 @@ module.global_keys = gears.table.join(
               awful.tag.history.restore,
               {description = "go back", group = "tag"}),
 
-    awful.key({ modkey, altkey            }, "Left",
-              function () lain.util.tag_view_nonempty(-1) end,
-              {description = "view  previous nonempty", group = "tag"}),
-    awful.key({ modkey, altkey            }, "Right",
-              function () lain.util.tag_view_nonempty(1) end,
-              {description = "view  previous nonempty", group = "tag"}),
-
     -- Dynamic tagging
     awful.key({ modkey, "Shift"           }, "n",
-              function () lain.util.add_tag() end,
+              add_tag,
               {description = "add new tag", group = "tag"}),
     awful.key({ modkey, "Shift"           }, "r",
-              function () lain.util.rename_tag() end,
+              rename_tag,
               {description = "rename tag", group = "tag"}),
     awful.key({ modkey, "Shift"           }, "Left",
-              function () lain.util.move_tag(-1) end,
+              function () move_tag(-1) end,
               {description = "move tag to the left", group = "tag"}),
     awful.key({ modkey, "Shift"           }, "Right",
-              function () lain.util.move_tag(1) end,
+              function () move_tag(1) end,
               {description = "move tag to the right", group = "tag"}),
     awful.key({ modkey, "Shift"           }, "d",
-              function () lain.util.delete_tag() end,
+              delete_tag,
               {description = "delete tag", group = "tag"}),
 
     -- client
