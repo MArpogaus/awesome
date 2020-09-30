@@ -4,7 +4,7 @@
 -- @Date:   2020-09-30 09:33:55
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-09-30 12:56:24
+-- @Last Modified at: 2020-09-30 15:19:11
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -73,10 +73,9 @@ if config.tyrannical then
             layout = awful.layout.suit.fair -- Use the max layout
         },
         {
-            name = 'Web',
+            name = '',
             init = false,
             exclusive = true,
-            -- icon        = "~net.png",                 -- Use this icon for the tag (uncomment with a real path)
             screen = screen.count() > 1 and 2 or 1, -- Setup on screen 2 if there is more than 1 screen, else on screen 1
             layout = awful.layout.suit.max, -- Use the max layout
             class = {
@@ -91,7 +90,7 @@ if config.tyrannical then
             }
         },
         {
-            name = 'Mail',
+            name = '',
             init = false,
             exclusive = true,
             screen = screen.count() > 1 and 2 or 1, -- Setup on screen 2 if there is more than 1 screen, else on screen 1
@@ -99,7 +98,7 @@ if config.tyrannical then
             class = {'Thunderbird'}
         },
         {
-            name = 'Files',
+            name = '',
             init = false,
             exclusive = true,
             screen = 1,
@@ -115,7 +114,7 @@ if config.tyrannical then
             }
         },
         {
-            name = 'Dev',
+            name = '',
             init = false,
             exclusive = true,
             screen = 1,
@@ -141,7 +140,7 @@ if config.tyrannical then
             }
         },
         {
-            name = 'Doc',
+            name = '',
             init = false, -- This tag wont be created at startup, but will be when one of the
             -- client in the "class" section will start. It will be created on
             -- the client startup screen
@@ -158,7 +157,7 @@ if config.tyrannical then
             }
         },
         {
-            name = 'Media',
+            name = '',
             init = false, -- This tag wont be created at startup, but will be when one of the
             -- client in the "class" section will start. It will be created on
             -- the client startup screen
