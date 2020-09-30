@@ -1,0 +1,33 @@
+local module = {}
+
+-- This is used later as the default terminal and editor to run.
+module.browser = 'exo-open --launch WebBrowser' or 'firefox'
+module.filemanager = 'exo-open --launch FileManager' or 'thunar'
+module.gui_editor = 'subl'
+module.terminal = os.getenv('TERMINAL') or 'lxterminal'
+module.lock_command = 'light-locker-command -l'
+
+-- Default modkey.
+module.modkey = 'Mod4'
+module.altkey = 'Mod1'
+
+-- Select theme
+module.theme = 'ayu'
+
+-- Your city for the weather forcast widget
+-- module.city_id = nil
+-- module.app_id = ''
+
+-- Load color schemes from xresources
+-- module.use_xresources = true
+
+-- Set resource for temperature widget
+-- module.thermal_zone = 'thermal_zone0'
+
+-- Network interface
+-- module.net_interface = 'wlp4s0b1'
+
+-- Using Tyrannical tag managment engine
+-- module.tyrannical = true
+
+return module

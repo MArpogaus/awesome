@@ -2,128 +2,76 @@
 -- @File:   rc.lua
 -- @Author: Marcel Arpogaus
 -- @Date:   2019-12-03 15:34:44
+--
+-- @Last Modified by: Marcel Arpogaus
+-- @Last Modified at: 2020-09-30 11:56:37
 -- [ description ] -------------------------------------------------------------
 -- ...
--- [ changelog ] ---------------------------------------------------------------
--- @Last Modified by:   Marcel Arpogaus
--- @Last Modified time: 2020-09-26 16:09:37
--- @Changes: 
---      - removed module: lain
--- @Last Modified by:   Marcel Arpogaus
--- @Last Modified time: 2020-03-18 14:22:21
--- @Changes: 
---    - added lock_command
--- @Last Modified by:   Marcel Arpogaus
--- @Last Modified time: 2019-12-03 16:06:22
--- @Changes: 
---    - newly written
+-- [ license ] -----------------------------------------------------------------
+-- ...
 --------------------------------------------------------------------------------
-
 -- [ required modules ] --------------------------------------------------------
--- Standard awesome library
-local gears = require("gears")
-local awful = require("awful")
+-- grab environment
+local root = root
 
--- Widget and layout library
-local wibox = require("wibox")
+-- Standard awesome library
+local awful = require('awful')
 
 -- Theme handling library
-local beautiful = require("beautiful")
-local menubar = require("menubar")
-local hotkeys_popup = require("awful.hotkeys_popup").widget
+local beautiful = require('beautiful')
 
 -- Mac OSX like 'Expose' view of all clients.
-local revelation = require("revelation")
-
--- ensure that there's always a client that has focus
-require("awful.autofocus")
-
--- Enable VIM help for hotkeys widget when client with matching name is opened:
-require("awful.hotkeys_popup.keys.vim")
-
--- error handling
-require("rc.error_handling")
+local revelation = require('revelation')
 
 -- helper functions
-require("rc.helper_functions")
+local helpers = require('rc.helper_functions')
+
+-- configuration
+local config = helpers.load_config()
+
+-- ensure that there's always a client that has focus
+require('awful.autofocus')
+
+-- error handling
+require('rc.error_handling')
 
 -- connect signals
-require("rc.signals")
---------------------------------------------------------------------------------
+require('rc.signals')
+
+-- [ theme ] -------------------------------------------------------------------
+beautiful.init(
+    string.format(
+        '%s/.config/awesome/themes/%s/theme.lua', os.getenv('HOME'),
+        config.theme
+    )
+)
+beautiful.icon_theme = 'Papirus'
 
 -- [ autorun programs ] --------------------------------------------------------
-awful.spawn.with_shell("~/.config/awesome/autorun.sh")
-
--- [ variable definitions ] ----------------------------------------------------
--- Initialize Theme
-local chosen_theme= "ayu"
-beautiful.init(
-  string.format("%s/.config/awesome/themes/%s/theme.lua",
-  os.getenv("HOME"),
-  chosen_theme)
-)
-beautiful.icon_theme = "Papirus"
+awful.spawn.with_shell('~/.config/awesome/autorun.sh')
 
 -- Initialize revelation
 revelation.init()
 
--- This is used later as the default terminal and editor to run.
-browser = "exo-open --launch WebBrowser" or "firefox"
-filemanager = "exo-open --launch FileManager" or "thunar"
-gui_editor = "subl"
-terminal = os.getenv("TERMINAL") or "lxterminal"
-lock_command = "light-locker-command -l"
-
--- Default modkey.
-modkey = "Mod4"
-altkey = "Mod1"
-
--- Table of layouts to cover with awful.layout.inc, order matters.
-awful.layout.layouts = {
-    awful.layout.suit.floating,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    -- awful.layout.suit.spiral,
-    -- awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    -- awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier,
-    -- awful.layout.suit.corner.nw,
-    -- awful.layout.suit.corner.ne,
-    -- awful.layout.suit.corner.sw,
-    -- awful.layout.suit.corner.se,
-}
--- Define default layout per screen
-awful.layout.default = {
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile,
-}
-
--- Default names for tags
-awful.util.tagnames = { "1", "2", "3", "4", "5", "6" }
+-- [ tags ] --------------------------------------------------------------------
+require('rc.tags')
 --------------------------------------------------------------------------------
 
 -- [ menu ] --------------------------------------------------------------------
-local menu = require("rc.menu")
-mymainmenu = menu.mainmenu
+local menu = require('rc.menu')
+-- add exit menu to wibar
 awful.util.myexitmenu = menu.exitmenu
 --------------------------------------------------------------------------------
 
 -- [ mouse bindings ] ----------------------------------------------------------
-local buttons = require("rc.mouse_bindings")
+local buttons = require('rc.mouse_bindings')
 awful.util.taglist_buttons = buttons.taglist_buttons
 awful.util.tasklist_buttons = buttons.tasklist_buttons
-client_buttons = buttons.client_buttons
 root.buttons(buttons.root)
 --------------------------------------------------------------------------------
 
 -- [ key bindings ] ------------------------------------------------------------
-local keys = require("rc.key_bindings")
-client_keys = keys.client_keys  
+local keys = require('rc.key_bindings')
 root.keys(keys.global_keys)
 --------------------------------------------------------------------------------
 
@@ -134,5 +82,5 @@ awful.screen.connect_for_each_screen(beautiful.at_screen_connect)
 
 -- [ rules ] -------------------------------------------------------------------
 -- Rules to apply to new clients (through the "manage" signal).
-awful.rules.rules = require("rc.rules").rules
+awful.rules.rules = require('rc.rules').rules
 --------------------------------------------------------------------------------
