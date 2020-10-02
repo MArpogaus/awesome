@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-09-30 11:40:45
+-- @Last Modified at: 2020-10-02 14:35:08
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -65,7 +65,6 @@ module.rules = {
                 'xtightvncviewer',
                 'Pavucontrol'
             },
-
             name = {
                 'Event Tester' -- xev.
             },
@@ -79,6 +78,14 @@ module.rules = {
     {
         rule_any = {type = {'normal', 'dialog'}},
         properties = {titlebars_enabled = true}
+    },
+    {
+        rule_any = {class = {'Nextcloud'}},
+        properties = {
+            intrusive = true,
+            floating = true,
+            titlebars_enabled = false
+        }
     }
 
     -- Set Firefox to always map on the tag named "2" on screen 1.

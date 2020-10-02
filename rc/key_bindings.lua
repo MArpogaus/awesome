@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-09-30 11:55:24
+-- @Last Modified at: 2020-10-02 14:34:42
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -31,6 +31,7 @@ local revelation = require('revelation')
 
 -- helper functions
 local helpers = require('rc.helper_functions')
+local util = require('themes.ayu.util')
 
 -- configuration
 local config = helpers.load_config()
@@ -289,13 +290,13 @@ module.global_keys = gears.table.join(
     ),
     -- [ theme ]----------------------------------------------------------------
     awful.key(
-        {modkey, altkey, 'Control'}, 'l', helpers.set_light,
+        {modkey, altkey, 'Control'}, 'l', util.set_light,
         {description = 'set light colorscheme', group = 'theme'}
     ), awful.key(
-        {modkey, altkey, 'Control'}, 'm', helpers.set_mirage,
+        {modkey, altkey, 'Control'}, 'm', util.set_mirage,
         {description = 'set mirage colorscheme', group = 'theme'}
     ), awful.key(
-        {modkey, altkey, 'Control'}, 'd', helpers.set_dark,
+        {modkey, altkey, 'Control'}, 'd', util.set_dark,
         {description = 'set dark colorscheme', group = 'theme'}
     ), awful.key(
         {modkey, altkey, 'Control'}, '+',
@@ -373,16 +374,16 @@ for i = 1, 9 do
         module.global_keys, -- View tag only.
         awful.key(
             {modkey}, '#' .. i + 9, function()
-                local screen = awful.screen.focused()
-                local tag = screen.tags[i]
+                local s = awful.screen.focused()
+                local tag = s.tags[i]
                 if tag then tag:view_only() end
             end, descr_view
         ),
         -- [ toggle tag display ]-----------------------------------------------
         awful.key(
             {modkey, 'Control'}, '#' .. i + 9, function()
-                local screen = awful.screen.focused()
-                local tag = screen.tags[i]
+                local s = awful.screen.focused()
+                local tag = s.tags[i]
                 if tag then awful.tag.viewtoggle(tag) end
             end, descr_toggle
         ),

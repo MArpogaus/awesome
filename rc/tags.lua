@@ -4,7 +4,7 @@
 -- @Date:   2020-09-30 09:33:55
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-09-30 15:19:11
+-- @Last Modified at: 2020-10-02 13:50:32
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -81,6 +81,7 @@ if config.tyrannical then
             class = {
                 'Opera',
                 'Firefox',
+                'Tor Browser',
                 'Rekonq',
                 'Dillo',
                 'Arora',
@@ -95,6 +96,7 @@ if config.tyrannical then
             exclusive = true,
             screen = screen.count() > 1 and 2 or 1, -- Setup on screen 2 if there is more than 1 screen, else on screen 1
             layout = awful.layout.suit.magnifier, -- Use the max layout
+            master_width_factor = 0.8,
             class = {'Thunderbird'}
         },
         {
@@ -118,7 +120,8 @@ if config.tyrannical then
             init = false,
             exclusive = true,
             screen = 1,
-            layout = awful.layout.suit.tile,
+            layout = awful.layout.suit.tile.bottom,
+            master_width_factor = 0.8,
             class = {
                 'Kate',
                 'KDevelop',
@@ -144,6 +147,7 @@ if config.tyrannical then
             init = false, -- This tag wont be created at startup, but will be when one of the
             -- client in the "class" section will start. It will be created on
             -- the client startup screen
+            screen = screen.count() > 1 and 2 or 1, -- Setup on screen 2 if there is more than 1 screen, else on screen 1
             exclusive = true,
             layout = awful.layout.suit.max,
             class = {
