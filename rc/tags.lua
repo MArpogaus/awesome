@@ -4,11 +4,27 @@
 -- @Date:   2020-09-30 09:33:55
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-02 13:50:32
+-- @Last Modified at: 2020-10-04 19:53:37
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
--- ...
+-- MIT License
+-- Copyright (c) 2020 Marcel Arpogaus
+-- Permission is hereby granted, free of charge, to any person obtaining a copy
+-- of this software and associated documentation files (the "Software"), to deal
+-- in the Software without restriction, including without limitation the rights
+-- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+-- copies of the Software, and to permit persons to whom the Software is
+-- furnished to do so, subject to the following conditions:
+-- The above copyright notice and this permission notice shall be included in
+-- all copies or substantial portions of the Software.
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+-- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+-- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+-- SOFTWARE.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- grab environment
@@ -173,47 +189,48 @@ if config.tyrannical then
 
     -- Ignore the tag "exclusive" property for the following clients (matched by classes)
     tyrannical.properties.intrusive = {
-        'ksnapshot',
-        'pinentry',
-        'gtksu',
-        'kcalc',
-        'xcalc',
+        'About KDE',
+        'Background color',
         'feh',
         'Gradient editor',
-        'About KDE',
-        'Paste Special',
-        'Background color',
+        'gtksu',
+        'kcalc',
         'kcolorchooser',
-        'plasmoidviewer',
-        'Xephyr',
         'kruler',
+        'ksnapshot',
+        'Nm-applet',
+        'Paste Special',
+        'Pavucontrol',
+        'pinentry',
         'plasmaengineexplorer',
-        'Pavucontrol'
+        'plasmoidviewer',
+        'xcalc',
+        'Xephyr'
     }
 
     -- Ignore the tiled layout for the matching clients
     tyrannical.properties.floating = {
-        'MPlayer',
-        'pinentry',
-        'ksnapshot',
-        'pinentry',
-        'gtksu',
-        'xine',
         'feh',
-        'kmix',
-        'kcalc',
-        'xcalc',
-        'yakuake',
-        'Select Color$',
-        'kruler',
-        'kcolorchooser',
-        'Paste Special',
-        'New Form',
+        'gtksu',
         'Insert Picture',
+        'kcalc',
         'kcharselect',
+        'kcolorchooser',
+        'kmix',
+        'kruler',
+        'ksnapshot',
+        'MPlayer',
         'mythfrontend',
+        'New Form',
+        'Paste Special',
+        'Pavucontrol',
+        'pinentry',
+        'pinentry',
         'plasmoidviewer',
-        'Pavucontrol'
+        'Select Color$',
+        'xcalc',
+        'xine',
+        'yakuake'
     }
 
 else

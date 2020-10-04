@@ -44,4 +44,3 @@ run msm_notifier
 run nextcloud
 run fusuma -d
 run redshift-gtk
-# mount -t vboxsf -o gid=vboxsf dev ~/dev
