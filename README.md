@@ -60,7 +60,7 @@ optional to switch colorschemes
     ```
 
  1. **Optional:** install [wpgtk][wpgtk] to switch colorschemes.
-    [JSON colorschemes][json-colorschemes] and a `Rofi` template can be found in the `wpg` folder.
+    Details can be found in the [README of awesome-ayu][readme-of-awesome-ayu].
 
 # Configuration
 
