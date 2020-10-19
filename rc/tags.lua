@@ -4,7 +4,7 @@
 -- @Date:   2020-09-30 09:33:55
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-04 19:53:37
+-- @Last Modified at: 2020-10-19 16:07:18
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -85,6 +85,7 @@ if config.tyrannical then
             name = '',
             init = true,
             exclusive = false,
+            screen = {1, 2}, -- Create this tag on screen 1 and screen 2
             fallback = true,
             layout = awful.layout.suit.fair -- Use the max layout
         },

@@ -38,7 +38,7 @@ if (command -v system-config-printer-applet && ! pgrep applet.py ); then
   system-config-printer-applet &
 fi
 
-run picom --unredir-if-possible #--experimental-backends
+#run picom --experimental-backends
 run blueman-applet
 run msm_notifier
 run nextcloud
