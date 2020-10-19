@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-19 16:10:21
+-- @Last Modified at: 2020-10-19 17:04:27
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -55,6 +55,8 @@ module.rules = {
             raise = true,
             keys = clientkeys,
             buttons = clientbuttons,
+            size_hints_honor = false, -- Remove gaps between terminals
+            callback = awful.client.setslave,
             screen = awful.screen.preferred,
             placement = awful.placement.no_overlap +
                 awful.placement.no_offscreen
