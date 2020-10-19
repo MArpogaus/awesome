@@ -4,7 +4,7 @@
 -- @Date:   2020-09-30 09:33:55
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-19 17:05:37
+-- @Last Modified at: 2020-10-19 22:28:54
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -63,6 +63,9 @@ awful.layout.layouts = {
 
 if config.tyrannical then
     -- [ tyrannical properties ] ---------------------------------------------------
+    -- Define default layout per screen
+    tyrannical.settings.default_layout = awful.layout.suit.tile
+
     -- Make the matching clients (by classes) on top of the default layout
     tyrannical.properties.ontop = {'Xephyr', 'ksnapshot', 'kruler'}
 
@@ -75,9 +78,6 @@ if config.tyrannical then
 
     -- Force popups/dialogs to have the same tags as the parent client
     tyrannical.settings.group_children = true
-
-    -- Define default layout per screen
-    tyrannical.settings.default_layout = awful.layout.suit.tile
 
     -- [ tyrannical tags ] ---------------------------------------------------------
     tyrannical.tags = {

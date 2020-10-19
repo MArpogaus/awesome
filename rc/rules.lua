@@ -98,9 +98,7 @@ module.rules = {
     },
     -- Add titlebars to normal clients and dialogs
     {
-        rule_any = {
-            type = {"normal", "dialog"}
-        },
+        rule_any = {type = {"normal", "dialog"}},
         properties = {titlebars_enabled = true}
     }
 

@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-04 19:54:14
+-- @Last Modified at: 2020-10-19 22:34:05
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -189,6 +189,9 @@ module.global_keys = gears.table.join(
     ), awful.key(
         {modkey, 'Shift'}, 'd', helpers.delete_tag,
         {description = 'delete tag', group = 'tag'}
+    ), awful.key(
+        {modkey, 'Shift'}, 'f', helpers.fork_tag,
+        {description = 'fork tag', group = 'tag'}
     ),
     -- [ screen ]---------------------------------------------------------------
     awful.key(
@@ -342,8 +345,13 @@ module.client_keys = gears.table.join(
         function(c) c:swap(awful.client.getmaster()) end,
         {description = 'move to master', group = 'client'}
     ), awful.key(
-        {modkey}, 'o', function(c) c:move_to_screen() end,
-        {description = 'move to screen', group = 'client'}
+        {modkey}, 'o', function(c)
+            if config.tyrannical then
+                helpers.move_to_screen(c)
+            else
+                c:move_to_screen()
+            end
+        end, {description = 'move to screen', group = 'client'}
     ), awful.key(
         {modkey}, 't', function(c) c.ontop = not c.ontop end,
         {description = 'toggle keep on top', group = 'client'}

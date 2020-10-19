@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-04 19:54:15
+-- @Last Modified at: 2020-10-19 22:24:57
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -111,6 +111,45 @@ function module.move_tag(pos)
     else
         awful.tag.move(tag.index + 1, tag)
     end
+end
+
+-- taken from: https://github.com/Elv13/tyrannical/blob/master/shortcut.lua
+function module.fork_tag()
+    local s = awful.screen.focused()
+    local t = s.selected_tag
+    if not t then return end
+
+    local clients = t:clients()
+    local t2 = awful.tag.add(t.name, awful.tag.getdata(t))
+
+    t2:clients(clients)
+    t2:view_only()
+end
+
+function module.move_to_screen(c)
+    if not c then return end
+
+    local sc = screen.count()
+    local s = c.screen.index + 1
+    if s > sc then s = 1 end
+
+    local s1 = awful.screen.focused()
+    local s2 = screen[s]
+
+    if s1 == s2 then return end
+
+    local t1 = s1.selected_tag
+
+    local t2 = awful.tag.find_by_name(s2, t1.name)
+    if t2 == nil then
+        local td = awful.tag.getdata(t1)
+        t2 = awful.tag.add(t1.name, td, {screen = s2})
+        t2.instances[s] = t2
+    end
+
+    c:move_to_screen()
+    c:move_to_tag(t2)
+    t2:view_only()
 end
 
 -- [ return module ]------------------------------------------------------------
