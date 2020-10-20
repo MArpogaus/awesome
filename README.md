@@ -69,14 +69,14 @@ The following table gives an overview of all configuration parameters required b
 
 | Name           | Description                                        | Type   |
 |:---------------|:---------------------------------------------------|:-------|
-| `browser'      | command to run the web browser                     | string |
-| `filemanager'  | command to run the file manger                     | string |
-| `gui_editor'   | command to run the gui editor                      | string |
-| `terminal'     | command to run the terminal emulator               | string |
-| `lock_command' | command to lock the current session                | string |
-| `modkey'       | the mod key to use for key bindings                | string |
-| `altkey'       | the alt key to use for key bindings                | string |
-| `theme'        | theme to load (only [`ayu`][ayu] supported so far) | string |
+| `browser`      | command to run the web browser                     | string |
+| `filemanager`  | command to run the file manger                     | string |
+| `gui_editor`   | command to run the gui editor                      | string |
+| `terminal`     | command to run the terminal emulator               | string |
+| `lock_command` | command to lock the current session                | string |
+| `modkey`       | the mod key to use for key bindings                | string |
+| `altkey`       | the alt key to use for key bindings                | string |
+| `theme`        | theme to load (only [`ayu`][ayu] supposrted so far) | string |
 
 The following defaults are used as a fallback for any missing value:
 
