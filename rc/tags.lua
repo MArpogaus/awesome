@@ -4,7 +4,7 @@
 -- @Date:   2020-09-30 09:33:55
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-19 22:28:54
+-- @Last Modified at: 2020-10-22 13:38:02
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -88,14 +88,14 @@ if config.tyrannical then
             selected = true,
             screen = {1, 2}, -- Create this tag on screen 1 and screen 2
             fallback = true,
-            layout = awful.layout.suit.fair -- Use the max layout
+            layout = awful.layout.suit.fair
         },
         {
             name = '',
             init = false,
             exclusive = true,
             screen = screen.count() > 1 and 2 or 1, -- Setup on screen 2 if there is more than 1 screen, else on screen 1
-            layout = awful.layout.suit.max, -- Use the max layout
+            layout = awful.layout.suit.max,
             class = {
                 'Opera',
                 'Firefox',
@@ -113,9 +113,18 @@ if config.tyrannical then
             init = false,
             exclusive = true,
             screen = screen.count() > 1 and 2 or 1, -- Setup on screen 2 if there is more than 1 screen, else on screen 1
-            layout = awful.layout.suit.magnifier, -- Use the max layout
+            layout = awful.layout.suit.magnifier,
             master_width_factor = 0.8,
             class = {'Thunderbird'}
+        },
+        {
+            name = '',
+            init = false,
+            exclusive = true,
+            screen = screen.count() > 1 and 2 or 1, -- Setup on screen 2 if there is more than 1 screen, else on screen 1
+            layout = awful.layout.suit.max,
+            master_width_factor = 0.8,
+            class = {'zoom', 'franz'}
         },
         {
             name = '',

@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-19 22:24:57
+-- @Last Modified at: 2020-10-22 11:46:58
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -143,8 +143,8 @@ function module.move_to_screen(c)
     local t2 = awful.tag.find_by_name(s2, t1.name)
     if t2 == nil then
         local td = awful.tag.getdata(t1)
-        t2 = awful.tag.add(t1.name, td, {screen = s2})
-        t2.instances[s] = t2
+        t2 = awful.tag.add(t1.name, gears.table.clone(td), {screen = s})
+        td.instances[s] = t2
     end
 
     c:move_to_screen()
