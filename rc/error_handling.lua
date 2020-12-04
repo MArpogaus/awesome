@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-04 19:54:16
+-- @Last Modified at: 2020-12-04 16:48:36
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,7 +28,7 @@
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- grab environment
-local awesome = awesome
+local capi = {awesome = awesome}
 
 -- Notification library
 local naughty = require('naughty')
@@ -37,19 +37,19 @@ local naughty = require('naughty')
 
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
-if awesome.startup_errors then
+if capi.awesome.startup_errors then
     naughty.notify(
         {
             preset = naughty.config.presets.critical,
             title = 'Oops, there were errors during startup!',
-            text = awesome.startup_errors
+            text = capi.awesome.startup_errors
         }
     )
 end
 -- Handle runtime errors after startup
 do
     local in_error = false
-    awesome.connect_signal(
+    capi.awesome.connect_signal(
         'debug::error', function(err)
             -- Make sure we don't go into an endless error loop
             if in_error then return end

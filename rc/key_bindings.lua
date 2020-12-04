@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-19 22:34:05
+-- @Last Modified at: 2020-11-27 16:52:00
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -318,13 +318,22 @@ module.global_keys = gears.table.join(
         {modkey, altkey, 'Control'}, 'd', util.set_dark,
         {description = 'set dark colorscheme', group = 'theme'}
     ), awful.key(
-        {modkey, altkey, 'Control'}, '+',
-        function() for s in screen do s.dpi = s.dpi + 10 end end,
+        {modkey, altkey, 'Control'}, '+', function() util.inc_dpi(10) end,
         {description = 'increase dpi', group = 'theme'}
     ), awful.key(
-        {modkey, altkey, 'Control'}, '-',
-        function() for s in screen do s.dpi = s.dpi - 10 end end,
+        {modkey, altkey, 'Control'}, '-', function() util.dec_dpi(10) end,
         {description = 'decrease dpi', group = 'theme'}
+    ),
+    -- [ widgets ]--------------------------------------------------------------
+    awful.key(
+        {modkey, 'Shift'}, 'w', util.toggle_widgets,
+        {description = 'toggle widgets', group = 'widgets'}
+    ), awful.key(
+        {modkey, altkey, 'Shift'}, 'w', util.toggle_desktop_widget_visibility,
+        {description = 'toggle desktop widget visibility', group = 'widgets'}
+    ), awful.key(
+        {modkey, 'Shift'}, 'u', util.update_widgets,
+        {description = 'update widgets', group = 'widgets'}
     )
 )
 

@@ -4,7 +4,7 @@
 -- @Date:   2020-09-30 09:33:55
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-22 13:38:02
+-- @Last Modified at: 2020-11-27 14:43:29
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -31,6 +31,7 @@
 local screen = screen
 
 -- Standard awesome library
+local gears = require('gears')
 local awful = require('awful')
 
 -- Tyrannical - tag managment engine
@@ -71,6 +72,66 @@ if config.tyrannical then
 
     -- Force the matching clients (by classes) to be centered on the screen on init
     tyrannical.properties.placement = {kcalc = awful.placement.centered}
+
+    -- Ignore the tiled layout for the matching clients
+    tyrannical.properties.floating = {
+        'feh',
+        'gtksu',
+        'Insert Picture',
+        'kcalc',
+        'kcharselect',
+        'kcolorchooser',
+        'kmix',
+        'kruler',
+        'ksnapshot',
+        'MPlayer',
+        'mythfrontend',
+        'New Form',
+        'Paste Special',
+        'Pavucontrol',
+        'pinentry',
+        'pinentry',
+        'plasmoidviewer',
+        'Select Color$',
+        'xcalc',
+        'xine',
+        'yakuake'
+    }
+
+    -- Ignore the tag "exclusive" property for the following clients (matched by classes)
+    tyrannical.properties.intrusive_popup =
+        gears.table.join(
+            {
+                'About KDE',
+                'Background color',
+                'feh',
+                'Gradient editor',
+                'gtksu',
+                'Insert Picture',
+                'kcalc',
+                'kcharselect',
+                'kcolorchooser',
+                'kmix',
+                'kruler',
+                'ksnapshot',
+                'MPlayer',
+                'mythfrontend',
+                'New Form',
+                'Nm-applet',
+                'Paste Special',
+                'Pavucontrol',
+                'pinentry',
+                'plasmaengineexplorer',
+                'plasmoidviewer',
+                'Polkit-mate-authentication-agent-1',
+                'Select Color$',
+                'xcalc',
+                'Xephyr',
+                'Xfce4-settings-manager',
+                'xine',
+                'yakuake'
+            }, tyrannical.properties.floating
+        )
 
     -- [ tyrannical settings ] -----------------------------------------------------
     -- Block popups ()
@@ -122,9 +183,9 @@ if config.tyrannical then
             init = false,
             exclusive = true,
             screen = screen.count() > 1 and 2 or 1, -- Setup on screen 2 if there is more than 1 screen, else on screen 1
-            layout = awful.layout.suit.max,
+            layout = awful.layout.suit.tile.left,
             master_width_factor = 0.8,
-            class = {'zoom', 'franz'}
+            class = {'zoom', 'franz', 'pidgin'}
         },
         {
             name = '',
@@ -166,7 +227,8 @@ if config.tyrannical then
                 "XTerm",
                 "konsole",
                 "terminator",
-                "gnome-terminal"
+                "gnome-terminal",
+                "emacs"
             }
         },
         {
@@ -194,54 +256,17 @@ if config.tyrannical then
             -- the client startup screen
             exclusive = true,
             layout = awful.layout.suit.fair,
-            class = {'mpv', 'vlc', 'Player', 'qvidcap', 'Gpodder'}
+            class = {'mpv', 'vlc', 'Player', 'qvidcap', 'Gpodder', 'Ristretto'}
+        },
+        {
+            name = '',
+            init = false, -- This tag wont be created at startup, but will be when one of the
+            -- client in the "class" section will start. It will be created on
+            -- the client startup screen
+            exclusive = true,
+            layout = awful.layout.suit.fair,
+            class = {'0ad', 'supertuxkart', 'Xonotic', 'Hedgewars'}
         }
-    }
-
-    -- Ignore the tag "exclusive" property for the following clients (matched by classes)
-    tyrannical.properties.intrusive = {
-        'About KDE',
-        'Background color',
-        'feh',
-        'Gradient editor',
-        'gtksu',
-        'kcalc',
-        'kcolorchooser',
-        'kruler',
-        'ksnapshot',
-        'Nm-applet',
-        'Paste Special',
-        'Pavucontrol',
-        'pinentry',
-        'plasmaengineexplorer',
-        'plasmoidviewer',
-        'xcalc',
-        'Xephyr'
-    }
-
-    -- Ignore the tiled layout for the matching clients
-    tyrannical.properties.floating = {
-        'feh',
-        'gtksu',
-        'Insert Picture',
-        'kcalc',
-        'kcharselect',
-        'kcolorchooser',
-        'kmix',
-        'kruler',
-        'ksnapshot',
-        'MPlayer',
-        'mythfrontend',
-        'New Form',
-        'Paste Special',
-        'Pavucontrol',
-        'pinentry',
-        'pinentry',
-        'plasmoidviewer',
-        'Select Color$',
-        'xcalc',
-        'xine',
-        'yakuake'
     }
 
 else

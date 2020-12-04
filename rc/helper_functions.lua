@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-22 11:46:58
+-- @Last Modified at: 2020-12-04 16:49:28
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -27,6 +27,8 @@
 -- SOFTWARE.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
+local capi = {screen = screen}
+
 -- Standard awesome library
 local awful = require('awful')
 local gears = require('gears')
@@ -129,12 +131,12 @@ end
 function module.move_to_screen(c)
     if not c then return end
 
-    local sc = screen.count()
+    local sc = capi.screen.count()
     local s = c.screen.index + 1
     if s > sc then s = 1 end
 
     local s1 = awful.screen.focused()
-    local s2 = screen[s]
+    local s2 = capi.screen[s]
 
     if s1 == s2 then return end
 

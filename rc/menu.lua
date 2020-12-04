@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-04 19:54:12
+-- @Last Modified at: 2020-12-04 16:50:04
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,7 +28,7 @@
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- grab environment
-local awesome = awesome
+local capi = {awesome = awesome}
 
 -- Standard awesome library
 local awful = require('awful')
@@ -70,15 +70,19 @@ local myawesomemenu = {
     },
     {
         'edit config',
-        gui_editor .. ' ' .. awesome.conffile,
+        gui_editor .. ' ' .. capi.awesome.conffile,
         menubar.utils.lookup_icon('accessories-text-editor')
     },
-    {'restart', awesome.restart, menubar.utils.lookup_icon('system-restart')}
+    {
+        'restart',
+        capi.awesome.restart,
+        menubar.utils.lookup_icon('system-restart')
+    }
 }
 local myexitmenu = {
     {
         'log out',
-        function() awesome.quit() end,
+        function() capi.awesome.quit() end,
         menubar.utils.lookup_icon('system-log-out')
     },
     {
