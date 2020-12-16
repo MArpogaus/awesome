@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-12-04 16:53:34
+-- @Last Modified at: 2020-12-06 12:46:10
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -33,6 +33,7 @@ local capi = {client = client}
 -- Standard awesome library
 local gears = require('gears')
 local awful = require('awful')
+local beautiful = require('beautiful')
 
 -- helper functions
 local helpers = require('rc.helper_functions')
@@ -58,11 +59,48 @@ local function client_menu_toggle_fn()
             instance:hide()
             instance = nil
         else
-            instance = awful.menu.clients({theme = {width = 250}})
+            instance = awful.menu.clients({theme = {width = 1000}})
         end
     end
 end
 -- ref.: https://stackoverflow.com/questions/62286322/grouping-windows-in-the-tasklist
+local function client_label(c)
+    local theme = beautiful.get()
+    local sticky = theme.tasklist_sticky or "▪"
+    local ontop = theme.tasklist_ontop or '⌃'
+    local above = theme.tasklist_above or '▴'
+    local below = theme.tasklist_below or '▾'
+    local floating = theme.tasklist_floating or '✈'
+    local minimized = theme.tasklist_maximized or '-'
+    local maximized = theme.tasklist_maximized or '+'
+    local maximized_horizontal = theme.tasklist_maximized_horizontal or '⬌'
+    local maximized_vertical = theme.tasklist_maximized_vertical or '⬍'
+
+    local name = c.name
+    if c.sticky then name = sticky .. name end
+
+    if c.ontop then
+        name = ontop .. name
+    elseif c.above then
+        name = above .. name
+    elseif c.below then
+        name = below .. name
+    end
+
+    if c.minimized then name = minimized .. name end
+    if c.maximized then
+        name = maximized .. name
+    else
+        if c.maximized_horizontal then
+            name = maximized_horizontal .. name
+        end
+        if c.maximized_vertical then name = maximized_vertical .. name end
+        if c.floating then name = floating .. name end
+    end
+
+    return name
+end
+
 local function client_stack_toggle_fn()
     local cl_menu
     return function(c)
@@ -76,7 +114,7 @@ local function client_stack_toggle_fn()
                 if cl.class == c.class then
                     client_num = client_num + 1
                     client_list[i] = {
-                        cl.name,
+                        client_label(cl),
                         function()
                             capi.client.focus = cl
                             cl:tags()[1]:view_only()
@@ -88,7 +126,9 @@ local function client_stack_toggle_fn()
             end
 
             if client_num > 1 then
-                cl_menu = awful.menu({items = client_list})
+                cl_menu = awful.menu(
+                    {items = client_list, theme = {width = 1000}}
+                )
                 cl_menu:show()
             else
                 capi.client.focus = c

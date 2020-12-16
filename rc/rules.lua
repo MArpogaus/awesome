@@ -27,6 +27,8 @@
 -- SOFTWARE.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
+local capi = {screen = screen}
+
 -- Standard awesome library
 local awful = require('awful')
 
@@ -56,10 +58,15 @@ module.rules = {
             keys = clientkeys,
             buttons = clientbuttons,
             size_hints_honor = false, -- Remove gaps between terminals
-            callback = awful.client.setslave,
             screen = awful.screen.preferred,
-            placement = awful.placement.no_overlap +
-                awful.placement.no_offscreen
+            placement = awful.placement.center + awful.placement.no_overlap +
+                awful.placement.no_offscreen,
+            switchtotag = true,
+            requests_no_titlebar = false,
+            callback = function(c)
+                c.titlebars_enabled = not c.requests_no_titlebar
+                awful.client.setslave(c)
+            end
         }
     },
     -- Floating clients.
@@ -97,14 +104,116 @@ module.rules = {
         properties = {floating = true}
     },
     -- Add titlebars to normal clients and dialogs
+    {rule_any = {type = {"dialog"}}, properties = {titlebars_enabled = true}},
     {
-        rule_any = {type = {"normal", "dialog"}},
-        properties = {titlebars_enabled = true}
+        rule = {name = 'doom-capture'},
+        properties = {
+            tag = awful.screen.focused().selected_tags[0],
+            floating = true,
+            ontop = true,
+            placement = awful.placement.top,
+            maximized_horizontal = true,
+            requests_no_titlebars = true
+        }
+    },
+    {
+        rule_any = {class = {'firefox', 'tor browser', 'Chromium'}},
+        properties = {
+            new_tag = {
+                name = '',
+                volatile = true,
+                layout = awful.layout.suit.max
+            }
+        }
+    },
+    {
+        rule_any = {class = {'Thunderbird'}},
+        properties = {
+            new_tag = {
+                name = '',
+                volatile = true,
+                layout = awful.layout.suit.magnifier,
+                master_width_factor = 0.8
+            },
+            screen = capi.screen.count() > 1 and 2 or 1
+        }
+    },
+    {
+        rule_any = {class = {'zoom', 'Franz', 'Pidgin'}},
+        properties = {
+            new_tag = {
+                name = '',
+                volatile = true,
+                layout = awful.layout.suit.tile.left,
+                master_width_factor = 0.8
+            },
+            screen = capi.screen.count() > 1 and 2 or 1
+        }
+    },
+    {
+        rule_any = {class = {'Thunar'}},
+        properties = {
+            new_tag = {
+                name = '',
+                volatile = true,
+                layout = awful.layout.suit.tile
+            }
+        }
+    },
+    {
+        rule_any = {
+            class = {
+                'Sublime_text',
+                'Sublime_merge',
+                'lxterminal',
+                "xterm",
+                "urxvt",
+                "aterm",
+                "urxvt",
+                "Emacs"
+            }
+        },
+        except = {name = 'doom-capture'},
+        properties = {
+            new_tag = {
+                name = '',
+                volatile = true,
+                layout = awful.layout.suit.tile.bottom,
+                master_width_factor = 0.8
+            }
+        }
+    },
+    {
+        rule_any = {class = {'Evince', 'Zathura'}},
+        properties = {
+            new_tag = {
+                name = '',
+                volatile = true,
+                layout = awful.layout.suit.max
+            },
+            screen = capi.screen.count() > 1 and 2 or 1
+        }
+    },
+    {
+        rule_any = {class = {'Mpv', 'Vlc', 'Gpodder', 'Ristretto'}},
+        properties = {
+            new_tag = {
+                name = '',
+                volatile = true,
+                layout = awful.layout.suit.fair
+            }
+        }
+    },
+    {
+        rule_any = {class = {'0ad', 'supertuxkart', 'xonotic', 'hedgewars'}},
+        properties = {
+            new_tag = {
+                name = '',
+                volatile = true,
+                layout = awful.layout.suit.fair
+            }
+        }
     }
-
-    -- Set Firefox to always map on the tag named "2" on screen 1.
-    -- { rule = { class = "Firefox" },
-    --   properties = { screen = 1, tag = "2" } },
 }
 
 -- [ return module ] -----------------------------------------------------------

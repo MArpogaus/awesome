@@ -44,10 +44,6 @@ local beautiful = require('beautiful')
 -- Signal function to execute when a new client appears.
 capi.client.connect_signal(
     'manage', function(c)
-        -- Set the windows at the slave,
-        -- i.e. put it at the end of others instead of setting it master.
-        -- if not capi.awesome.startup then awful.client.setslave(c) end
-
         if capi.awesome.startup and not c.size_hints.user_position and
             not c.size_hints.program_position then
             -- Prevent clients from being unreachable after screen count changes.
@@ -101,11 +97,6 @@ capi.client.connect_signal(
             },
             layout = wibox.layout.align.horizontal
         }
-        -- Hide the titlebar if we are not floating
-        local l = awful.layout.get(c.screen)
-        if not (l.name == 'floating' or c.floating) then
-            awful.titlebar.hide(c)
-        end
     end
 )
 
@@ -173,7 +164,9 @@ for s = 1, capi.screen.count() do
 end
 capi.client.connect_signal(
     'property::floating', function(c)
-        if c.floating then
+        c:raise()
+        local l = awful.layout.get(c.screen)
+        if (l.name == 'floating' or c.floating) and c.titlebars_enabled then
             awful.titlebar.show(c)
         else
             awful.titlebar.hide(c)
