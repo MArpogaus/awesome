@@ -103,7 +103,6 @@ Additionally the used [awesome-ayu][ayu] theme has the following configuration p
 
 | Name              | Description                             | Type             |
 |:------------------|:----------------------------------------|:-----------------|
-| `tyrannical`      | using Tyrannical tag managment engine   | bool             |
 | `xresources`      | load colorschemes from xresources       | bool             |
 | `color_scheme`    | colorscheme to use                      | string           |
 | `dpi`             | number of pixels per inch of the screen | string           |

@@ -30,9 +30,6 @@
 -- Standard awesome library
 local awful = require('awful')
 
--- helper functions
-local helpers = require('rc.helper_functions')
-
 -- [ layouts ] -----------------------------------------------------------------
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
