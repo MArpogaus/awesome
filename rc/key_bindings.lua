@@ -361,7 +361,10 @@ module.client_keys = gears.table.join(
         {modkey}, 'x', function(c) c:kill() end,
         {description = 'close', group = 'client'}
     ), awful.key(
-        {modkey, 'Control'}, 'space', awful.client.floating.toggle,
+        {modkey, 'Control'}, 'space', function(c)
+            awful.client.floating.toggle(c)
+            c:raise()
+        end,
         {description = 'toggle floating', group = 'client'}
     ), awful.key(
         {modkey, 'Control'}, 'Return',

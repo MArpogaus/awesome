@@ -62,11 +62,8 @@ module.rules = {
             placement = awful.placement.center + awful.placement.no_overlap +
                 awful.placement.no_offscreen,
             switchtotag = true,
-            requests_no_titlebar = false,
-            callback = function(c)
-                c.titlebars_enabled = not c.requests_no_titlebar
-                awful.client.setslave(c)
-            end
+            titlebars_enabled = false,
+            requests_no_titlebar = false
         }
     },
     -- Floating clients.
@@ -109,11 +106,12 @@ module.rules = {
         rule = {name = 'doom-capture'},
         properties = {
             tag = awful.screen.focused().selected_tags[0],
+            requests_no_titlebars = true,
+            titlebars_enabled = false,
             floating = true,
             ontop = true,
             placement = awful.placement.top,
-            maximized_horizontal = true,
-            requests_no_titlebars = true
+            -- maximized_horizontal = true,
         }
     },
     {

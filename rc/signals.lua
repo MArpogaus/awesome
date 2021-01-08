@@ -164,9 +164,9 @@ for s = 1, capi.screen.count() do
 end
 capi.client.connect_signal(
     'property::floating', function(c)
-        c:raise()
         local l = awful.layout.get(c.screen)
-        if (l.name == 'floating' or c.floating) and c.titlebars_enabled then
+        if c.requests_no_titlebars then return end 
+        if (l.name == 'floating' or c.floating) then
             awful.titlebar.show(c)
         else
             awful.titlebar.hide(c)

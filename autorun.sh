@@ -23,5 +23,5 @@ fi
 
 run thunar --daemon
 run fusuma -d
-run picom
+run picom --experimental-backends
 run xfsettingsd --sm-client-disable --disable-wm-check 
