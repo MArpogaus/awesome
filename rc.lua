@@ -38,16 +38,17 @@ local revelation = require('revelation')
 
 -- rc modules
 local error_handling = require('rc.error_handling')
-local helpers = require('rc.helper_functions')
+local utils = require('rc.utils')
 local signals = require('rc.signals')
 local tags = require('rc.tags')
 local menu = require('rc.menu')
 local mouse_bindings = require('rc.mouse_bindings')
 local key_bindings = require('rc.key_bindings')
 local rules = require('rc.rules')
+local screensss = require('rc.screen')
 
 -- configuration
-local config = helpers.load_config()
+local config = utils.load_config()
 
 -- ensure that there's always a client that has focus
 require('awful.autofocus')
@@ -77,19 +78,19 @@ awful.util.myexitmenu = menu.exitmenu
 
 -- mouse bindings
 mouse_bindings.init(config, menu.mainmenu)
-awful.util.taglist_buttons = mouse_bindings.taglist_buttons
-awful.util.tasklist_buttons = mouse_bindings.tasklist_buttons
 
 -- key bindings
 key_bindings.init(config, menu.mainmenu)
 
--- [ setup wibar and desktop widgets ] -----------------------------------------
-awful.screen.set_auto_dpi_enabled(true)
-awful.screen.connect_for_each_screen(beautiful.at_screen_connect)
---------------------------------------------------------------------------------
-
 -- rules
 rules.init(mouse_bindings.client_buttons, key_bindings.client_keys)
+
+-- wibars and widgets
+screensss.init(
+    config, tags.tagnames, mouse_bindings.taglist_buttons,
+    mouse_bindings.tasklist_buttons, menu.exitmenu
+)
+awful.screen.connect_for_each_screen(screensss.at_screen_connect)
 
 -- Initialize revelation
 revelation.init()

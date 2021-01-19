@@ -76,9 +76,58 @@ local function client_label(c)
 
     return name
 end
+local function set_xconf(property, value, sleep)
+    local xconf = string.format(
+        'xfconf-query -c xsettings --property %s --set \'%s\'', property, value
+    )
+    if sleep then xconf = string.format('sleep %.1f && %s', sleep, xconf) end
+    awful.spawn.with_shell(xconf)
+end
+local function set_color_scheme(cs, ico) error('not implemented') end
 
 -- [ module functions ] --------------------------------------------------------
 function module.sleep(n) os.execute('sleep ' .. tonumber(n)) end
+
+-- Helper functions for modifying hex colors -----------------------------------
+local hex_color_match = '[a-fA-F0-9][a-fA-F0-9]'
+function module.darker(color_value, darker_n)
+    local result = '#'
+    local channel_counter = 1
+    for s in color_value:gmatch(hex_color_match) do
+        local bg_numeric_value = tonumber('0x' .. s)
+        if channel_counter <= 3 then
+            bg_numeric_value = bg_numeric_value - darker_n
+        end
+        if bg_numeric_value < 0 then bg_numeric_value = 0 end
+        if bg_numeric_value > 255 then bg_numeric_value = 255 end
+        result = result .. string.format('%02x', bg_numeric_value)
+        channel_counter = channel_counter + 1
+    end
+    return result
+end
+function module.is_dark(color_value)
+    local bg_numeric_value = 0
+    local channel_counter = 1
+    for s in color_value:gmatch(hex_color_match) do
+        bg_numeric_value = bg_numeric_value + tonumber('0x' .. s)
+        if channel_counter == 3 then break end
+        channel_counter = channel_counter + 1
+    end
+    local is_dark_bg = (bg_numeric_value < 383)
+    return is_dark_bg
+end
+function module.reduce_contrast(color, ratio)
+    ratio = ratio or 50
+    if module.is_dark(color) then
+        return module.darker(color, -ratio)
+    else
+        return module.darker(color, ratio)
+    end
+end
+function module.set_alpha(color, alpha)
+    local alpha_hex = string.format('%02x', math.floor(alpha * 2.56))
+    return string.sub(color, 1, 7) .. alpha_hex
+end
 
 -- Load configuration file
 function module.load_config(config_file)
@@ -95,7 +144,30 @@ function module.load_config(config_file)
         altkey = 'Mod1',
 
         -- Select theme
-        theme = 'ayu'
+        theme = 'ayu',
+
+        -- icon theme to use
+        icon_theme = 'HighContrast',
+
+        -- enable / disable desktop widget
+        desktop_widgets = true,
+
+        -- widgets to be added to wibar
+        wibar_widgets = {
+            'net_down',
+            'net_up',
+            'vol',
+            'mem',
+            'cpu',
+            'fs',
+            'weather',
+            'temp',
+            'bat',
+            'datetime'
+        },
+
+        -- widgets to be added to the desktop pop up
+        arc_widgets = {'cpu', 'mem', 'fs', 'bat'}
 
     }
     if gfs.file_readable(gfs.get_configuration_dir() .. 'config.lua') then
@@ -263,5 +335,27 @@ function module.application_switcher()
         end
     }
 end
+
+-- change dpi
+function module.inc_dpi(inc)
+    for s in capi.screen do
+        s.dpi = s.dpi + inc
+        set_xconf('/Xft/DPI', math.floor(s.dpi))
+    end
+end
+function module.dec_dpi(dec) module.inc_dpi(-dec) end
+
+-- manage widgets
+function module.toggle_widgets() for s in capi.screen do s.toggle_widgets() end end
+function module.update_widgets() for s in capi.screen do s.update_widgets() end end
+function module.toggle_desktop_widget_visibility()
+    for s in capi.screen do s.toggle_desktop_widget_visibility() end
+end
+
+-- change colorschemes
+function module.set_dark() set_color_scheme('dark', 'flattrcolor') end
+function module.set_mirage() set_color_scheme('mirage', 'flattrcolor') end
+function module.set_light() set_color_scheme('light', 'flattrcolor-dark') end
+
 -- [ return module ]------------------------------------------------------------
 return module

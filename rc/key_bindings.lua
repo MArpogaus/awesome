@@ -44,8 +44,7 @@ local hotkeys_popup = require('awful.hotkeys_popup').widget
 local revelation = require('revelation')
 
 -- helper functions
-local helpers = require('rc.helper_functions')
-local util = require('themes.ayu.util')
+local utils = require('rc.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -171,24 +170,22 @@ module.init = function(config, mainmenu)
             {modkey}, 'Escape', awful.tag.history.restore,
             {description = 'go back', group = 'tag'}
         ), awful.key(
-            {modkey, 'Shift'}, 'n', helpers.add_tag,
+            {modkey, 'Shift'}, 'n', utils.add_tag,
             {description = 'add new tag', group = 'tag'}
         ), awful.key(
-            {modkey, 'Shift'}, 'r', helpers.rename_tag,
+            {modkey, 'Shift'}, 'r', utils.rename_tag,
             {description = 'rename tag', group = 'tag'}
         ), awful.key(
-            {modkey, 'Shift'}, 'Left', function()
-                helpers.move_tag(-1)
-            end, {description = 'move tag to the left', group = 'tag'}
+            {modkey, 'Shift'}, 'Left', function() utils.move_tag(-1) end,
+            {description = 'move tag to the left', group = 'tag'}
         ), awful.key(
-            {modkey, 'Shift'}, 'Right', function()
-                helpers.move_tag(1)
-            end, {description = 'move tag to the right', group = 'tag'}
+            {modkey, 'Shift'}, 'Right', function() utils.move_tag(1) end,
+            {description = 'move tag to the right', group = 'tag'}
         ), awful.key(
-            {modkey, 'Shift'}, 'd', helpers.delete_tag,
+            {modkey, 'Shift'}, 'd', utils.delete_tag,
             {description = 'delete tag', group = 'tag'}
         ), awful.key(
-            {modkey, 'Shift'}, 'f', helpers.fork_tag,
+            {modkey, 'Shift'}, 'f', utils.fork_tag,
             {description = 'fork tag', group = 'tag'}
         ),
         -- [ screen ]---------------------------------------------------------------
@@ -240,15 +237,14 @@ module.init = function(config, mainmenu)
                 end
             end, {description = 'restore minimized', group = 'client'}
         ), awful.key(
-            {altkey, "Control"}, "+", function()
-                helpers.gaps_resize(2)
-            end, {description = "increment useless gaps", group = "client"}
+            {altkey, "Control"}, "+", function() utils.gaps_resize(2) end,
+            {description = "increment useless gaps", group = "client"}
         ), awful.key(
             {altkey, "Control"}, "-", function()
-                helpers.gaps_resize(-2)
+                utils.gaps_resize(-2)
             end, {description = "decrement useless gaps", group = "client"}
         ), awful.key(
-            {altkey}, "Tab", helpers.application_switcher,
+            {altkey}, "Tab", utils.application_switcher,
             {description = 'restore minimized', group = 'client'}
         ),
         -- [ launcher ]-------------------------------------------------------------
@@ -332,35 +328,35 @@ module.init = function(config, mainmenu)
         ),
         -- [ theme ]----------------------------------------------------------------
         awful.key(
-            {modkey, altkey, 'Control'}, 'l', util.set_light,
+            {modkey, altkey, 'Control'}, 'l', utils.set_light,
             {description = 'set light colorscheme', group = 'theme'}
         ), awful.key(
-            {modkey, altkey, 'Control'}, 'm', util.set_mirage,
+            {modkey, altkey, 'Control'}, 'm', utils.set_mirage,
             {description = 'set mirage colorscheme', group = 'theme'}
         ), awful.key(
-            {modkey, altkey, 'Control'}, 'd', util.set_dark,
+            {modkey, altkey, 'Control'}, 'd', utils.set_dark,
             {description = 'set dark colorscheme', group = 'theme'}
         ), awful.key(
             {modkey, altkey, 'Control'}, '+', function()
-                util.inc_dpi(10)
+                utils.inc_dpi(10)
             end, {description = 'increase dpi', group = 'theme'}
         ), awful.key(
             {modkey, altkey, 'Control'}, '-', function()
-                util.dec_dpi(10)
+                utils.dec_dpi(10)
             end, {description = 'decrease dpi', group = 'theme'}
         ),
         -- [ widgets ]--------------------------------------------------------------
         awful.key(
-            {modkey, 'Shift'}, 'w', util.toggle_widgets,
+            {modkey, 'Shift'}, 'w', utils.toggle_widgets,
             {description = 'toggle widgets', group = 'widgets'}
         ), awful.key(
             {modkey, altkey, 'Shift'}, 'w',
-            util.toggle_desktop_widget_visibility, {
+            utils.toggle_desktop_widget_visibility, {
                 description = 'toggle desktop widget visibility',
                 group = 'widgets'
             }
         ), awful.key(
-            {modkey, 'Shift'}, 'u', util.update_widgets,
+            {modkey, 'Shift'}, 'u', utils.update_widgets,
             {description = 'update widgets', group = 'widgets'}
         )
     )

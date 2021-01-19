@@ -1,12 +1,12 @@
 --------------------------------------------------------------------------------
--- @File:   tags.lua
+-- @File:   desktop.lua
 -- @Author: Marcel Arpogaus
--- @Date:   2020-09-30 09:33:55
+-- @Date:   2019-11-18 10:19:01
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-11-27 14:43:29
+-- @Last Modified at: 2020-11-27 11:27:46
 -- [ description ] -------------------------------------------------------------
--- ...
+-- desktop widgets
 -- [ license ] -----------------------------------------------------------------
 -- MIT License
 -- Copyright (c) 2020 Marcel Arpogaus
@@ -27,36 +27,40 @@
 -- SOFTWARE.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
--- Standard awesome library
-local awful = require('awful')
+local battery = require('widgets.battery')
+local cpu = require('widgets.cpu')
+local date_time = require('widgets.date_time')
+local fs = require('widgets.fs')
+local memory = require('widgets.memory')
+local net = require('widgets.net')
+local temp = require('widgets.temp')
+local volume = require('widgets.volume')
+local weather = require('widgets.weather')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function()
-    -- Table of layouts to cover with awful.layout.inc, order matters.
-    awful.layout.layouts = {
-        awful.layout.suit.floating,
-        awful.layout.suit.tile,
-        awful.layout.suit.tile.left,
-        awful.layout.suit.tile.bottom,
-        awful.layout.suit.tile.top,
-        awful.layout.suit.fair,
-        awful.layout.suit.fair.horizontal, -- awful.layout.suit.spiral,
-        -- awful.layout.suit.spiral.dwindle,
-        awful.layout.suit.max, -- awful.layout.suit.max.fullscreen,
-        awful.layout.suit.magnifier
-        -- awful.layout.suit.corner.nw,
-        -- awful.layout.suit.corner.ne,
-        -- awful.layout.suit.corner.sw,
-        -- awful.layout.suit.corner.se,
-    }
+module.clock = date_time.create_desktop_widget
+module.weather = weather.create_desktop_widget
 
-    awful.layout.default = {awful.layout.layouts[6]}
-
-    module.tagnames = {''}
-end
+-- [ arcs ] --------------------------------------------------------------------
+module.arcs = {
+    net_down = function(warg)
+        warg.value = 'down'
+        return net.create_arc_widget(warg)
+    end,
+    net_up = function(warg)
+        warg.value = 'up'
+        return net.create_arc_widget(warg)
+    end,
+    vol = volume.create_arc_widget,
+    mem = memory.create_arc_widget,
+    cpu = cpu.create_arc_widget,
+    temp = temp.create_arc_widget,
+    bat = battery.create_arc_widget,
+    fs = fs.create_arc_widget
+}
 
 -- [ return module ] -----------------------------------------------------------
 return module

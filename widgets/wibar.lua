@@ -1,12 +1,12 @@
 --------------------------------------------------------------------------------
--- @File:   tags.lua
+-- @File:   wibar.lua
 -- @Author: Marcel Arpogaus
--- @Date:   2020-09-30 09:33:55
+-- @Date:   2019-07-15 08:12:41
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-11-27 14:43:29
+-- @Last Modified at: 2020-11-27 11:27:34
 -- [ description ] -------------------------------------------------------------
--- ...
+-- wibar widgets
 -- [ license ] -----------------------------------------------------------------
 -- MIT License
 -- Copyright (c) 2020 Marcel Arpogaus
@@ -27,36 +27,35 @@
 -- SOFTWARE.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
--- Standard awesome library
-local awful = require('awful')
+local battery = require('widgets.battery')
+local cpu = require('widgets.cpu')
+local date_time = require('widgets.date_time')
+local fs = require('widgets.fs')
+local memory = require('widgets.memory')
+local net = require('widgets.net')
+local temp = require('widgets.temp')
+local volume = require('widgets.volume')
+local weather = require('widgets.weather')
 
 -- [ local objects ] -----------------------------------------------------------
-local module = {}
-
--- [ module functions ] --------------------------------------------------------
-module.init = function()
-    -- Table of layouts to cover with awful.layout.inc, order matters.
-    awful.layout.layouts = {
-        awful.layout.suit.floating,
-        awful.layout.suit.tile,
-        awful.layout.suit.tile.left,
-        awful.layout.suit.tile.bottom,
-        awful.layout.suit.tile.top,
-        awful.layout.suit.fair,
-        awful.layout.suit.fair.horizontal, -- awful.layout.suit.spiral,
-        -- awful.layout.suit.spiral.dwindle,
-        awful.layout.suit.max, -- awful.layout.suit.max.fullscreen,
-        awful.layout.suit.magnifier
-        -- awful.layout.suit.corner.nw,
-        -- awful.layout.suit.corner.ne,
-        -- awful.layout.suit.corner.sw,
-        -- awful.layout.suit.corner.se,
-    }
-
-    awful.layout.default = {awful.layout.layouts[6]}
-
-    module.tagnames = {''}
-end
+local module = {
+    weather = weather.create_wibar_widget,
+    net_down = function(warg)
+        warg.value = 'down'
+        return net.create_wibar_widget(warg)
+    end,
+    net_up = function(warg)
+        warg.value = 'up'
+        return net.create_wibar_widget(warg)
+    end,
+    vol = volume.create_wibar_widget,
+    mem = memory.create_wibar_widget,
+    cpu = cpu.create_wibar_widget,
+    temp = temp.create_wibar_widget,
+    bat = battery.create_wibar_widget,
+    fs = fs.create_wibar_widget,
+    datetime = date_time.create_wibar_widget
+}
 
 -- [ return module ] -----------------------------------------------------------
 return module
