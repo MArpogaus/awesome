@@ -42,107 +42,111 @@ local hotkeys_popup = require('awful.hotkeys_popup').widget
 -- Freedesktop menu
 local freedesktop = require('freedesktop')
 
--- helper functions
-local helpers = require('rc.helper_functions')
-
--- configuration
-local config = helpers.load_config()
-
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
--- This is used later as the default terminal and editor to run.
-local browser = config.browser
-local filemanager = config.filemanager
-local gui_editor = config.gui_editor
-local terminal = config.terminal
-local lock_command = config.lock_command
-
-local myawesomemenu = {
-    {
-        'hotkeys',
-        function() return false, hotkeys_popup.show_help end,
-        menubar.utils.lookup_icon('preferences-desktop-keyboard-shortcuts')
-    },
-    {
-        'manual',
-        terminal .. ' -e man awesome',
-        menubar.utils.lookup_icon('system-help')
-    },
-    {
-        'edit config',
-        gui_editor .. ' ' .. capi.awesome.conffile,
-        menubar.utils.lookup_icon('accessories-text-editor')
-    },
-    {
-        'restart',
-        capi.awesome.restart,
-        menubar.utils.lookup_icon('system-restart')
-    }
-}
-local myexitmenu = {
-    {
-        'log out',
-        function() capi.awesome.quit() end,
-        menubar.utils.lookup_icon('system-log-out')
-    },
-    {
-        'lock screen',
-        lock_command,
-        menubar.utils.lookup_icon('system-lock-screen')
-    },
-    {
-        'suspend',
-        'systemctl suspend',
-        menubar.utils.lookup_icon('system-suspend')
-    },
-    {
-        'hibernate',
-        'systemctl hibernate',
-        menubar.utils.lookup_icon('system-suspend-hibernate')
-    },
-    {'reboot', 'systemctl reboot', menubar.utils.lookup_icon('system-reboot')},
-    {'shutdown', 'poweroff', menubar.utils.lookup_icon('system-shutdown')}
-}
 
 -- [ module objects ] ----------------------------------------------------------
--- Create a launcher widget and a main menu
-module.mainmenu = freedesktop.menu.build(
-    {
-        icon_size = 32,
-        before = {
-            {
-                'Terminal',
-                terminal,
-                menubar.utils.lookup_icon('utilities-terminal')
-            },
-            {
-                'Browser',
-                browser,
-                menubar.utils.lookup_icon('internet-web-browser')
-            },
-            {
-                'Files',
-                filemanager,
-                menubar.utils.lookup_icon('system-file-manager')
-            }
-            -- other triads can be put here
+module.init = function(config)
+
+    -- This is used later as the default terminal and editor to run.
+    local browser = config.browser
+    local filemanager = config.filemanager
+    local gui_editor = config.gui_editor
+    local terminal = config.terminal
+    local lock_command = config.lock_command
+
+    local myawesomemenu = {
+        {
+            'hotkeys',
+            function() return false, hotkeys_popup.show_help end,
+            menubar.utils.lookup_icon('preferences-desktop-keyboard-shortcuts')
         },
-        after = {
-            {'Awesome', myawesomemenu, '/usr/share/awesome/icons/awesome32.png'},
-            {'Exit', myexitmenu, menubar.utils.lookup_icon('system-shutdown')}
-            -- other triads can be put here
+        {
+            'manual',
+            terminal .. ' -e man awesome',
+            menubar.utils.lookup_icon('system-help')
+        },
+        {
+            'edit config',
+            gui_editor .. ' ' .. capi.awesome.conffile,
+            menubar.utils.lookup_icon('accessories-text-editor')
+        },
+        {
+            'restart',
+            capi.awesome.restart,
+            menubar.utils.lookup_icon('system-restart')
         }
     }
-)
-module.exitmenu = awful.widget.launcher(
-    {
-        image = beautiful.exitmenu_icon,
-        menu = awful.menu({icon_size = 32, items = myexitmenu})
+    local myexitmenu = {
+        {
+            'log out',
+            function() capi.awesome.quit() end,
+            menubar.utils.lookup_icon('system-log-out')
+        },
+        {
+            'lock screen',
+            lock_command,
+            menubar.utils.lookup_icon('system-lock-screen')
+        },
+        {
+            'suspend',
+            'systemctl suspend',
+            menubar.utils.lookup_icon('system-suspend')
+        },
+        {
+            'hibernate',
+            'systemctl hibernate',
+            menubar.utils.lookup_icon('system-suspend-hibernate')
+        },
+        {
+            'reboot',
+            'systemctl reboot',
+            menubar.utils.lookup_icon('system-reboot')
+        },
+        {'shutdown', 'poweroff', menubar.utils.lookup_icon('system-shutdown')}
     }
-)
 
--- Menubar configuration
-menubar.utils.terminal = terminal -- Set the terminal for applications that require it
+    module.mainmenu = freedesktop.menu.build(
+        {
+            icon_size = 32,
+            before = {
+                {
+                    'Terminal',
+                    terminal,
+                    menubar.utils.lookup_icon('utilities-terminal')
+                },
+                {
+                    'Browser',
+                    browser,
+                    menubar.utils.lookup_icon('internet-web-browser')
+                },
+                {
+                    'Files',
+                    filemanager,
+                    menubar.utils.lookup_icon('system-file-manager')
+                }
+            },
+            after = {
+                {
+                    'Awesome',
+                    myawesomemenu,
+                    '/usr/share/awesome/icons/awesome32.png'
+                },
+                {
+                    'Exit',
+                    myexitmenu,
+                    menubar.utils.lookup_icon('system-shutdown')
+                }
+            }
+        }
+    )
+    module.exitmenu = awful.widget.launcher(
+        {
+            image = beautiful.exitmenu_icon,
+            menu = awful.menu({icon_size = 32, items = myexitmenu})
+        }
+    )
+end
 
 -- [ return module ] -----------------------------------------------------------
 return module

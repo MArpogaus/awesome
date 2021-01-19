@@ -28,28 +28,15 @@
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- grab environment
-local capi = {client = client}
+local capi = {client = client, root = root}
 
 -- Standard awesome library
 local gears = require('gears')
 local awful = require('awful')
 local beautiful = require('beautiful')
 
--- helper functions
-local helpers = require('rc.helper_functions')
-
--- configuration
-local config = helpers.load_config()
-
--- the main menu
-local menu = require('rc.menu')
-local mymainmenu = menu.mainmenu
-
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
-
--- Default modkey.
-local modkey = config.modkey
 
 -- [ local functions ] ---------------------------------------------------------
 local function client_menu_toggle_fn()
@@ -138,42 +125,52 @@ local function client_stack_toggle_fn()
         end
     end
 end
--- [ module objects ] ----------------------------------------------------------
-module.taglist_buttons = gears.table.join(
-    awful.button({}, 1, function(t) t:view_only() end), awful.button(
-        {modkey}, 1, function(t)
-            if capi.client.focus then
-                capi.client.focus:move_to_tag(t)
+
+-- [ module function ] ---------------------------------------------------------
+module.init = function(config, mainmenu)
+    -- Default modkey.
+    local modkey = config.modkey
+
+    module.taglist_buttons = gears.table.join(
+        awful.button({}, 1, function(t) t:view_only() end), awful.button(
+            {modkey}, 1, function(t)
+                if capi.client.focus then
+                    capi.client.focus:move_to_tag(t)
+                end
             end
-        end
-    ), awful.button({}, 3, awful.tag.viewtoggle), awful.button(
-        {modkey}, 3, function(t)
-            if capi.client.focus then capi.client.focus:toggle_tag(t) end
-        end
-    ), awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
-    awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
-)
-module.tasklist_buttons = gears.table.join(
-    awful.button({}, 1, client_stack_toggle_fn()),
-    awful.button({}, 3, client_menu_toggle_fn()),
-    awful.button({}, 4, function() awful.client.focus.byidx(1) end),
-    awful.button({}, 5, function() awful.client.focus.byidx(-1) end)
-)
-module.client_buttons = gears.table.join(
-    awful.button(
-        {}, 1, function(c)
-            capi.client.focus = c;
-            c:raise()
-            mymainmenu:hide()
-        end
-    ), awful.button({modkey}, 1, awful.mouse.client.move),
-    awful.button({modkey}, 3, awful.mouse.client.resize)
-)
-module.root = gears.table.join(
-    awful.button({}, 1, function() mymainmenu:hide() end),
-    awful.button({}, 3, function() mymainmenu:toggle() end),
-    awful.button({}, 4, awful.tag.viewnext),
-    awful.button({}, 5, awful.tag.viewprev)
-)
+        ), awful.button({}, 3, awful.tag.viewtoggle), awful.button(
+            {modkey}, 3, function(t)
+                if capi.client.focus then
+                    capi.client.focus:toggle_tag(t)
+                end
+            end
+        ), awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
+        awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
+    )
+    module.tasklist_buttons = gears.table.join(
+        awful.button({}, 1, client_stack_toggle_fn()),
+        awful.button({}, 3, client_menu_toggle_fn()),
+        awful.button({}, 4, function() awful.client.focus.byidx(1) end),
+        awful.button({}, 5, function() awful.client.focus.byidx(-1) end)
+    )
+    module.client_buttons = gears.table.join(
+        awful.button(
+            {}, 1, function(c)
+                capi.client.focus = c;
+                c:raise()
+                mainmenu:hide()
+            end
+        ), awful.button({modkey}, 1, awful.mouse.client.move),
+        awful.button({modkey}, 3, awful.mouse.client.resize)
+    )
+    local root = gears.table.join(
+        awful.button({}, 1, function() mainmenu:hide() end),
+        awful.button({}, 3, function() mainmenu:toggle() end),
+        awful.button({}, 4, awful.tag.viewnext),
+        awful.button({}, 5, awful.tag.viewprev)
+    )
+    capi.root.buttons(root)
+end
+
 -- [ return module ] -----------------------------------------------------------
 return module

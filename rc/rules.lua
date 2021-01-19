@@ -35,184 +35,194 @@ local awful = require('awful')
 -- Theme handling library
 local beautiful = require('beautiful')
 
--- mouse / key bindings
-local buttons = require('rc.mouse_bindings')
-local keys = require('rc.key_bindings')
-
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
-local clientbuttons = buttons.client_buttons
-local clientkeys = keys.client_keys
+-- [ local functions ] ----------------------------------------------------------
+local new_tag = awful.rules.high_priority_properties.new_tag
+function awful.rules.high_priority_properties.new_tag(c, value, props)
+    if not awful.tag.find_by_name(c.screen, value.name) then
+        new_tag(c, value, props)
+    end
+    awful.rules.high_priority_properties.tag(c, value.name, props)
+end
 
--- [ module objects ] ----------------------------------------------------------
--- Rules to apply to new clients (through the "manage" signal).
-module.rules = {
-    {
-        rule = {},
-        properties = {
-            border_width = beautiful.border_width,
-            border_color = beautiful.border_normal,
-            focus = awful.client.focus.filter,
-            raise = true,
-            keys = clientkeys,
-            buttons = clientbuttons,
-            size_hints_honor = false, -- Remove gaps between terminals
-            screen = awful.screen.preferred,
-            placement = awful.placement.center + awful.placement.no_overlap +
-                awful.placement.no_offscreen,
-            switchtotag = true,
-            titlebars_enabled = false,
-            requests_no_titlebar = false
-        }
-    },
-    -- Floating clients.
-    {
-        rule_any = {
-            instance = {
-                "DTA", -- Firefox addon DownThemAll.
-                "copyq", -- Includes session name in class.
-                "pinentry"
-            },
-            class = {
-                "Arandr",
-                "Blueman-manager",
-                "Gpick",
-                "Kruler",
-                "MessageWin", -- kalarm.
-                "Sxiv",
-                "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
-                "Wpa_gui",
-                "veromix",
-                "xtightvncviewer"
-            },
-
-            -- Note that the name property shown in xprop might be set slightly after creation of the client
-            -- and the name shown there might not match defined rules here.
-            name = {
-                "Event Tester" -- xev.
-            },
-            role = {
-                "AlarmWindow", -- Thunderbird's calendar.
-                "ConfigManager", -- Thunderbird's about:config.
-                "pop-up" -- e.g. Google Chrome's (detached) Developer Tools.
+-- [ module functions ] ---------------------------------------------------------
+module.init = function(client_buttons, client_keys)
+    -- Rules to apply to new clients (through the "manage" signal).
+    module.rules = {
+        {
+            rule = {},
+            properties = {
+                border_width = beautiful.border_width,
+                border_color = beautiful.border_normal,
+                focus = awful.client.focus.filter,
+                raise = true,
+                keys = client_keys,
+                buttons = client_buttons,
+                size_hints_honor = false, -- Remove gaps between terminals
+                screen = awful.screen.preferred,
+                placement = awful.placement.center + awful.placement.no_overlap +
+                    awful.placement.no_offscreen,
+                switchtotag = true,
+                titlebars_enabled = false,
+                requests_no_titlebar = false
             }
         },
-        properties = {floating = true}
-    },
-    -- Add titlebars to normal clients and dialogs
-    {rule_any = {type = {"dialog"}}, properties = {titlebars_enabled = true}},
-    {
-        rule = {name = 'doom-capture'},
-        properties = {
-            tag = awful.screen.focused().selected_tags[0],
-            requests_no_titlebars = true,
-            titlebars_enabled = false,
-            floating = true,
-            ontop = true,
-            placement = awful.placement.top,
-            -- maximized_horizontal = true,
-        }
-    },
-    {
-        rule_any = {class = {'firefox', 'tor browser', 'Chromium'}},
-        properties = {
-            new_tag = {
-                name = '',
-                volatile = true,
-                layout = awful.layout.suit.max
-            }
-        }
-    },
-    {
-        rule_any = {class = {'Thunderbird'}},
-        properties = {
-            new_tag = {
-                name = '',
-                volatile = true,
-                layout = awful.layout.suit.magnifier,
-                master_width_factor = 0.8
+        -- Floating clients.
+        {
+            rule_any = {
+                instance = {
+                    "DTA", -- Firefox addon DownThemAll.
+                    "copyq", -- Includes session name in class.
+                    "pinentry"
+                },
+                class = {
+                    "Arandr",
+                    "Blueman-manager",
+                    "Gpick",
+                    "Kruler",
+                    "MessageWin", -- kalarm.
+                    "Sxiv",
+                    "Tor Browser", -- Needs a fixed window size to avoid fingerprinting by screen size.
+                    "Wpa_gui",
+                    "veromix",
+                    "xtightvncviewer"
+                },
+
+                -- Note that the name property shown in xprop might be set slightly after creation of the client
+                -- and the name shown there might not match defined rules here.
+                name = {
+                    "Event Tester" -- xev.
+                },
+                role = {
+                    "AlarmWindow", -- Thunderbird's calendar.
+                    "ConfigManager", -- Thunderbird's about:config.
+                    "pop-up" -- e.g. Google Chrome's (detached) Developer Tools.
+                }
             },
-            screen = capi.screen.count() > 1 and 2 or 1
-        }
-    },
-    {
-        rule_any = {class = {'zoom', 'Franz', 'Pidgin'}},
-        properties = {
-            new_tag = {
-                name = '',
-                volatile = true,
-                layout = awful.layout.suit.tile.left,
-                master_width_factor = 0.8
-            },
-            screen = capi.screen.count() > 1 and 2 or 1
-        }
-    },
-    {
-        rule_any = {class = {'Thunar'}},
-        properties = {
-            new_tag = {
-                name = '',
-                volatile = true,
-                layout = awful.layout.suit.tile
-            }
-        }
-    },
-    {
-        rule_any = {
-            class = {
-                'Sublime_text',
-                'Sublime_merge',
-                'lxterminal',
-                "xterm",
-                "urxvt",
-                "aterm",
-                "urxvt",
-                "Emacs"
+            properties = {floating = true}
+        },
+        -- Add titlebars to normal clients and dialogs
+        {
+            rule_any = {type = {"dialog"}},
+            properties = {titlebars_enabled = true}
+        },
+        {
+            rule = {name = 'doom-capture'},
+            properties = {
+                tag = awful.screen.focused().selected_tags[0],
+                requests_no_titlebars = true,
+                titlebars_enabled = false,
+                floating = true,
+                ontop = true,
+                placement = awful.placement.top
+                -- maximized_horizontal = true,
             }
         },
-        except = {name = 'doom-capture'},
-        properties = {
-            new_tag = {
-                name = '',
-                volatile = true,
-                layout = awful.layout.suit.tile.bottom,
-                master_width_factor = 0.8
+        {
+            rule_any = {class = {'firefox', 'tor browser', 'Chromium'}},
+            properties = {
+                new_tag = {
+                    name = '',
+                    volatile = true,
+                    layout = awful.layout.suit.max
+                }
             }
-        }
-    },
-    {
-        rule_any = {class = {'Evince', 'Zathura'}},
-        properties = {
-            new_tag = {
-                name = '',
-                volatile = true,
-                layout = awful.layout.suit.max
+        },
+        {
+            rule_any = {class = {'Thunderbird'}},
+            properties = {
+                new_tag = {
+                    name = '',
+                    volatile = true,
+                    layout = awful.layout.suit.magnifier,
+                    master_width_factor = 0.8
+                },
+                screen = capi.screen.count() > 1 and 2 or 1
+            }
+        },
+        {
+            rule_any = {class = {'zoom', 'Franz', 'Pidgin'}},
+            properties = {
+                new_tag = {
+                    name = '',
+                    volatile = true,
+                    layout = awful.layout.suit.tile.left,
+                    master_width_factor = 0.8
+                },
+                screen = capi.screen.count() > 1 and 2 or 1
+            }
+        },
+        {
+            rule_any = {class = {'Thunar'}},
+            properties = {
+                new_tag = {
+                    name = '',
+                    volatile = true,
+                    layout = awful.layout.suit.tile
+                }
+            }
+        },
+        {
+            rule_any = {
+                class = {
+                    'Sublime_text',
+                    'Sublime_merge',
+                    'lxterminal',
+                    "xterm",
+                    "urxvt",
+                    "aterm",
+                    "urxvt",
+                    "Emacs"
+                }
             },
-            screen = capi.screen.count() > 1 and 2 or 1
-        }
-    },
-    {
-        rule_any = {class = {'Mpv', 'Vlc', 'Gpodder', 'Ristretto'}},
-        properties = {
-            new_tag = {
-                name = '',
-                volatile = true,
-                layout = awful.layout.suit.fair
+            except = {name = 'doom-capture'},
+            properties = {
+                new_tag = {
+                    name = '',
+                    volatile = true,
+                    layout = awful.layout.suit.tile.bottom,
+                    master_width_factor = 0.8
+                }
             }
-        }
-    },
-    {
-        rule_any = {class = {'0ad', 'supertuxkart', 'xonotic', 'hedgewars'}},
-        properties = {
-            new_tag = {
-                name = '',
-                volatile = true,
-                layout = awful.layout.suit.fair
+        },
+        {
+            rule_any = {class = {'Evince', 'Zathura'}},
+            properties = {
+                new_tag = {
+                    name = '',
+                    volatile = true,
+                    layout = awful.layout.suit.max
+                },
+                screen = capi.screen.count() > 1 and 2 or 1
+            }
+        },
+        {
+            rule_any = {class = {'Mpv', 'Vlc', 'Gpodder', 'Ristretto'}},
+            properties = {
+                new_tag = {
+                    name = '',
+                    volatile = true,
+                    layout = awful.layout.suit.fair
+                }
+            }
+        },
+        {
+            rule_any = {class = {'0ad', 'supertuxkart', 'xonotic', 'hedgewars'}},
+            properties = {
+                new_tag = {
+                    name = '',
+                    volatile = true,
+                    layout = awful.layout.suit.fair
+                }
             }
         }
     }
-}
+
+    -- apply rules
+    awful.rules.rules = module.rules
+end
 
 -- [ return module ] -----------------------------------------------------------
 return module

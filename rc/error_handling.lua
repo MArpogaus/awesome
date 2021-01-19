@@ -33,8 +33,10 @@ local capi = {awesome = awesome}
 -- Notification library
 local naughty = require('naughty')
 
--- [ sequential ] --------------------------------------------------------------
+-- [ local objects ] -----------------------------------------------------------
+local module = {}
 
+-- [ sequential code ] ---------------------------------------------------------
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
 if capi.awesome.startup_errors then
@@ -46,8 +48,10 @@ if capi.awesome.startup_errors then
         }
     )
 end
--- Handle runtime errors after startup
-do
+
+-- [ module functions ] --------------------------------------------------------
+module.init = function()
+    -- Handle runtime errors after startup
     local in_error = false
     capi.awesome.connect_signal(
         'debug::error', function(err)
@@ -65,3 +69,6 @@ do
         end
     )
 end
+
+-- [ return module ] -----------------------------------------------------------
+return module

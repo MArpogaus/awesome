@@ -27,9 +27,6 @@
 -- SOFTWARE.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
--- grab environment
-local capi = {root = root}
-
 -- Standard awesome library
 local awful = require('awful')
 
@@ -39,8 +36,15 @@ local beautiful = require('beautiful')
 -- Mac OSX like 'Expose' view of all clients.
 local revelation = require('revelation')
 
--- helper functions
+-- rc modules
+local error_handling = require('rc.error_handling')
 local helpers = require('rc.helper_functions')
+local signals = require('rc.signals')
+local tags = require('rc.tags')
+local menu = require('rc.menu')
+local mouse_bindings = require('rc.mouse_bindings')
+local key_bindings = require('rc.key_bindings')
+local rules = require('rc.rules')
 
 -- configuration
 local config = helpers.load_config()
@@ -48,13 +52,17 @@ local config = helpers.load_config()
 -- ensure that there's always a client that has focus
 require('awful.autofocus')
 
+-- [ initialization ] ----------------------------------------------------------
 -- error handling
-require('rc.error_handling')
+error_handling.init()
 
 -- connect signals
-require('rc.signals')
+signals.init()
 
--- [ theme ] -------------------------------------------------------------------
+-- tags and layouts
+tags.init()
+
+-- theme
 beautiful.init(
     string.format(
         '%s/.config/awesome/themes/%s/theme.lua', os.getenv('HOME'),
@@ -63,47 +71,28 @@ beautiful.init(
 )
 beautiful.icon_theme = 'Papirus'
 
--- [ autorun programs ] --------------------------------------------------------
-awful.spawn.with_shell('~/.config/awesome/autorun.sh')
-
--- Initialize revelation
-revelation.init()
-
--- [ tags ] --------------------------------------------------------------------
-require('rc.tags')
---------------------------------------------------------------------------------
-
--- [ menu ] --------------------------------------------------------------------
-local menu = require('rc.menu')
--- add exit menu to wibar
+-- menues
+menu.init(config)
 awful.util.myexitmenu = menu.exitmenu
---------------------------------------------------------------------------------
 
--- [ mouse bindings ] ----------------------------------------------------------
-local buttons = require('rc.mouse_bindings')
-awful.util.taglist_buttons = buttons.taglist_buttons
-awful.util.tasklist_buttons = buttons.tasklist_buttons
-capi.root.buttons(buttons.root)
---------------------------------------------------------------------------------
+-- mouse bindings
+mouse_bindings.init(config, menu.mainmenu)
+awful.util.taglist_buttons = mouse_bindings.taglist_buttons
+awful.util.tasklist_buttons = mouse_bindings.tasklist_buttons
 
--- [ key bindings ] ------------------------------------------------------------
-local keys = require('rc.key_bindings')
-capi.root.keys(keys.global_keys)
---------------------------------------------------------------------------------
+-- key bindings
+key_bindings.init(config, menu.mainmenu)
 
 -- [ setup wibar and desktop widgets ] -----------------------------------------
 awful.screen.set_auto_dpi_enabled(true)
 awful.screen.connect_for_each_screen(beautiful.at_screen_connect)
 --------------------------------------------------------------------------------
 
--- [ rules ] -------------------------------------------------------------------
--- Rules to apply to new clients (through the "manage" signal).
-awful.rules.rules = require('rc.rules').rules
-local new_tag = awful.rules.high_priority_properties.new_tag
-function awful.rules.high_priority_properties.new_tag(c, value, props)
-    if not awful.tag.find_by_name(c.screen, value.name) then
-        new_tag(c, value, props)
-    end
-    awful.rules.high_priority_properties.tag(c, value.name, props)
-end
---------------------------------------------------------------------------------
+-- rules
+rules.init(mouse_bindings.client_buttons, key_bindings.client_keys)
+
+-- Initialize revelation
+revelation.init()
+
+-- [ autorun programs ] --------------------------------------------------------
+awful.spawn.with_shell('~/.config/awesome/autorun.sh')
