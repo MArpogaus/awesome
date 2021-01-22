@@ -34,7 +34,7 @@ local awful = require('awful')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function()
+module.init = function(config)
     -- Table of layouts to cover with awful.layout.inc, order matters.
     awful.layout.layouts = {
         awful.layout.suit.floating,
@@ -55,7 +55,19 @@ module.init = function()
 
     awful.layout.default = {awful.layout.layouts[6]}
 
-    module.tagnames = {''}
+    if config.dynamic_tagging then
+        module.tagnames = {''}
+        -- workaround for now
+        local new_tag = awful.rules.high_priority_properties.new_tag
+        function awful.rules.high_priority_properties.new_tag(c, value, props)
+            if not awful.tag.find_by_name(c.screen, value.name) then
+                new_tag(c, value, props)
+            end
+            awful.rules.high_priority_properties.tag(c, value.name, props)
+        end
+    else
+        module.tagnames = {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
+    end
 end
 
 -- [ return module ] -----------------------------------------------------------

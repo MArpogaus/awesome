@@ -347,8 +347,8 @@ module.init = function(config, mainmenu)
         ),
         -- [ widgets ]--------------------------------------------------------------
         awful.key(
-            {modkey, 'Shift'}, 'w', utils.toggle_widgets,
-            {description = 'toggle widgets', group = 'widgets'}
+            {modkey, 'Shift'}, 'w', utils.toggle_wibar_widgets,
+            {description = 'toggle wibar widgets', group = 'widgets'}
         ), awful.key(
             {modkey, altkey, 'Shift'}, 'w',
             utils.toggle_desktop_widget_visibility, {

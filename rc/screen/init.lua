@@ -1,22 +1,12 @@
 -- [ required modules ] --------------------------------------------------------
 -- Standard awesome library
-local table = table
-
 local capi = {client = client, screen = screen}
 
 local gears = require('gears')
 local awful = require('awful')
-local wibox = require('wibox')
 local beautiful = require('beautiful')
 
-local vicious = require('vicious')
-
-local utils = require('rc.utils')
 local tasklist = require('rc.screen.tasklist')
-
--- custom wibox widgets
-local wibar_widgets = require('rc.widgets.wibar')
-local desktop_widgets = require('rc.widgets.desktop')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -114,6 +104,12 @@ module.init = function(config,
             -- Dynamic widget management
             s.unregister_elements = {}
 
+            s.update_elements = function ()
+                for e,_ in pairs(s.unregister_elements) do
+                    e.update(s)
+                end
+            end
+            
             -- show systray on focused screen
             s.reset = function()
                 for _, unregister in pairs(s.unregister_elements) do

@@ -31,6 +31,7 @@ local capi = {screen = screen}
 
 -- Standard awesome library
 local awful = require('awful')
+local gears = require('gears')
 
 -- Theme handling library
 local beautiful = require('beautiful')
@@ -38,17 +39,8 @@ local beautiful = require('beautiful')
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
--- [ local functions ] ----------------------------------------------------------
-local new_tag = awful.rules.high_priority_properties.new_tag
-function awful.rules.high_priority_properties.new_tag(c, value, props)
-    if not awful.tag.find_by_name(c.screen, value.name) then
-        new_tag(c, value, props)
-    end
-    awful.rules.high_priority_properties.tag(c, value.name, props)
-end
-
 -- [ module functions ] ---------------------------------------------------------
-module.init = function(client_buttons, client_keys)
+module.init = function(config, client_buttons, client_keys)
     -- Rules to apply to new clients (through the "manage" signal).
     module.rules = {
         {
@@ -119,106 +111,114 @@ module.init = function(client_buttons, client_keys)
                 placement = awful.placement.top
                 -- maximized_horizontal = true,
             }
-        },
-        {
-            rule_any = {class = {'firefox', 'tor browser', 'Chromium'}},
-            properties = {
-                new_tag = {
-                    name = '',
-                    volatile = true,
-                    layout = awful.layout.suit.max
-                }
-            }
-        },
-        {
-            rule_any = {class = {'Thunderbird'}},
-            properties = {
-                new_tag = {
-                    name = '',
-                    volatile = true,
-                    layout = awful.layout.suit.magnifier,
-                    master_width_factor = 0.8
-                },
-                screen = capi.screen.count() > 1 and 2 or 1
-            }
-        },
-        {
-            rule_any = {class = {'zoom', 'Franz', 'Pidgin'}},
-            properties = {
-                new_tag = {
-                    name = '',
-                    volatile = true,
-                    layout = awful.layout.suit.tile.left,
-                    master_width_factor = 0.8
-                },
-                screen = capi.screen.count() > 1 and 2 or 1
-            }
-        },
-        {
-            rule_any = {class = {'Thunar'}},
-            properties = {
-                new_tag = {
-                    name = '',
-                    volatile = true,
-                    layout = awful.layout.suit.tile
-                }
-            }
-        },
-        {
-            rule_any = {
-                class = {
-                    'Sublime_text',
-                    'Sublime_merge',
-                    'lxterminal',
-                    'xterm',
-                    'urxvt',
-                    'aterm',
-                    'urxvt',
-                    'Emacs'
-                }
-            },
-            except = {name = 'doom-capture'},
-            properties = {
-                new_tag = {
-                    name = '',
-                    volatile = true,
-                    layout = awful.layout.suit.tile.bottom,
-                    master_width_factor = 0.8
-                }
-            }
-        },
-        {
-            rule_any = {class = {'Evince', 'Zathura'}},
-            properties = {
-                new_tag = {
-                    name = '',
-                    volatile = true,
-                    layout = awful.layout.suit.max
-                },
-                screen = capi.screen.count() > 1 and 2 or 1
-            }
-        },
-        {
-            rule_any = {class = {'Mpv', 'Vlc', 'Gpodder', 'Ristretto'}},
-            properties = {
-                new_tag = {
-                    name = '',
-                    volatile = true,
-                    layout = awful.layout.suit.fair
-                }
-            }
-        },
-        {
-            rule_any = {class = {'0ad', 'supertuxkart', 'xonotic', 'hedgewars'}},
-            properties = {
-                new_tag = {
-                    name = '',
-                    volatile = true,
-                    layout = awful.layout.suit.fair
-                }
-            }
         }
     }
+    if config.dynamic_tagging then
+        gears.table.merge(
+            module.rules, {
+                {
+                    rule_any = {class = {'firefox', 'tor browser', 'Chromium'}},
+                    properties = {
+                        new_tag = {
+                            name = '',
+                            volatile = true,
+                            layout = awful.layout.suit.max
+                        }
+                    }
+                },
+                {
+                    rule_any = {class = {'Thunderbird'}},
+                    properties = {
+                        new_tag = {
+                            name = '',
+                            volatile = true,
+                            layout = awful.layout.suit.magnifier,
+                            master_width_factor = 0.8
+                        },
+                        screen = capi.screen.count() > 1 and 2 or 1
+                    }
+                },
+                {
+                    rule_any = {class = {'zoom', 'Franz', 'Pidgin'}},
+                    properties = {
+                        new_tag = {
+                            name = '',
+                            volatile = true,
+                            layout = awful.layout.suit.tile.left,
+                            master_width_factor = 0.8
+                        },
+                        screen = capi.screen.count() > 1 and 2 or 1
+                    }
+                },
+                {
+                    rule_any = {class = {'Thunar'}},
+                    properties = {
+                        new_tag = {
+                            name = '',
+                            volatile = true,
+                            layout = awful.layout.suit.tile
+                        }
+                    }
+                },
+                {
+                    rule_any = {
+                        class = {
+                            'Sublime_text',
+                            'Sublime_merge',
+                            'lxterminal',
+                            'xterm',
+                            'urxvt',
+                            'aterm',
+                            'urxvt',
+                            'Emacs'
+                        }
+                    },
+                    except = {name = 'doom-capture'},
+                    properties = {
+                        new_tag = {
+                            name = '',
+                            volatile = true,
+                            layout = awful.layout.suit.tile.bottom,
+                            master_width_factor = 0.8
+                        }
+                    }
+                },
+                {
+                    rule_any = {class = {'Evince', 'Zathura'}},
+                    properties = {
+                        new_tag = {
+                            name = '',
+                            volatile = true,
+                            layout = awful.layout.suit.max
+                        },
+                        screen = capi.screen.count() > 1 and 2 or 1
+                    }
+                },
+                {
+                    rule_any = {class = {'Mpv', 'Vlc', 'Gpodder', 'Ristretto'}},
+                    properties = {
+                        new_tag = {
+                            name = '',
+                            volatile = true,
+                            layout = awful.layout.suit.fair
+                        }
+                    }
+                },
+                {
+                    rule_any = {
+                        class = {'0ad', 'supertuxkart', 'xonotic', 'hedgewars'}
+                    },
+                    properties = {
+                        new_tag = {
+                            name = '',
+                            volatile = true,
+                            layout = awful.layout.suit.fair
+                        }
+                    }
+                }
+            }
+        )
+    end
 
     -- apply rules
     awful.rules.rules = module.rules

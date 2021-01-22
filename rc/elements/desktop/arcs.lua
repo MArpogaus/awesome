@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-01-22 11:50:19 (Marcel Arpogaus)
+-- @Changed: 2021-01-22 19:37:25 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -110,7 +110,7 @@ module.init = function(config)
                 input_passthrough = true
             }
             if config.wallpaper then
-                desktop_popup_arg.border_color = beautiful.fg_normal
+                desktop_popup_arg.border_color = beautiful.border_normal
                 desktop_popup_arg.border_width = beautiful.border_width
                 desktop_popup_arg.bg = utils.set_alpha(beautiful.bg_normal, 75)
             end
@@ -125,24 +125,22 @@ module.init = function(config)
                     end
                 end
             )
-            s.toggle_desktop_widget_visibility =
-                function()
-                    local is_visible = s.desktop_popup.visible
-                    s.desktop_popup.visible = not is_visible
-                end
+            s.toggle_desktop_widget_visibility = function()
+                local is_visible = s.desktop_popup.visible
+                s.desktop_popup.visible = not is_visible
+            end
             s.suspend_desktop_widgets = function()
                 for _, w in ipairs(s.registered_desktop_widgets) do
                     vicious.unregister(w, true)
                 end
             end
-            s.activate_desktop_widgets =
-                function()
-                    for _, w in ipairs(s.registered_desktop_widgets) do
-                        vicious.activate(w)
-                    end
+            s.activate_desktop_widgets = function()
+                for _, w in ipairs(s.registered_desktop_widgets) do
+                    vicious.activate(w)
                 end
+            end
             -- show hide desktop_popup
-            s.desktop_popup.visible = config.desktop_widgets
+            s.desktop_popup.visible = config.desktop_widgets_visible or true
         end,
         unregister_fn = function(s)
             for _, w in ipairs(s.registered_desktop_widgets) do

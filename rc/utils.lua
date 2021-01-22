@@ -360,8 +360,8 @@ end
 function module.dec_dpi(dec) module.inc_dpi(-dec) end
 
 -- manage widgets
-function module.toggle_widgets() for s in capi.screen do s.toggle_widgets() end end
-function module.update_widgets() for s in capi.screen do s.update_widgets() end end
+function module.update_widgets() for s in capi.screen do s.update_elements() end end
+function module.toggle_wibar_widgets() for s in capi.screen do s.toggle_wibar_widgets() end end
 function module.toggle_desktop_widget_visibility()
     for s in capi.screen do s.toggle_desktop_widget_visibility() end
 end

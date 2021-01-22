@@ -62,17 +62,10 @@ error_handling.init()
 signals.init()
 
 -- tags and layouts
-tags.init()
+tags.init(config)
 
 -- theme
 themes.init(config)
--- beautiful.init(
---     string.format(
---         '%s/.config/awesome/themes/%s/theme.lua', os.getenv('HOME'),
---         config.theme
---     )
--- )
--- beautiful.icon_theme = 'Papirus'
 
 -- wibars and widgest
 elements.init(config)
@@ -87,7 +80,7 @@ mouse_bindings.init(config, menu.mainmenu)
 key_bindings.init(config, menu.mainmenu)
 
 -- rules
-rules.init(mouse_bindings.client_buttons, key_bindings.client_keys)
+rules.init(config, mouse_bindings.client_buttons, key_bindings.client_keys)
 
 -- wibars and widgets
 screen.init(
@@ -95,7 +88,7 @@ screen.init(
     mouse_bindings.tasklist_buttons, menu.mainmenu, menu.exitmenu
 )
 screen.register(elements.wibar)
-if config.desktop then
+if elements.desktop then
   screen.register(elements.desktop)
 end
 

@@ -27,12 +27,9 @@
 -- SOFTWARE.
 --------------------------------------------------------------------------------
 -- [ required modules ] -------------------------------------------------------
-local os = os
-
 local beautiful = require('beautiful')
 local gears = require('gears')
 local gfs = require('gears.filesystem')
-local menubar = require('menubar')
 
 local assets = require('rc.themes.decorations.assets')
 
@@ -78,6 +75,9 @@ module.init = function(config)
     end
     if not beautiful.init(theme_file) then
         beautiful.init(themes_path .. '/default/theme.lua')
+    end
+    if config.theme_overwrite then
+        gears.table.crush(beautiful.get(), config.theme_overwrite)
     end
 end
 

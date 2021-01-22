@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-01-22 11:50:41 (Marcel Arpogaus)
+-- @Changed: 2021-01-22 19:40:20 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -141,6 +141,15 @@ module.init = function(config)
                     vicious.activate(w)
                     s.set_wibar_widget_opacity(1)
                 end
+            end
+            s.wibar_widgets_active = true
+            s.toggle_wibar_widgets = function()
+                if s.wibar_widgets_active then
+                    s.suspend_wibar_widgets()
+                else
+                    s.activate_wibar_widgets()
+                end
+                s.wibar_widgets_active = not s.wibar_widgets_active
             end
         end,
         unregister_fn = function(s)
