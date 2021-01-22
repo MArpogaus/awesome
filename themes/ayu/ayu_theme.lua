@@ -97,20 +97,20 @@ module.set_color_scheme = function(self, cs)
 
     self.exit_icon_fg_color = cs.fg
     self.close_button_fg_color = util.reduce_contrast(
-                                     self.close_button_bg_color, 50
-                                 )
+        self.close_button_bg_color, 50
+    )
     self.maximized_button_fg_color = util.reduce_contrast(
-                                         self.maximized_button_bg_color, 50
-                                     )
+        self.maximized_button_bg_color, 50
+    )
     self.minimize_button_fg_color = util.reduce_contrast(
-                                        self.minimize_button_bg_color, 50
-                                    )
+        self.minimize_button_bg_color, 50
+    )
     self.ontop_button_fg_color = util.reduce_contrast(
-                                     self.ontop_button_bg_color, 50
-                                 )
+        self.ontop_button_bg_color, 50
+    )
     self.sticky_button_fg_color = util.reduce_contrast(
-                                      self.sticky_button_bg_color, 50
-                                  )
+        self.sticky_button_bg_color, 50
+    )
 
     self.widgets = {
         wibar = {
@@ -169,12 +169,12 @@ module.set_color_scheme = function(self, cs)
     self.desktop_widgets_weather_font_size = 50
 
     -- generate buttons
-    self.titlebar_close_button_normal =
-        self:close_button(self.button_size, self.button_radius, false)
+    self.titlebar_close_button_normal = self:close_button(
+        self.button_size, self.button_radius, false
+    )
     self.titlebar_close_button_focus = self:close_button(
-                                           self.button_size,
-                                           self.button_radius, false
-                                       )
+        self.button_size, self.button_radius, false
+    )
     self.titlebar_close_button_normal_hover =
         self:close_button(self.button_size, self.button_radius, true)
     self.titlebar_close_button_focus_hover =
@@ -243,11 +243,11 @@ module.set_color_scheme = function(self, cs)
     -- Generate taglist squares:
     local taglist_square_size = 4
     self.taglist_squares_sel = theme_assets.taglist_squares_sel(
-                                   taglist_square_size, self.fg_focus
-                               )
+        taglist_square_size, self.fg_focus
+    )
     self.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
-                                     taglist_square_size, self.fg_normal
-                                 )
+        taglist_square_size, self.fg_normal
+    )
     if util.is_dark(cs.bg) then
         self.titlebar_floating_button_normal_inactive =
             themes_path .. 'default/titlebar/floating_normal_inactive.png'
@@ -292,10 +292,8 @@ module.set_color_scheme = function(self, cs)
         self.layout_floating = themes_path .. 'default/layouts/floating.png'
         self.layout_magnifier = themes_path .. 'default/layouts/magnifier.png'
         self.layout_max = themes_path .. 'default/layouts/max.png'
-        self.layout_fullscreen = themes_path ..
-                                     'default/layouts/fullscreen.png'
-        self.layout_tilebottom = themes_path ..
-                                     'default/layouts/tilebottom.png'
+        self.layout_fullscreen = themes_path .. 'default/layouts/fullscreen.png'
+        self.layout_tilebottom = themes_path .. 'default/layouts/tilebottom.png'
         self.layout_tileleft = themes_path .. 'default/layouts/tileleft.png'
         self.layout_tile = themes_path .. 'default/layouts/tile.png'
         self.layout_tiletop = themes_path .. 'default/layouts/tiletop.png'
@@ -310,18 +308,17 @@ module.set_color_scheme = function(self, cs)
 
     -- Generate Awesome icon:
     self.awesome_icon = theme_assets.awesome_icon(
-                            self.menu_height, self.fg_normal, self.bg_normal
-                        )
+        self.menu_height, self.fg_normal, self.bg_normal
+    )
     self.exitmenu_icon = self:exit_icon(
-                             self.menu_height * 2, self.menu_height / 2
-                         )
+        self.menu_height * 2, self.menu_height / 2
+    )
 
     -- wallpaper
     self.wallpaper = function(s)
         return gears.surface.load_from_shape(
-                   s.geometry.width, s.geometry.height, gears.shape.rectangle,
-                   cs.bg
-               )
+            s.geometry.width, s.geometry.height, gears.shape.rectangle, cs.bg
+        )
     end
 end
 module.exit_icon = function(self, size, radius)
@@ -361,7 +358,7 @@ module.close_button = function(self, size, radius, hover, active)
         local x = size / 2
         local y = (size - height - width / 3) / 2
         local shape = gears.shape.transform(gears.shape.cross):translate(x, y)
-                          :rotate(math.pi / 4)
+            :rotate(math.pi / 4)
         shape(cr, width, height, thickness)
         cr:fill()
     end

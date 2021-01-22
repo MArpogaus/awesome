@@ -147,12 +147,40 @@ module.init = function(config, mainmenu)
         ), awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
         awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
     )
-    module.tasklist_buttons = gears.table.join(
-        awful.button({}, 1, client_stack_toggle_fn()),
-        awful.button({}, 3, client_menu_toggle_fn()),
-        awful.button({}, 4, function() awful.client.focus.byidx(1) end),
-        awful.button({}, 5, function() awful.client.focus.byidx(-1) end)
-    )
+    if config.tasklist == 'windows' or beautiful.tasklist == 'windows' then
+        module.tasklist_buttons = gears.table.join(
+            awful.button({}, 1, client_stack_toggle_fn()),
+            awful.button({}, 3, client_menu_toggle_fn()),
+            awful.button(
+                {}, 4, function() awful.client.focus.byidx(1) end
+            ), awful.button(
+                {}, 5, function() awful.client.focus.byidx(-1) end
+            )
+        )
+    else
+        module.tasklist_buttons = gears.table.join(
+            awful.button(
+                {}, 1, function(c)
+                    if c == capi.client.focus then
+                        c.minimized = true
+                    else
+                        c:emit_signal(
+                            "request::activate", "tasklist", {raise = true}
+                        )
+                    end
+                end
+            ), awful.button(
+                {}, 3,
+                function()
+                    awful.menu.client_list({theme = {width = 250}})
+                end
+            ), awful.button(
+                {}, 4, function() awful.client.focus.byidx(1) end
+            ), awful.button(
+                {}, 5, function() awful.client.focus.byidx(-1) end
+            )
+        )
+    end
     module.client_buttons = gears.table.join(
         awful.button(
             {}, 1, function(c)

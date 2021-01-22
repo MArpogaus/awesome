@@ -51,7 +51,7 @@ local default_app_id = ''
 -- [ local functions ] ---------------------------------------------------------
 local function markup_color_size(size, color, text)
     return utils.markup {
-        font = beautiful.font_name .. size,
+        font = utils.set_font_size(beautiful.font, size),
         fg_color = color,
         text = text
     }
@@ -172,7 +172,7 @@ widget_defs.desktop = function(warg)
     local city_id = warg.city_id or default_city_id
     local app_id = warg.app_id or default_app_id
 
-    local font_size = beautiful.desktop_widgets_weather_font_size
+    local font_size = beautiful.desktop_widgets_weather_font_size or 50
 
     local font_size_temp = 0.8 * font_size
     local font_size_range = 0.2 * font_size
@@ -183,7 +183,7 @@ widget_defs.desktop = function(warg)
         widget_container = weather_widget_container,
         container_args = {
             font_size = font_size,
-            color = beautiful.widgets.desktop.weather.fg,
+            color = beautiful.fg_desktop_widgets_weather,
             spacing = font_size_descr / 2
         },
         widgets = {
@@ -196,7 +196,7 @@ widget_defs.desktop = function(warg)
                     local sunset = args['{sunset}']
 
                     return utils.owf_markup(
-                        beautiful.widgets.desktop.weather.fg, weather, sunrise,
+                        beautiful.fg_desktop_widgets_weather, weather, sunrise,
                         sunset, font_size
                     )
                 end
@@ -207,7 +207,7 @@ widget_defs.desktop = function(warg)
                 format = function(_, args)
                     local temp = args['{temp c}']
                     return markup_color_size(
-                        font_size_temp, beautiful.widgets.desktop.weather.fg,
+                        font_size_temp, beautiful.fg_desktop_widgets_weather,
                         temp
                     )
                 end
@@ -220,7 +220,7 @@ widget_defs.desktop = function(warg)
                         tonumber(args['{temp min c}']) or 0
                     )
                     return markup_color_size(
-                        font_size_range, beautiful.widgets.desktop.weather.fg,
+                        font_size_range, beautiful.fg_desktop_widgets_weather,
                         temp_min .. ' / '
                     )
                 end
@@ -233,7 +233,7 @@ widget_defs.desktop = function(warg)
                         tonumber(args['{temp max c}']) or 0
                     )
                     return markup_color_size(
-                        font_size_range, beautiful.widgets.desktop.weather.fg,
+                        font_size_range, beautiful.fg_desktop_widgets_weather,
                         temp_max
                     )
                 end
@@ -244,7 +244,7 @@ widget_defs.desktop = function(warg)
                 format = function(_, args)
                     local weather = args['{weather}']
                     return markup_color_size(
-                        font_size_descr, beautiful.widgets.desktop.weather.fg,
+                        font_size_descr, beautiful.fg_desktop_widgets_weather,
                         weather
                     )
                 end

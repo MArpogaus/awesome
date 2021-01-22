@@ -77,16 +77,16 @@ module.new = function(args)
                 local timeout = wargs.timeout or widget_def.default_timeout
                 if k == 'wibar' then
                     return create_widget(
-                               widget_def, util.create_wibar_widget, timeout
-                           )
+                        widget_def, util.create_wibar_widget, timeout
+                    )
                 elseif k == 'arc' then
                     return create_widget(
-                               widget_def, util.create_arc_widget, timeout
-                           )
+                        widget_def, util.create_arc_widget, timeout
+                    )
                 else
                     return create_widget(
-                               widget_def, widget_def.widget_container, timeout
-                           )
+                        widget_def, widget_def.widget_container, timeout
+                    )
                 end
             end
     end

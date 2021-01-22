@@ -30,10 +30,7 @@
 local os = os
 local string = string
 
-local capi = {screen = screen}
-
 local gears = require('gears')
-local cairo = require('lgi').cairo
 local wibox = require('wibox')
 local beautiful = require('beautiful')
 
@@ -43,9 +40,13 @@ local owfont = require('widgets.utils.owfont')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
+module.set_font_size = function(font, size)
+    local font_name = font:match("[^%d]+")
+    return string.format('%s %d', font_name, math.floor(size))
+end
 -- FontAwesome icons -----------------------------------------------------------
 module.fa_markup = function(col, ico, size)
-    local font_size = size or beautiful.font_size
+    local font_size = size or beautiful.font:match("[%d]+")
     local fa_font = 'FontAwesome ' .. font_size
     return module.markup {font = fa_font, fg_color = col, text = ico}
 end
@@ -77,7 +78,7 @@ module.owf_markup = function(col, weather, sunrise, sunset, size)
     else
         icon = 'N/A'
     end
-    local font_size = size or beautiful.font_size
+    local font_size = size or beautiful.font:match("[%d]+")
     local owf_font = 'owf-regular ' .. font_size
     return module.markup {font = owf_font, fg_color = col, text = icon}
 end
@@ -94,13 +95,11 @@ end
 -- Helper function that puts a widget inside a box with a specified background color
 -- Invisible margins are added so that the boxes created with this function are evenly separated
 -- The widget_to_be_boxed is vertically and horizontally centered inside the box
-module.create_boxed_widget = function(
-    widget_to_be_boxed,
+module.create_boxed_widget = function(widget_to_be_boxed,
     bg_color,
     radius,
     inner_margin,
-    outer_margin
-)
+    outer_margin)
     radius = radius or 15
     inner_margin = inner_margin or 30
     outer_margin = outer_margin or 30
@@ -137,8 +136,8 @@ module.create_wibar_widget = function(args)
         {
             -- add margins
             icon_widget,
-            left = beautiful.icon_margin_left,
-            right = beautiful.icon_margin_right,
+            left = beautiful.wibar_widget_spacing or 12,
+            right = 0.8 * (beautiful.wibar_widget_spacing or 12),
             color = '#FF000000',
             widget = wibox.container.margin
         },
@@ -160,7 +159,7 @@ module.create_arc_widget = function(args)
     local fg = args.fg
     local min = args.min or 0
     local max = args.max or 100
-    local size = args.size or beautiful.desktop_widgets_arc_size
+    local size = args.size or beautiful.desktop_widgets_arc_size or 220
     local thickness = args.thickness or math.sqrt(size)
 
     local icon_widget

@@ -142,7 +142,8 @@ module.init = function(config)
     )
     module.exitmenu = awful.widget.launcher(
         {
-            image = beautiful.exitmenu_icon,
+            image = beautiful.exitmenu_icon or
+                menubar.utils.lookup_icon('system-shutdown'),
             menu = awful.menu({icon_size = 32, items = myexitmenu})
         }
     )

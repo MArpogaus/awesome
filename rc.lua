@@ -30,9 +30,6 @@
 -- Standard awesome library
 local awful = require('awful')
 
--- Theme handling library
-local beautiful = require('beautiful')
-
 -- Mac OSX like 'Expose' view of all clients.
 local revelation = require('revelation')
 
@@ -45,7 +42,11 @@ local menu = require('rc.menu')
 local mouse_bindings = require('rc.mouse_bindings')
 local key_bindings = require('rc.key_bindings')
 local rules = require('rc.rules')
-local screensss = require('rc.screen')
+local screen = require('rc.screen')
+
+-- thememing module
+local themes = require("themes")
+local elements = require("elements")
 
 -- configuration
 local config = utils.load_config()
@@ -64,13 +65,17 @@ signals.init()
 tags.init()
 
 -- theme
-beautiful.init(
-    string.format(
-        '%s/.config/awesome/themes/%s/theme.lua', os.getenv('HOME'),
-        config.theme
-    )
-)
-beautiful.icon_theme = 'Papirus'
+themes.init(config)
+-- beautiful.init(
+--     string.format(
+--         '%s/.config/awesome/themes/%s/theme.lua', os.getenv('HOME'),
+--         config.theme
+--     )
+-- )
+-- beautiful.icon_theme = 'Papirus'
+
+-- wibars and widgest
+elements.init(config)
 
 -- menues
 menu.init(config)
@@ -86,12 +91,11 @@ key_bindings.init(config, menu.mainmenu)
 rules.init(mouse_bindings.client_buttons, key_bindings.client_keys)
 
 -- wibars and widgets
-screensss.init(
+screen.init(
     config, tags.tagnames, mouse_bindings.taglist_buttons,
-    mouse_bindings.tasklist_buttons, menu.exitmenu
+    mouse_bindings.tasklist_buttons, menu.mainmenu, menu.exitmenu
 )
-awful.screen.connect_for_each_screen(screensss.at_screen_connect)
-
+for _, e in ipairs(elements) do screen.register(e) end
 -- Initialize revelation
 revelation.init()
 

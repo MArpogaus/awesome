@@ -200,8 +200,7 @@ theme.at_screen_connect = function(s)
         local fg_color = util.reduce_contrast(color, 50)
         local bg_color = util.set_alpha(fg_color, 50)
         local warg = config.widgets_arg[w] or
-                         config.widgets_arg[gears.string.split(w, '_')[1]] or
-                         {}
+                         config.widgets_arg[gears.string.split(w, '_')[1]] or {}
         warg = gears.table.clone(warg)
         warg.fg_color = warg.fg_color or fg_color
         warg.bg_color = warg.bg_color or bg_color
@@ -209,9 +208,8 @@ theme.at_screen_connect = function(s)
             desktop_widgets.arcs[w](warg)
         table.insert(arc_widget_containers, widget_container)
         s.registered_desktop_widgets = gears.table.join(
-                                           s.registered_desktop_widgets,
-                                           registered_widgets
-                                       )
+            s.registered_desktop_widgets, registered_widgets
+        )
     end
     local desktop_widgets_clock_container, desktop_widgets_clock_widgets =
         desktop_widgets.clock()
@@ -219,15 +217,13 @@ theme.at_screen_connect = function(s)
         desktop_widgets.weather(s, config.widgets_arg.weather)
 
     s.registered_desktop_widgets = gears.table.join(
-                                       s.registered_desktop_widgets,
-                                       desktop_widgets_weather_widgets,
-                                       desktop_widgets_clock_widgets
-                                   )
+        s.registered_desktop_widgets, desktop_widgets_weather_widgets,
+        desktop_widgets_clock_widgets
+    )
     s.desktop_widget_containers = gears.table.join(
-                                      arc_widget_containers,
-                                      desktop_widgets_weather_container,
-                                      desktop_widgets_clock_container
-                                  )
+        arc_widget_containers, desktop_widgets_weather_container,
+        desktop_widgets_clock_container
+    )
 
     local desktop_popup_widget = wibox.widget {
         {
@@ -272,14 +268,14 @@ theme.at_screen_connect = function(s)
 
     -- Create the wibox
     s.mytopwibar = awful.wibar(
-                       {
+        {
             position = 'top',
             screen = s,
             height = theme.top_bar_height,
             bg = theme.bg_normal,
             fg = theme.fg_normal
         }
-                   )
+    )
 
     -- Add widgets to the wibox
     local myexitmenu = nil
@@ -299,16 +295,14 @@ theme.at_screen_connect = function(s)
         local midx = #theme.widgets.wibar
         local cidx = (i - 1) % midx + 1
         local warg = config.widgets_arg[w] or
-                         config.widgets_arg[gears.string.split(w, '_')[1]] or
-                         {}
+                         config.widgets_arg[gears.string.split(w, '_')[1]] or {}
         warg = gears.table.clone(warg)
         warg.color = warg.color or theme.widgets.wibar[cidx]
         local widget_container, registered_widgets = wibar_widgets[w](warg)
         table.insert(s.wibar_widget_containers, widget_container)
         s.registered_wibar_widgets = gears.table.join(
-                                         s.registered_wibar_widgets,
-                                         registered_widgets
-                                     )
+            s.registered_wibar_widgets, registered_widgets
+        )
     end
     table.insert(s.wibar_widget_containers, myexitmenu)
 
@@ -329,14 +323,14 @@ theme.at_screen_connect = function(s)
 
     -- Create the bottom wibox
     s.mybottomwibar = awful.wibar(
-                          {
+        {
             position = 'bottom',
             screen = s,
             height = theme.bottom_bar_height,
             bg = theme.bg_normal,
             fg = theme.fg_normal
         }
-                      )
+    )
 
     -- Add widgets to the bottom wibox
     s.systray = wibox.widget.systray()

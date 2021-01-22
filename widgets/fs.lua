@@ -87,7 +87,7 @@ widget_defs.arc = function(warg)
                         'widget::value_changed', args[mount_point]
                     )
                     return utils.markup {
-                        font = beautiful.font_name .. 8,
+                        font = utils.set_font_size(beautiful.font, 8),
                         fg_color = fg_color,
                         text = args[mount_point] .. '%'
                     }

@@ -89,7 +89,7 @@ widget_defs.arc = function(warg)
                         args['{' .. interface .. ' ' .. value .. '_kb}'] or -1
                     widget:emit_signal_recursive('widget::value_changed', val)
                     return utils.markup {
-                        font = beautiful.font_name .. 8,
+                        font = utils.set_font_size(beautiful.font, 8),
                         fg_color = fg_color,
                         text = val .. 'kb'
                     }

@@ -35,6 +35,9 @@ local beautiful = require('beautiful')
 local gears = require('gears')
 local gfs = require('gears.filesystem')
 
+local lgi = require("lgi")
+local cairo = lgi.cairo
+
 -- [ local variables ] ---------------------------------------------------------
 local module = {}
 
@@ -90,31 +93,35 @@ function module.sleep(n) os.execute('sleep ' .. tonumber(n)) end
 
 -- Helper functions for modifying hex colors -----------------------------------
 local hex_color_match = '[a-fA-F0-9][a-fA-F0-9]'
-function module.darker(color_value, darker_n)
-    local result = '#'
-    local channel_counter = 1
-    for s in color_value:gmatch(hex_color_match) do
-        local bg_numeric_value = tonumber('0x' .. s)
-        if channel_counter <= 3 then
-            bg_numeric_value = bg_numeric_value - darker_n
-        end
-        if bg_numeric_value < 0 then bg_numeric_value = 0 end
-        if bg_numeric_value > 255 then bg_numeric_value = 255 end
-        result = result .. string.format('%02x', bg_numeric_value)
-        channel_counter = channel_counter + 1
+function module.darker(color, ratio)
+    local pattern = gears.color(color)
+    local kind = pattern:get_type()
+    ratio = 1 - ratio / 100
+    if kind == "SOLID" then
+        local _, r, g, b, a = pattern:get_rgba()
+        r = math.min(math.floor(ratio * r * 0xFF), 0xFF)
+        g = math.min(math.floor(ratio * g * 0xFF), 0xFF)
+        b = math.min(math.floor(ratio * b * 0xFF), 0xFF)
+        a = math.floor(a * 0xFF)
+        return string.format('#%02x%02x%02x%02x', r, g, b, a) -- cairo.Pattern.create_rgba(r,g,b,a)
+    else
+        return color
     end
-    return result
 end
-function module.is_dark(color_value)
-    local bg_numeric_value = 0
-    local channel_counter = 1
-    for s in color_value:gmatch(hex_color_match) do
-        bg_numeric_value = bg_numeric_value + tonumber('0x' .. s)
-        if channel_counter == 3 then break end
-        channel_counter = channel_counter + 1
+function module.is_dark(color)
+    local pattern = gears.color(color)
+    local kind = pattern:get_type()
+
+    if kind == "SOLID" then
+        local _, r, g, b, _ = pattern:get_rgba()
+        if (r + b + g) > 1.5 then
+            return true
+        else
+            return false
+        end
+    else
+        return
     end
-    local is_dark_bg = (bg_numeric_value < 383)
-    return is_dark_bg
 end
 function module.reduce_contrast(color, ratio)
     ratio = ratio or 50
@@ -125,8 +132,15 @@ function module.reduce_contrast(color, ratio)
     end
 end
 function module.set_alpha(color, alpha)
-    local alpha_hex = string.format('%02x', math.floor(alpha * 2.56))
-    return string.sub(color, 1, 7) .. alpha_hex
+    local pattern = gears.color(color)
+    local kind = pattern:get_type()
+
+    if kind == "SOLID" then
+        local _, r, g, b, _ = pattern:get_rgba()
+        return cairo.Pattern.create_rgba(r, g, b, alpha / 100)
+    else
+        return color
+    end
 end
 
 -- Load configuration file
@@ -144,7 +158,7 @@ function module.load_config(config_file)
         altkey = 'Mod1',
 
         -- Select theme
-        theme = 'ayu',
+        -- theme = 'ayu',
 
         -- icon theme to use
         icon_theme = 'HighContrast',

@@ -62,10 +62,7 @@ widget_defs.wibar = function(warg)
             widget = {
                 wtype = vicious.widgets.cpu,
                 format = function(_, args)
-                    return util.markup {
-                        fg_color = color,
-                        text = args[1] .. '%'
-                    }
+                    return util.markup {fg_color = color, text = args[1] .. '%'}
                 end
             }
         }

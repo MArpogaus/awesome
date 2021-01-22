@@ -80,7 +80,7 @@ widget_defs.arc = function(warg)
         min_value = 0,
         step_width = step_width,
         step_spacing = step_spacing,
-        forced_height = beautiful.desktop_widgets_arc_size / 5,
+        forced_height = (beautiful.desktop_widgets_arc_size or 220) / 5,
         color = fg_color,
         background_color = '#00000000',
         widget = wibox.widget.graph
@@ -117,7 +117,7 @@ widget_defs.arc = function(warg)
                         'widget::value_changed', args[1]
                     )
                     return utils.markup {
-                        font = beautiful.font_name .. 8,
+                        font = utils.set_font_size(beautiful.font, 8),
                         fg_color = fg_color,
                         text = args[1] .. '%'
                     }

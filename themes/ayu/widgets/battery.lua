@@ -94,10 +94,7 @@ widget_defs.wibar = function(warg)
                 wtype = vicious.widgets.bat,
                 warg = battery,
                 format = function(_, args)
-                    return util.markup {
-                        fg_color = color,
-                        text = args[2] .. '%'
-                    }
+                    return util.markup {fg_color = color, text = args[2] .. '%'}
                 end
             }
         }

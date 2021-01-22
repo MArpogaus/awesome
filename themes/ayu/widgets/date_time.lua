@@ -45,7 +45,7 @@ module.create_wibar_widget = function()
     local clock_icon = util.fa_ico(beautiful.widgets.wibar.cal, '')
 
     local clock_widget = wibox.widget.textclock(
-                             util.markup {
+        util.markup {
             font = beautiful.font,
             fg_color = beautiful.widgets.wibar.cal,
             text = '%A %d %B'
@@ -58,7 +58,7 @@ module.create_wibar_widget = function()
             fg_color = beautiful.widgets.wibar.clock,
             text = '%H:%M'
         }
-                         )
+    )
 
     -- popup calendar
     local cal_widget = awful.widget.calendar_popup.month {
@@ -90,21 +90,21 @@ module.create_desktop_widget = function()
     local date_font_size = beautiful.desktop_widgets_date_font_size
     local create_deskop_clock_box = function()
         local deskop_clock = wibox.widget.textclock(
-                                 util.markup {
+            util.markup {
                 font = beautiful.font_name .. time_font_size,
                 fg_color = beautiful.widgets.desktop.clock.time,
                 text = '%H:%M'
             }
-                             )
+        )
         return util.create_boxed_widget(
-                   deskop_clock, beautiful.widgets.desktop.clock.bg,
-                   time_font_size / 2, time_font_size, date_font_size * 1.5
-               )
+            deskop_clock, beautiful.widgets.desktop.clock.bg,
+            time_font_size / 2, time_font_size, date_font_size * 1.5
+        )
     end
 
     local create_desktop_clock_date = function()
         return wibox.widget.textclock(
-                   util.markup {
+            util.markup {
                 font = beautiful.font_name .. date_font_size,
                 fg_color = beautiful.widgets.desktop.clock.fg,
                 text = 'Today is '
@@ -133,7 +133,7 @@ module.create_desktop_widget = function()
                 fg_color = beautiful.widgets.desktop.clock.fg,
                 text = '.'
             }
-               )
+        )
     end
 
     return wibox.widget {
