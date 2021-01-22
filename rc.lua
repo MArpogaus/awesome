@@ -27,28 +27,28 @@
 -- SOFTWARE.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
+local os = os
+
 -- Standard awesome library
 local awful = require('awful')
+
+-- rc modules
+local error_handling = require('rc.error_handling')
+local elements = require("rc.elements")
+local key_bindings = require('rc.key_bindings')
+local menu = require('rc.menu')
+local mouse_bindings = require('rc.mouse_bindings')
+local rules = require('rc.rules')
+local screen = require('rc.screen')
+local signals = require('rc.signals')
+local tags = require('rc.tags')
+local themes = require("rc.themes")
+local utils = require('rc.utils')
 
 -- Mac OSX like 'Expose' view of all clients.
 local revelation = require('revelation')
 
--- rc modules
-local error_handling = require('rc.error_handling')
-local utils = require('utils')
-local signals = require('rc.signals')
-local tags = require('rc.tags')
-local menu = require('rc.menu')
-local mouse_bindings = require('rc.mouse_bindings')
-local key_bindings = require('rc.key_bindings')
-local rules = require('rc.rules')
-local screen = require('rc.screen')
-
--- thememing module
-local themes = require("themes")
-local elements = require("elements")
-
--- configuration
+-- configuration file
 local config = utils.load_config()
 
 -- ensure that there's always a client that has focus
@@ -79,7 +79,6 @@ elements.init(config)
 
 -- menues
 menu.init(config)
-awful.util.myexitmenu = menu.exitmenu
 
 -- mouse bindings
 mouse_bindings.init(config, menu.mainmenu)

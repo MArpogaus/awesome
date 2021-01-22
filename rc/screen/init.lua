@@ -11,12 +11,12 @@ local beautiful = require('beautiful')
 
 local vicious = require('vicious')
 
-local utils = require('utils')
+local utils = require('rc.utils')
 local tasklist = require('rc.screen.tasklist')
 
 -- custom wibox widgets
-local wibar_widgets = require('widgets.wibar')
-local desktop_widgets = require('widgets.desktop')
+local wibar_widgets = require('rc.widgets.wibar')
+local desktop_widgets = require('rc.widgets.desktop')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

@@ -12,7 +12,7 @@
 -- [ required modules ] --------------------------------------------------------
 local capi = {client = client}
 
-local awful = require("awful")
+local awful = require('awful')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
 
