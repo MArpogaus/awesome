@@ -36,6 +36,7 @@ local awful = require('awful')
 local error_handling = require('rc.error_handling')
 local elements = require("rc.elements")
 local key_bindings = require('rc.key_bindings')
+local layouts = require('rc.layouts')
 local menu = require('rc.menu')
 local mouse_bindings = require('rc.mouse_bindings')
 local rules = require('rc.rules')
@@ -61,8 +62,11 @@ error_handling.init()
 -- connect signals
 signals.init()
 
--- tags and layouts
+-- tags
 tags.init(config)
+
+-- layouts
+layouts.init(config)
 
 -- theme
 themes.init(config)

@@ -125,20 +125,22 @@ module.init = function(config)
                     end
                 end
             )
-            s.toggle_desktop_widget_visibility = function()
-                local is_visible = s.desktop_popup.visible
-                s.desktop_popup.visible = not is_visible
-            end
+            s.toggle_desktop_widget_visibility =
+                function()
+                    local is_visible = s.desktop_popup.visible
+                    s.desktop_popup.visible = not is_visible
+                end
             s.suspend_desktop_widgets = function()
                 for _, w in ipairs(s.registered_desktop_widgets) do
                     vicious.unregister(w, true)
                 end
             end
-            s.activate_desktop_widgets = function()
-                for _, w in ipairs(s.registered_desktop_widgets) do
-                    vicious.activate(w)
+            s.activate_desktop_widgets =
+                function()
+                    for _, w in ipairs(s.registered_desktop_widgets) do
+                        vicious.activate(w)
+                    end
                 end
-            end
             -- show hide desktop_popup
             s.desktop_popup.visible = config.desktop_widgets_visible or true
         end,
