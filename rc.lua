@@ -35,7 +35,7 @@ local revelation = require('revelation')
 
 -- rc modules
 local error_handling = require('rc.error_handling')
-local utils = require('rc.utils')
+local utils = require('utils')
 local signals = require('rc.signals')
 local tags = require('rc.tags')
 local menu = require('rc.menu')
@@ -95,7 +95,11 @@ screen.init(
     config, tags.tagnames, mouse_bindings.taglist_buttons,
     mouse_bindings.tasklist_buttons, menu.mainmenu, menu.exitmenu
 )
-for _, e in ipairs(elements) do screen.register(e) end
+screen.register(elements.wibar)
+if config.desktop then
+  screen.register(elements.desktop)
+end
+
 -- Initialize revelation
 revelation.init()
 

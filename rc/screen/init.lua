@@ -2,7 +2,7 @@
 -- Standard awesome library
 local table = table
 
-local capi = {client = client}
+local capi = {client = client, screen = screen}
 
 local gears = require('gears')
 local awful = require('awful')
@@ -11,7 +11,7 @@ local beautiful = require('beautiful')
 
 local vicious = require('vicious')
 
-local utils = require('rc.utils')
+local utils = require('utils')
 local tasklist = require('rc.screen.tasklist')
 
 -- custom wibox widgets
@@ -112,20 +112,12 @@ module.init = function(config,
             s.myexitmenu = exitmenu
 
             -- Dynamic widget management
-            s.unregistered_elements = {}
-            s.register = function(element)
-                element.register(s)
-                s.unregistered_elements[element] = element.unregister
-            end
-            s.unregister = function(element)
-                s.unregistered_elements[element](s)
-                s.unregistered_elements[element] = nil
-            end
+            s.unregister_elements = {}
 
             -- show systray on focused screen
             s.reset = function()
-                for e, _ in pairs(s.unregister_elements) do
-                    s.unregister(e)
+                for _, unregister in pairs(s.unregister_elements) do
+                    unregister(s)
                 end
 
                 if s.promptbox then
@@ -146,10 +138,11 @@ module.init = function(config,
     )
 end
 module.register = function(element)
-    awful.screen.connect_for_each_screen(function(s) s.register(element) end)
+    awful.screen.connect_for_each_screen(element.register)
 end
 module.unregister = function(element)
-    awful.screen.connect_for_each_screen(function(s) s.unregister(element) end)
+    awful.screen.disconnect_for_each_screen(element.register)
+    for s in capi.screen do element.unregister(s) end
 end
 -- [ return module ] -----------------------------------------------------------
 return module

@@ -44,7 +44,7 @@ local hotkeys_popup = require('awful.hotkeys_popup').widget
 local revelation = require('revelation')
 
 -- helper functions
-local utils = require('rc.utils')
+local utils = require('utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
