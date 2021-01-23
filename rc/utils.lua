@@ -155,34 +155,7 @@ function module.load_config(config_file)
 
         -- Default modkey.
         modkey = 'Mod4',
-        altkey = 'Mod1',
-
-        -- Select theme
-        -- theme = 'ayu',
-
-        -- icon theme to use
-        icon_theme = 'HighContrast',
-
-        -- enable / disable desktop widget
-        desktop_widgets = true,
-
-        -- widgets to be added to wibar
-        wibar_widgets = {
-            'net_down',
-            'net_up',
-            'vol',
-            'mem',
-            'cpu',
-            'fs',
-            'weather',
-            'temp',
-            'bat',
-            'datetime'
-        },
-
-        -- widgets to be added to the desktop pop up
-        arc_widgets = {'cpu', 'mem', 'fs', 'bat'}
-
+        altkey = 'Mod1'
     }
     if gfs.file_readable(gfs.get_configuration_dir() .. 'config.lua') then
         config = gears.table.crush(config, require(config_file or 'config'))

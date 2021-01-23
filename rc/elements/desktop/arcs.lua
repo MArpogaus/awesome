@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-01-22 19:37:25 (Marcel Arpogaus)
+-- @Changed: 2021-01-23 19:55:43 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -29,6 +29,8 @@ local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
+    local arc_widgets = config.arc_widgets or {'cpu', 'mem', 'fs', 'vol'}
+    local widgets_arg = config.widgets_arg or {}
     local element = abstract_element.new {
         register_fn = function(s)
             -- Create the desktop widget popup
@@ -46,13 +48,13 @@ module.init = function(config)
                 fg_arcs = {beautiful.fg_normal}
             end
             local midx = #fg_arcs
-            for i, w in pairs(config.arc_widgets) do
+            for i, w in pairs(arc_widgets) do
                 local cidx = (i - 1) % midx + 1
                 local color = fg_arcs[cidx]
                 local fg_color = utils.reduce_contrast(color, 10)
                 local bg_color = utils.set_alpha(fg_color, 50)
-                local warg = config.widgets_arg[w] or
-                                 config.widgets_arg[gears.string.split(w, '_')[1]] or
+                local warg = widgets_arg[w] or
+                                 widgets_arg[gears.string.split(w, '_')[1]] or
                                  {}
                 warg = gears.table.clone(warg)
                 warg.fg_color = warg.fg_color or fg_color
@@ -69,7 +71,7 @@ module.init = function(config)
                 desktop_widgets.clock()
             local desktop_widgets_weather_container,
                 desktop_widgets_weather_widgets =
-                desktop_widgets.weather(s, config.widgets_arg.weather)
+                desktop_widgets.weather(s, widgets_arg.weather)
 
             s.registered_desktop_widgets =
                 gears.table.join(

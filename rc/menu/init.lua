@@ -77,34 +77,6 @@ module.init = function(config)
             menubar.utils.lookup_icon('system-restart')
         }
     }
-    local myexitmenu = {
-        {
-            'log out',
-            function() capi.awesome.quit() end,
-            menubar.utils.lookup_icon('system-log-out')
-        },
-        {
-            'lock screen',
-            lock_command,
-            menubar.utils.lookup_icon('system-lock-screen')
-        },
-        {
-            'suspend',
-            'systemctl suspend',
-            menubar.utils.lookup_icon('system-suspend')
-        },
-        {
-            'hibernate',
-            'systemctl hibernate',
-            menubar.utils.lookup_icon('system-suspend-hibernate')
-        },
-        {
-            'reboot',
-            'systemctl reboot',
-            menubar.utils.lookup_icon('system-reboot')
-        },
-        {'shutdown', 'poweroff', menubar.utils.lookup_icon('system-shutdown')}
-    }
 
     module.mainmenu = freedesktop.menu.build(
         {
@@ -131,22 +103,52 @@ module.init = function(config)
                     'Awesome',
                     myawesomemenu,
                     '/usr/share/awesome/icons/awesome32.png'
-                },
-                {
-                    'Exit',
-                    myexitmenu,
-                    menubar.utils.lookup_icon('system-shutdown')
                 }
             }
         }
     )
-    module.exitmenu = awful.widget.launcher(
-        {
-            image = beautiful.exitmenu_icon or
-                menubar.utils.lookup_icon('system-shutdown'),
-            menu = awful.menu({icon_size = 32, items = myexitmenu})
+
+    if config.exitmenu then
+        local myexitmenu = {
+            {
+                'log out',
+                function() capi.awesome.quit() end,
+                menubar.utils.lookup_icon('system-log-out')
+            },
+            {
+                'lock screen',
+                lock_command,
+                menubar.utils.lookup_icon('system-lock-screen')
+            },
+            {
+                'suspend',
+                'systemctl suspend',
+                menubar.utils.lookup_icon('system-suspend')
+            },
+            {
+                'hibernate',
+                'systemctl hibernate',
+                menubar.utils.lookup_icon('system-suspend-hibernate')
+            },
+            {
+                'reboot',
+                'systemctl reboot',
+                menubar.utils.lookup_icon('system-reboot')
+            },
+            {
+                'shutdown',
+                'poweroff',
+                menubar.utils.lookup_icon('system-shutdown')
+            }
         }
-    )
+        module.exitmenu = awful.widget.launcher(
+            {
+                image = beautiful.exitmenu_icon or
+                    menubar.utils.lookup_icon('system-shutdown'),
+                menu = awful.menu({icon_size = 32, items = myexitmenu})
+            }
+        )
+    end
 end
 
 -- [ return module ] -----------------------------------------------------------
