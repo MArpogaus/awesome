@@ -57,8 +57,8 @@ module.init = function(config, client_buttons, client_keys)
                 placement = awful.placement.center + awful.placement.no_overlap +
                     awful.placement.no_offscreen,
                 switchtotag = true,
-                titlebars_enabled = false,
-                requests_no_titlebar = false
+                callback = awful.client.setslave,
+                requests_no_titlebar = true
             }
         },
         -- Floating clients.

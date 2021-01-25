@@ -28,7 +28,7 @@
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- grab environment
-local capi = {awesome = awesome, client = client, screen = screen}
+local capi = {awesome = awesome, client = client, screen = screen, tag = tag}
 
 -- Standard awesome library
 local gears = require('gears')
@@ -59,18 +59,21 @@ module.init = function()
     -- Add a titlebar if titlebars_enabled is set to true in the rules.
     capi.client.connect_signal(
         'request::titlebars', function(c)
+            if c.requests_no_titlebar then return end
             -- buttons for the titlebar
             local buttons = gears.table.join(
                 awful.button(
                     {}, 1, function()
-                        capi.client.focus = c
-                        c:raise()
+                        c:emit_signal(
+                            'request::activate', 'titlebar', {raise = true}
+                        )
                         awful.mouse.client.move(c)
                     end
                 ), awful.button(
                     {}, 3, function()
-                        capi.client.focus = c
-                        c:raise()
+                        c:emit_signal(
+                            'request::activate', 'titlebar', {raise = true}
+                        )
                         awful.mouse.client.resize(c)
                     end
                 )
@@ -107,9 +110,10 @@ module.init = function()
     -- Enable sloppy focus, so that focus follows mouse.
     capi.client.connect_signal(
         'mouse::enter', function(c)
-            if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier and
-                awful.client.focus.filter(c) then
-                capi.client.focus = c
+            if awful.layout.get(c.screen).name ~= 'magnifier' then
+                c:emit_signal(
+                    'request::activate', 'mouse_enter', {raise = false}
+                )
             end
 
             local focused_screen = awful.screen.focused()
@@ -170,12 +174,21 @@ module.init = function()
     end
     capi.client.connect_signal(
         'property::floating', function(c)
-            local l = awful.layout.get(c.screen)
-            if c.requests_no_titlebars then return end
-            if (l.name == 'floating' or c.floating) then
+            if c.floating and not c.requests_no_titlebars then
                 awful.titlebar.show(c)
             else
                 awful.titlebar.hide(c)
+            end
+        end
+    )
+    capi.tag.connect_signal(
+        'property::layout', function(t)
+            for _, c in pairs(t:clients()) do
+                if t.layout.name == 'floating' and not c.requests_no_titlebars then
+                    awful.titlebar.show(c)
+                else
+                    awful.titlebar.hide(c)
+                end
             end
         end
     )

@@ -34,7 +34,6 @@ local capi = {awesome = awesome}
 local awful = require('awful')
 
 -- Theme handling library
-local beautiful = require('beautiful')
 
 local menubar = require('menubar')
 local hotkeys_popup = require('awful.hotkeys_popup').widget
@@ -141,13 +140,7 @@ module.init = function(config)
                 menubar.utils.lookup_icon('system-shutdown')
             }
         }
-        module.exitmenu = awful.widget.launcher(
-            {
-                image = beautiful.exitmenu_icon or
-                    menubar.utils.lookup_icon('system-shutdown'),
-                menu = awful.menu({icon_size = 32, items = myexitmenu})
-            }
-        )
+        module.exitmenu = awful.menu({icon_size = 32, items = myexitmenu})
     end
 end
 

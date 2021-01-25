@@ -5,8 +5,10 @@ local capi = {client = client, screen = screen}
 local gears = require('gears')
 local awful = require('awful')
 local beautiful = require('beautiful')
+local menubar = require('menubar')
 
 local tasklist = require('rc.screen.tasklist')
+local layout_popup = require('rc.screen.layout_popup')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -63,14 +65,10 @@ module.init = function(config,
         -- Create an imagebox widget which will contain an icon indicating which layout we're using.
         -- We need one layoutbox per screen.
         s.mylayoutbox = awful.widget.layoutbox(s)
+        s.layout_popup = layout_popup.init(s.mylayoutbox)
         s.mylayoutbox:buttons(
-            -- TODO: Add to mous bindigs
             gears.table.join(
                 awful.button(
-                    {}, 1, function() awful.layout.inc(1) end
-                ), awful.button(
-                    {}, 3, function() awful.layout.inc(-1) end
-                ), awful.button(
                     {}, 4, function() awful.layout.inc(1) end
                 ), awful.button(
                     {}, 5, function() awful.layout.inc(-1) end
@@ -90,8 +88,20 @@ module.init = function(config,
                            'default'](s, tasklist_buttons)
 
         -- menus
-        s.mymainmenu = mainmenu
-        s.myexitmenu = exitmenu
+        if config.mainmenu == nil and config.mainmenu ~= false then
+            s.mymainmenu = awful.widget.launcher(
+                {image = beautiful.awesome_icon, menu = mainmenu}
+            )
+        end
+        if config.exitmenu then
+            s.myexitmenu = awful.widget.launcher(
+                {
+                    image = beautiful.exitmenu_icon or
+                        menubar.utils.lookup_icon('system-shutdown'),
+                    menu = exitmenu
+                }
+            )
+        end
 
         -- Dynamic widget management
         s.elements = {}

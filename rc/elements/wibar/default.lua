@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-01-23 19:47:17 (Marcel Arpogaus)
+-- @Changed: 2021-01-25 16:40:33 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -12,6 +12,7 @@
 -- [ required modules ] --------------------------------------------------------
 local awful = require('awful')
 local wibox = require('wibox')
+local gears = require('gears')
 local beautiful = require('beautiful')
 
 local abstract_element = require('rc.elements.abstract_element')
@@ -29,31 +30,23 @@ module.init = function(config)
             s.mywibar = awful.wibar({position = 'top', screen = s})
 
             -- Add widgets to the wibox
-            s.wibar_widget_containers = utils.gen_wibar_widgets(s, config)
-            table.insert(s.wibar_widget_containers, mykeyboardlayout)
-            table.insert(s.wibar_widget_containers, wibox.widget.systray())
-            if s.myexitmenu then
-                local myexitmenu = {
-                    -- add margins
-                    s.myexitmenu,
-                    left = beautiful.wibar_widgets_spacing or 12,
-                    widget = wibox.container.margin
-                }
-                table.insert(s.wibar_widget_containers, myexitmenu)
-            end
-            s.wibar_widget_containers.layout = wibox.layout.fixed.horizontal
+            s.left_widget_container = {s.mymainmenu, s.mytaglist, s.mypromptbox}
+            s.left_widget_container.layout = wibox.layout.fixed.horizontal
+
+            s.right_widget_container = gears.table.join(
+                {mykeyboardlayout, wibox.widget.systray()},
+                utils.gen_wibar_widgets(s, config),
+                {s.mylayoutbox, s.myexitmenu}
+            )
+            s.right_widget_container.layout = wibox.layout.fixed.horizontal
+
 
             -- Add widgets to the wibox
             s.mywibar:setup{
                 layout = wibox.layout.align.horizontal,
-                { -- Left widgets
-                    layout = wibox.layout.fixed.horizontal,
-                    s.mainmenu,
-                    s.mytaglist,
-                    s.mypromptbox
-                },
+                s.left_widget_container, -- Left widgets
                 s.mytasklist, -- Middle widget
-                s.wibar_widget_containers -- Right widgets
+                s.right_widget_container -- Right widgets
             }
         end,
         unregister_fn = function(s)

@@ -40,7 +40,8 @@ module.init = function(config)
         -- workaround for now
         local new_tag = awful.rules.high_priority_properties.new_tag
         function awful.rules.high_priority_properties.new_tag(c, value, props)
-            if not awful.tag.find_by_name(c.screen, value.name) then
+            local tag = awful.tag.find_by_name(c.screen, value.name)
+            if not tag then
                 new_tag(c, value, props)
             end
             awful.rules.high_priority_properties.tag(c, value.name, props)

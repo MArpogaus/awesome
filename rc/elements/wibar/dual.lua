@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-01-23 19:18:22 (Marcel Arpogaus)
+-- @Changed: 2021-01-23 20:30:11 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -35,8 +35,8 @@ module.init = function(config)
             )
 
             -- Add widgets to the wibox
-            s.wibar_widget_containers = utils.gen_wibar_widgets(s, config)
-            s.wibar_widget_containers.layout = wibox.layout.fixed.horizontal
+            s.right_widget_container = utils.gen_wibar_widgets(s, config)
+            s.right_widget_container.layout = wibox.layout.fixed.horizontal
             if s.myexitmenu then
                 local myexitmenu = {
                     -- add margins
@@ -44,18 +44,28 @@ module.init = function(config)
                     left = beautiful.wibar_widgets_spacing or 12,
                     widget = wibox.container.margin
                 }
-                table.insert(s.wibar_widget_containers, myexitmenu)
+                table.insert(s.right_widget_container, myexitmenu)
             end
+
+            s.left_widget_container = {}
+            if s.mymainmenu then
+                local mymainmenu = {
+                    -- add margins
+                    s.mymainmenu,
+                    right = beautiful.wibar_widgets_spacing or 12,
+                    widget = wibox.container.margin
+                }
+                table.insert(s.left_widget_container, mymainmenu)
+            end
+            table.insert(s.left_widget_container, s.mytaglist)
+            table.insert(s.left_widget_container, s.mypromptbox)
+            s.left_widget_container.layout = wibox.layout.fixed.horizontal
 
             s.mytopwibar:setup{
                 layout = wibox.layout.align.horizontal,
-                { -- Left widgets
-                    layout = wibox.layout.fixed.horizontal,
-                    s.mytaglist,
-                    s.mypromptbox
-                },
-                nil, -- Middle widgets
-                s.wibar_widget_containers -- Right widgets
+                s.left_widget_container, -- Left widgets
+                nil, -- Middle widget
+                s.right_widget_container -- Right widgets
             }
 
             -- Create the bottom wibox

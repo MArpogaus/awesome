@@ -90,6 +90,7 @@ end
 
 local function client_stack_toggle_fn()
     local cl_menu
+
     return function(c)
         if cl_menu then
             cl_menu:hide()
@@ -97,8 +98,9 @@ local function client_stack_toggle_fn()
         else
             local client_num = 0
             local client_list = {}
+            local t = awful.screen.focused().selected_tag
             for i, cl in ipairs(capi.client.get()) do
-                if cl.class == c.class then
+                if cl.class == c.class and gears.table.hasitem(cl:tags(), t) then
                     client_num = client_num + 1
                     client_list[i] = {
                         client_label(cl),
@@ -118,9 +120,7 @@ local function client_stack_toggle_fn()
                 )
                 cl_menu:show()
             else
-                capi.client.focus = c
-                c:tags()[1]:view_only()
-                c:raise()
+                c:emit_signal('request::activate', 'taskbar', {raise = true})
             end
         end
     end
