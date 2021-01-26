@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 17:58:40 (Marcel Arpogaus)
--- @Changed: 2021-01-26 11:19:48 (Marcel Arpogaus)
+-- @Changed: 2021-01-26 16:32:16 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -187,9 +187,9 @@ local titlebar_button = function(theme, state, postfix)
             'titlebar_%s_button_bg_%s', tb.shape, tb.state
         )
         local fg_color = beautiful[fg_color_name] or
-                             beautiful['fg_' .. tb.state]
-        local bg_color = beautiful[bg_color_name] or
                              beautiful['bg_' .. tb.state]
+        local bg_color = beautiful[bg_color_name] or
+                             beautiful['fg_' .. tb.state]
 
         local full_name = string.format(
             'titlebar_%s_button_%s', tb.shape, tb.state
