@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 17:58:40 (Marcel Arpogaus)
--- @Changed: 2021-01-26 11:11:33 (Marcel Arpogaus)
+-- @Changed: 2021-01-26 11:19:48 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -56,10 +56,12 @@ local exit_icon = function(size, fg_color, bg_color)
 
     -- draw content
     cr:set_source(gears.color(fg_color))
-    local x = size / 2
-    local y = size / 2
-    local shape = gears.shape.transform(gears.shape.rectangle):translate(x, y)
-    shape(cr, size / 2, size / 2)
+    local shape_size = 0.4 * size
+    local x = (size - shape_size / 4) / 2
+    local y = (size - shape_size) / 2
+    local shape =
+        gears.shape.transform(gears.shape.rectangle):translate(x, y)
+    shape(cr, shape_size / 4, shape_size)
     cr:fill()
 
     return img
@@ -222,6 +224,11 @@ module.init = function()
     theme = titlebar_button(theme, 'focus', 'hover')
     theme = titlebar_button(theme, 'focus', 'press')
 
+    -- exit icon
+    theme.exitmenu_icon = exit_icon(
+        beautiful.wibar_height or gmath.round(beautiful.get_font_height(beautiful.font) * 1.5),
+        theme.exitmenu_icon_fg or beautiful.fg_normal,
+        theme.exitmenu_icon_bg or beautiful.bg_normal)
     return theme
 end
 
