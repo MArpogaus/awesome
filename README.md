@@ -1,34 +1,38 @@
-![](img/rec.gif)
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![GNU GPLv3 License][license-shield]][license-url]
 
-This configuration has initially been inspired by [Awesome WM Copycats][awesome-copycats].
-The used [awesome-ayu][ayu] theme uses the gorgeous [ayu color palette][ayu-colors].
+<!-- markdown-toc start - Don't edit this section. Run M-x markdown-toc-refresh-toc -->
+**Table of Contents**
 
-<!-- MarkdownTOC autolink="true" -->
-
+- [About](#about)
+- [Used libraries](#used-libraries)
 - [Installation](#installation)
-    - [Dependencies](#dependencies)
-    - [Quick installation example](#quick-installation-example)
+    - [Optional: Install Fonts](#optional-install-fonts)
 - [Configuration](#configuration)
+    - [Widget Parameters](#widget-parameters)
 - [License](#license)
 
-<!-- /MarkdownTOC -->
+<!-- markdown-toc end -->
 
+# About
+
+This is my [awesome][awesome] configuration.
+
+# Used libraries
+
+The following libraries are used:
+
+ * [vicious][vicious] - widget library for the wibar and desktop widgets
+ * [revelation][revelation] - Mac OSX like 'Expose' view of all clients. 
+
+They are included as git subtrees in the root of this repository.
 
 # Installation
 
-## Dependencies
-
- * [awesome v4.3][awesome]
- * [vicious][vicious]
- * [owfont - symbol font for Open Weather Map API][owfont]
- * [Font Awesome 4][font-awesome4]
- * [mononoki][mononoki]
-
-optional to switch colorschemes
-
- * [wpgtk][wpgtk]
-
-## Quick installation example
+This configuration requires [awesome v4.3][awesome].
 
  1. Backup your current awesome configuration
     ```shell
@@ -40,95 +44,136 @@ optional to switch colorschemes
     git clone --recursive https://github.com/MArpogaus/awesome-rc.git $HOME/.config/awesome 
     ```
 
- 1. Install [Font Awesome 4][font-awesome4] and [mononoki][mononoki]
+## Optional: Install Fonts
+
+The configuration uses [Font Awesome 4][font-awesome4] for widget and tag icons and [owfont][owfont] for weather icons.
+If you want to use this functionality, make sure to install them on your system.
+
+ 1. Install [Font Awesome 4][font-awesome4]
     ```shell
     # Debian / Ubuntu
-    apt install fonts-font-awesome fonts-mononoki
+    apt install fonts-font-awesome 
     # Manjaro
-    pamac build ttf-font-awesome-4 ttf-mononoki
+    pamac build ttf-font-awesome-4
     ```
  
  1. Download and install [owfont][owfont]
     ```shell
-    wget -O /usr/share/fonts/TTF/owfont-regular.ttf 'https://github.com/websygen/owfont/blob/master/fonts/owfont-regular.ttf?raw=true'
+    wget -O ~/.local/share/owfont-regular.ttf 'https://github.com/websygen/owfont/blob/master/fonts/owfont-regular.ttf?raw=true'
     ```
 
- 1. Create your configuration file.
+ 1. Update font cache
     ```shell
-    cd $HOME/.config/awesome 
-    cp config.lua.tmpl config.lua
+    fc-cache -v
     ```
-
- 1. **Optional:** install [wpgtk][wpgtk] to switch colorschemes.
-    Details can be found in the [README of awesome-ayu][readme-of-awesome-ayu].
 
 # Configuration
 
-The configuration file `config.lua` is used to set default applications, modkeys and adjust the appearance of the theme to your needs.
-The following table gives an overview of all configuration parameters required by `rc.lua`:
+You can use the provided template to create your initial configuration file:
 
-| Name           | Description                                        | Type   |
-|:---------------|:---------------------------------------------------|:-------|
-| `browser`      | command to run the web browser                     | string |
-| `filemanager`  | command to run the file manger                     | string |
-| `gui_editor`   | command to run the gui editor                      | string |
-| `terminal`     | command to run the terminal emulator               | string |
-| `lock_command` | command to lock the current session                | string |
-| `modkey`       | the mod key to use for key bindings                | string |
-| `altkey`       | the alt key to use for key bindings                | string |
-| `theme`        | theme to load (only [`ayu`][ayu] supposrted so far) | string |
+```shell
+cd $HOME/.config/awesome 
+cp config.lua.tmpl config.lua
+``` 
 
-The following defaults are used as a fallback for any missing value:
+The configuration file `config.lua` defines parameters like your default applications, modkeys or the look & feel of awesome.
+Every parameter has a reasonable fallback value.
+Without any configuration it should behave like the stock awesome rc.
+
+The following table gives an overview of all configuration parameters:
+
+| Name                      | Description                                           | Type   |
+|:--------------------------|:------------------------------------------------------|:-------|
+| `browser`                 | command to run the web browser                        | string |
+| `filemanager`             | command to run the file manger                        | string |
+| `gui_editor`              | command to run the gui editor                         | string |
+| `terminal`                | command to run the terminal emulator                  | string |
+| `lock_command`            | command to lock the current session                   | string |
+| `altkey`                  | the alt key to use for key bindings                   | string |
+| `modkey`                  | the mod key to use for key bindings                   | string |
+| `theme`                   | theme to load                                         | string |
+| `dynamic_tagging`         | enable dynamic tagging                                | bool   |
+| `exitmenu`                | add exit menu to the wibar                            | bool   |
+| `mainmenu`                | add the main menu to the wibar                        | bool   |
+| `tasklist`                | behavior. set to 'windows' group similar clients      | string |
+| `layouts`                 | overwrite default layout list                         | array  |
+| `default_layout`          | index of default layout to use on new tags            | int    |
+| `dpi`                     | set explicit dpi for every screen                     | int    |
+| `auto_dpi`                | enable automatic calculation of the screen DPI        | bool   |
+| `assets`                  | set custom theme assets ('recolor' or 'mac')          | string |
+| `theme`                   | select theme                                          | string |
+| `theme_overwrite`         | overwrite certain theme variables                     | table  |
+| `wallpaper`               | path to your wallpaper or 'xfconf-query' to use xconf | string |
+| `desktop`                 | select desktop elements ('arcs')                      | string |
+| `desktop_widgets_visible` | show / hide desktop widgets                           | book   |
+| `arc_widgets`             | widgets to be added to the desktop pop up             | array  |
+| `wibar`                   | select wibar configuration ('default' or 'dual')      | string |
+| `wibar_widgets`           | widgets to be added to the wibar                      | array  |
+| `widgets_arg `            | configure widgets                                     | table  |
+
+## Widget Parameters
+
+Some widgets (`weather`, `temp`, `net`) require additional configuration.
+The parameters for each widget are stored in a table under the key `widgets_arg` in the configuration.
+
+A example configuration is shown in the following listing:
 
 ```lua
 {
-    -- This is used later as the default terminal, editor etc.
-    browser = 'exo-open --launch WebBrowser' or 'firefox',
-    filemanager = 'exo-open --launch FileManager' or 'thunar',
-    gui_editor = 'subl',
-    terminal = os.getenv('TERMINAL') or 'lxterminal',
-    lock_command = 'light-locker-command -l',
-
-    -- Default modkey.
-    modkey = 'Mod4',
-    altkey = 'Mod1',
-
-    -- Select theme
-    theme = 'ayu'
-
+    weather = {
+        -- Your city for the weather widget
+        city_id = '2643743',
+        app_id = '4c57f0c88d9844630327623633ce269cf826ab99'
+    },
+    temp = {
+        -- Set resource for temperature widget
+        thermal_zone = 'thermal_zone0'
+    },
+    net = {
+        -- Network interface
+        net_interface = 'eth0'
+    }
 }
 ```
 
-Additionally the used [awesome-ayu][ayu] theme has the following configuration parameters:
+The following table gives an overview of all widget parameters:
 
-| Name              | Description                             | Type             |
-|:------------------|:----------------------------------------|:-----------------|
-| `xresources`      | load colorschemes from xresources       | bool             |
-| `color_scheme`    | colorscheme to use                      | string           |
-| `dpi`             | number of pixels per inch of the screen | string           |
-| `icon_theme`      | icon theme to use                       | string           |
-| `wallpaper`       | path to your wallpaper                  | string           |
-| `desktop_widgets` | enable/disable desktop widget           | bool             |
-| `wibar_widgets`   | widgets for the wibar                   | array of strings |
-| `arc_widgets`     | widgets for the the desktop pop up      | array of strings |
-| `widgets_arg`     | widget parameters (see below)           | table            |
-
-Please refer to the [README of awesome-ayu][readme-of-awesome-ayu] for details.
+| Name            | Description                                                                                                    | Type   |
+|:----------------|:---------------------------------------------------------------------------------------------------------------|:-------|
+| `city_id`       | open weather map id of your city. Find it here: https://openweathermap.org/find?q=                             | string |
+| `app_id`        | open weather map API key. Sign up here: https://home.openweathermap.org/users/sign_up                          | string |
+| `thermal_zone`  | resource for temperature widget: https://vicious.readthedocs.io/en/latest/widgets.html#vicious-widgets-thermal | string |
+| `net_interface` | network interface to monitor: https://vicious.readthedocs.io/en/latest/widgets.html#vicious-widgets-net        | string |
 
 # License
 
-licensed under MIT License Copyright (c) 2020 Marcel Arpogaus. See [LICENSE](LICENSE) for further details.
+Copyright (C) 2021 Marcel Arpogaus
 
-[awesome-copycats]: https://github.com/lcpz/awesome-copycats
-[ayu]: https://github.com/MArpogaus/awesome-ayu
-[ayu-colors]: https://github.com/ayu-theme/ayu-colors
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 [awesome]: https://awesomewm.org/
 [vicious]: https://github.com/vicious-widgets/vicious
+[revelation]: https://github.com/guotsuan/awesome-revelation
 [owfont]: http://websygen.github.io/owfont/
 [font-awesome4]: https://github.com/FortAwesome/Font-Awesome
-[mononoki]: https://madmalik.github.io/mononoki/
-[wpgtk]: https://github.com/deviantfero/wpgtk
-[json-colorschemes]: https://github.com/deviantfero/wpgtk/wiki/Colorschemes#import-a-colorscheme
-[readme-of-awesome-ayu]: https://github.com/MArpogaus/awesome-ayu/blob/master/README.md
-[wpk-templates]: https://github.com/deviantfero/wpgtk-templates
-[xsettingsd]: https://wiki.archlinux.org/index.php/Xsettingsd
+[contributors-shield]: https://img.shields.io/github/contributors/MArpogaus/awesome.svg?style=for-the-badge
+[contributors-url]: https://github.com/MArpogaus/awesome/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/MArpogaus/awesome.svg?style=for-the-badge
+[forks-url]: https://github.com/MArpogaus/awesome/network/members
+[stars-shield]: https://img.shields.io/github/stars/MArpogaus/awesome.svg?style=for-the-badge
+[stars-url]: https://github.com/MArpogaus/awesome/stargazers
+[issues-shield]: https://img.shields.io/github/issues/MArpogaus/awesome.svg?style=for-the-badge
+[issues-url]: https://github.com/MArpogaus/awesome/issues
+[license-shield]: https://img.shields.io/github/license/MArpogaus/awesome.svg?style=for-the-badge
+[license-url]: https://github.com/MArpogaus/awesome/blob/master/COPYING
