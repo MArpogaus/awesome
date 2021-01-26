@@ -59,8 +59,7 @@ local exit_icon = function(size, fg_color, bg_color)
     local shape_size = 0.4 * size
     local x = (size - shape_size / 4) / 2
     local y = (size - shape_size) / 2
-    local shape =
-        gears.shape.transform(gears.shape.rectangle):translate(x, y)
+    local shape = gears.shape.transform(gears.shape.rectangle):translate(x, y)
     shape(cr, shape_size / 4, shape_size)
     cr:fill()
 
@@ -226,9 +225,11 @@ module.init = function()
 
     -- exit icon
     theme.exitmenu_icon = exit_icon(
-        beautiful.wibar_height or gmath.round(beautiful.get_font_height(beautiful.font) * 1.5),
+        beautiful.wibar_height or
+            gmath.round(beautiful.get_font_height(beautiful.font) * 1.5),
         theme.exitmenu_icon_fg or beautiful.fg_normal,
-        theme.exitmenu_icon_bg or beautiful.bg_normal)
+        theme.exitmenu_icon_bg or beautiful.bg_normal
+    )
     return theme
 end
 

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-23 16:01:08 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-01-26 16:20:05 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,11 +23,13 @@ local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.gen_wibar_widgets = function(s, config)
+    s.wibar_widget_containers = {}
+    s.registered_wibar_widgets = {}
+
     local widgets = config.wibar_widgets or {wibox.widget.textclock()}
     local widgets_arg = config.widgets_arg or {}
-    local generated_widgets = {}
-    s.registered_wibar_widgets = {}
     local fg_wibar_widgets
+
     if beautiful.fg_wibar_widgets and #beautiful.fg_wibar_widgets then
         fg_wibar_widgets = beautiful.fg_wibar_widgets
     else
@@ -42,13 +44,11 @@ module.gen_wibar_widgets = function(s, config)
             warg = gears.table.clone(warg)
             warg.color = warg.color or fg_wibar_widgets[cidx]
             local widget_container, registered_widgets = wibar_widgets[w](warg)
-            table.insert(generated_widgets, widget_container)
+            table.insert(s.wibar_widget_containers, widget_container)
             s.registered_wibar_widgets =
                 gears.table.join(s.registered_wibar_widgets, registered_widgets)
         elseif type(w) == 'table' and w.is_widget then
-            table.insert(generated_widgets, w)
-            s.registered_wibar_widgets =
-                gears.table.join(s.registered_wibar_widgets, w)
+            table.insert(s.wibar_widget_containers, w)
         else
             error('unknown widget type')
         end
@@ -82,7 +82,7 @@ module.gen_wibar_widgets = function(s, config)
         end
         s.wibar_widgets_active = not s.wibar_widgets_active
     end
-    return generated_widgets
+    return s.wibar_widget_containers
 end
 module.unregister_wibar_widgets = function(s)
     for _, w in ipairs(s.registered_wibar_widgets) do
@@ -90,6 +90,7 @@ module.unregister_wibar_widgets = function(s)
     end
     s.activate_wibar_widgets = nil
     s.registered_wibar_widgets = nil
+    s.wibar_widget_containers = nil
     s.set_wibar_widget_opacity = nil
     s.suspend_wibar_widgets = nil
     s.toggle_wibar_widgets = nil

@@ -3,31 +3,60 @@ local module = {}
 -- [ applications ] ------------------------------------------------------------
 module.browser = 'exo-open --launch WebBrowser' or 'firefox'
 module.filemanager = 'exo-open --launch FileManager' or 'thunar'
-module.gui_editor = 'subl'
-module.terminal = os.getenv('TERMINAL') or 'lxterminal'
+module.gui_editor = os.getenv('EDITOR') or 'nano'
 module.lock_command = 'light-locker-command -l'
+module.terminal = os.getenv('TERMINAL') or 'lxterminal'
 
 -- [ key bindings ] ------------------------------------------------------------
 -- Default modkey.
-module.modkey = 'Mod4'
 module.altkey = 'Mod1'
+module.modkey = 'Mod4'
+
+-- [ behavior ] ----------------------------------------------------------------
+-- use dynamic tagging
+-- module.dynamic_tagging = false
+
+-- add exitmenu to wibar
+-- module.exitmenu = false
+
+-- add awesome menu and launcher to wibar
+-- module.mainmenu = true
+
+-- behavior of the task list. set to 'windows' to get windows-like client grouping
+-- module.tasklist = 'default'
+
+-- overwrite default layout list
+-- module.layouts = {...} 
+-- index of default layout to use on new tags
+-- module.default_layout = 0
 
 -- [ appearance ] --------------------------------------------------------------
+-- module.dpi = 144 -- set explicit dpi for every screen
+-- module.auto_dpi = true
+
+-- set custom theme asstes ('recolor', 'mac')
+-- module.assets
+
 -- Select theme
-module.theme = 'ayu'
+module.theme = 'gtk'
+-- use module.theme_overwrite = { var = val } to overwrite variable var in theme
 
--- Load colorschemes from xresources
-module.xresources = false
-
--- colorscheme to use, choose from: light, mirage, dark
-module.color_scheme = 'light'
-
--- path to your wallpaper
--- module.wallpaper = 'light'
+-- path to your wallpaper or 'xfconf-query' to use xconf
+-- module.wallpaper
 
 -- [ widgets ] -----------------------------------------------------------------
--- disable desktop widget
--- module.desktop_widgets = false
+
+-- select desktop configuraton ('arcs')
+-- module.desktop = 'arcs'
+
+-- hide desktop widgets
+-- module.desktop_widgets_visible = false
+
+-- widgets to be added to the desktop pop up
+-- module.arc_widgets = {'cpu', 'mem', 'fs', 'bat'}
+
+-- select wibar configuration ('default'|'dual')
+-- module.wibar = 'default'
 
 -- widgets to be added to wibar
 -- module.wibar_widgets = {
@@ -43,24 +72,22 @@ module.color_scheme = 'light'
 -- 	'datetime'
 -- }
 
--- widgets to be added to the desktop pop up
--- module.arc_widgets = {'cpu', 'mem', 'fs', 'bat'}
 
 -- configure widgets
-module.widgets_arg = {
-    weather = {
-        -- city and app id for the weather widget
-        city_id = 'change_me',
-        app_id = 'change_me'
-    },
-    temp = {
-        -- set resource for temperature widget
-        thermal_zone = 'thermal_zone0'
-    },
-    net = {
-        -- network interface
-        net_interface = 'change_me'
-    }
-}
+-- module.widgets_arg = {
+--     weather = {
+--         -- city and app id for the weather widget
+--         city_id = 'change_me',
+--         app_id = 'change_me'
+--     },
+--     temp = {
+--         -- set resource for temperature widget
+--         thermal_zone = 'thermal_zone0'
+--     },
+--     net = {
+--         -- network interface
+--         net_interface = 'change_me'
+--     }
+-- }
 
 return module
