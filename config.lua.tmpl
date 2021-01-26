@@ -1,0 +1,66 @@
+local module = {}
+
+-- [ applications ] ------------------------------------------------------------
+module.browser = 'exo-open --launch WebBrowser' or 'firefox'
+module.filemanager = 'exo-open --launch FileManager' or 'thunar'
+module.gui_editor = 'subl'
+module.terminal = os.getenv('TERMINAL') or 'lxterminal'
+module.lock_command = 'light-locker-command -l'
+
+-- [ key bindings ] ------------------------------------------------------------
+-- Default modkey.
+module.modkey = 'Mod4'
+module.altkey = 'Mod1'
+
+-- [ appearance ] --------------------------------------------------------------
+-- Select theme
+module.theme = 'ayu'
+
+-- Load colorschemes from xresources
+module.xresources = false
+
+-- colorscheme to use, choose from: light, mirage, dark
+module.color_scheme = 'light'
+
+-- path to your wallpaper
+-- module.wallpaper = 'light'
+
+-- [ widgets ] -----------------------------------------------------------------
+-- disable desktop widget
+-- module.desktop_widgets = false
+
+-- widgets to be added to wibar
+-- module.wibar_widgets = {
+-- 	'net_down',
+-- 	'net_up',
+-- 	'vol',
+-- 	'mem',
+-- 	'cpu',
+-- 	'fs',
+-- 	'weather',
+-- 	'temp',
+-- 	'bat',
+-- 	'datetime'
+-- }
+
+-- widgets to be added to the desktop pop up
+-- module.arc_widgets = {'cpu', 'mem', 'fs', 'bat'}
+
+-- configure widgets
+module.widgets_arg = {
+    weather = {
+        -- city and app id for the weather widget
+        city_id = 'change_me',
+        app_id = 'change_me'
+    },
+    temp = {
+        -- set resource for temperature widget
+        thermal_zone = 'thermal_zone0'
+    },
+    net = {
+        -- network interface
+        net_interface = 'change_me'
+    }
+}
+
+return module
