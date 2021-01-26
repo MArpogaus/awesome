@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 15:34:44
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-04 19:54:17
+-- @Last Modified at: 2020-12-04 16:47:43
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,7 +28,7 @@
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- grab environment
-local root = root
+local capi = {root = root}
 
 -- Standard awesome library
 local awful = require('awful')
@@ -83,12 +83,12 @@ awful.util.myexitmenu = menu.exitmenu
 local buttons = require('rc.mouse_bindings')
 awful.util.taglist_buttons = buttons.taglist_buttons
 awful.util.tasklist_buttons = buttons.tasklist_buttons
-root.buttons(buttons.root)
+capi.root.buttons(buttons.root)
 --------------------------------------------------------------------------------
 
 -- [ key bindings ] ------------------------------------------------------------
 local keys = require('rc.key_bindings')
-root.keys(keys.global_keys)
+capi.root.keys(keys.global_keys)
 --------------------------------------------------------------------------------
 
 -- [ setup wibar and desktop widgets ] -----------------------------------------
@@ -99,4 +99,11 @@ awful.screen.connect_for_each_screen(beautiful.at_screen_connect)
 -- [ rules ] -------------------------------------------------------------------
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = require('rc.rules').rules
+local new_tag = awful.rules.high_priority_properties.new_tag
+function awful.rules.high_priority_properties.new_tag(c, value, props)
+    if not awful.tag.find_by_name(c.screen, value.name) then
+        new_tag(c, value, props)
+    end
+    awful.rules.high_priority_properties.tag(c, value.name, props)
+end
 --------------------------------------------------------------------------------

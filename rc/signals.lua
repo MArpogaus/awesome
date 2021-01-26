@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-04 19:54:06
+-- @Last Modified at: 2020-12-04 16:54:38
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,8 +28,7 @@
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- grab environment
-local awesome = awesome
-local client = client
+local capi = {awesome = awesome, client = client, screen = screen}
 
 -- Standard awesome library
 local gears = require('gears')
@@ -43,13 +42,9 @@ local beautiful = require('beautiful')
 
 -- [ sequential ] -------------------------------------------------------------
 -- Signal function to execute when a new client appears.
-client.connect_signal(
+capi.client.connect_signal(
     'manage', function(c)
-        -- Set the windows at the slave,
-        -- i.e. put it at the end of others instead of setting it master.
-        -- if not awesome.startup then awful.client.setslave(c) end
-
-        if awesome.startup and not c.size_hints.user_position and
+        if capi.awesome.startup and not c.size_hints.user_position and
             not c.size_hints.program_position then
             -- Prevent clients from being unreachable after screen count changes.
             awful.placement.no_offscreen(c)
@@ -58,19 +53,19 @@ client.connect_signal(
 )
 
 -- Add a titlebar if titlebars_enabled is set to true in the rules.
-client.connect_signal(
+capi.client.connect_signal(
     'request::titlebars', function(c)
         -- buttons for the titlebar
         local buttons = gears.table.join(
             awful.button(
                 {}, 1, function()
-                    client.focus = c
+                    capi.client.focus = c
                     c:raise()
                     awful.mouse.client.move(c)
                 end
             ), awful.button(
                 {}, 3, function()
-                    client.focus = c
+                    capi.client.focus = c
                     c:raise()
                     awful.mouse.client.resize(c)
                 end
@@ -102,37 +97,32 @@ client.connect_signal(
             },
             layout = wibox.layout.align.horizontal
         }
-        -- Hide the titlebar if we are not floating
-        local l = awful.layout.get(c.screen)
-        if not (l.name == 'floating' or c.floating) then
-            awful.titlebar.hide(c)
-        end
     end
 )
 
 -- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal(
+capi.client.connect_signal(
     'mouse::enter', function(c)
         if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier and
-            awful.client.focus.filter(c) then client.focus = c end
+            awful.client.focus.filter(c) then capi.client.focus = c end
 
         local focused_screen = awful.screen.focused()
-        if not awesome.startup and focused_screen.systray then
+        if not capi.awesome.startup and focused_screen.systray then
             focused_screen.systray:set_screen(focused_screen)
         end
     end
 )
 
-client.connect_signal(
+capi.client.connect_signal(
     'focus', function(c) c.border_color = beautiful.border_focus end
 )
-client.connect_signal(
+capi.client.connect_signal(
     'unfocus', function(c) c.border_color = beautiful.border_normal end
 )
-client.connect_signal(
+capi.client.connect_signal(
     'property::screen', function()
         local focused_screen = awful.screen.focused()
-        if not awesome.startup and focused_screen.systray then
+        if not capi.awesome.startup and focused_screen.systray then
             focused_screen.systray:set_screen(focused_screen)
         end
     end
@@ -140,8 +130,8 @@ client.connect_signal(
 
 -- Disable borders on lone windows
 -- Handle border sizes of clients.
-for s = 1, screen.count() do
-    screen[s]:connect_signal(
+for s = 1, capi.screen.count() do
+    capi.screen[s]:connect_signal(
         'arrange', function()
             local clients = awful.client.visible(s)
             local layout = awful.layout.getname(awful.layout.get(s))
@@ -172,9 +162,11 @@ for s = 1, screen.count() do
         end
     )
 end
-client.connect_signal(
+capi.client.connect_signal(
     'property::floating', function(c)
-        if c.floating then
+        local l = awful.layout.get(c.screen)
+        if c.requests_no_titlebars then return end 
+        if (l.name == 'floating' or c.floating) then
             awful.titlebar.show(c)
         else
             awful.titlebar.hide(c)

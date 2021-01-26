@@ -4,7 +4,7 @@
 -- @Date:   2019-12-03 13:53:32
 --
 -- @Last Modified by: Marcel Arpogaus
--- @Last Modified at: 2020-10-19 22:34:05
+-- @Last Modified at: 2020-12-08 11:19:52
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,9 +28,7 @@
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- grab environment
-local awesome = awesome
-local client = client
-local screen = screen
+local capi = {awesome = awesome, client = client, screen = screen}
 
 -- Standard awesome library
 local gears = require('gears')
@@ -75,13 +73,13 @@ module.global_keys = gears.table.join(
         {modkey}, 's', hotkeys_popup.show_help,
         {description = 'show help', group = 'awesome'}
     ), awful.key(
-        {modkey, 'Control'}, 'r', awesome.restart,
+        {modkey, 'Control'}, 'r', capi.awesome.restart,
         {description = 'reload awesome', group = 'awesome'}
     ), awful.key(
         {modkey}, 'q', function() awful.spawn(lock_command) end,
         {description = 'lock screen', group = 'awesome'}
     ), awful.key(
-        {modkey, 'Shift'}, 'q', awesome.quit,
+        {modkey, 'Shift'}, 'q', capi.awesome.quit,
         {description = 'quit awesome', group = 'awesome'}
     ), awful.key(
         {modkey}, 'w', function() mymainmenu:show() end,
@@ -205,10 +203,13 @@ module.global_keys = gears.table.join(
     ),
     -- [ client ]---------------------------------------------------------------
     awful.key(
-        {modkey, 'Shift'}, 'j', function() awful.client.swap.byidx(1) end,
-        {description = 'swap with next client by index', group = 'client'}
+        {modkey, 'Shift'}, 'j', function()
+            awful.client.swap.byidx(1)
+        end, {description = 'swap with next client by index', group = 'client'}
     ), awful.key(
-        {modkey, 'Shift'}, 'k', function() awful.client.swap.byidx(-1) end,
+        {modkey, 'Shift'}, 'k', function()
+            awful.client.swap.byidx(-1)
+        end,
         {description = 'swap with previous client by index', group = 'client'}
     ), awful.key(
         {modkey}, 'u', awful.client.urgent.jumpto,
@@ -216,7 +217,7 @@ module.global_keys = gears.table.join(
     ), awful.key(
         {modkey}, 'Tab', function()
             awful.client.focus.history.previous()
-            if client.focus then client.focus:raise() end
+            if capi.client.focus then capi.client.focus:raise() end
         end, {description = 'go back', group = 'client'}
     ), awful.key(
         {modkey}, 'j', function() awful.client.focus.byidx(1) end,
@@ -229,10 +230,19 @@ module.global_keys = gears.table.join(
             local c = awful.client.restore()
             -- Focus restored client
             if c then
-                client.focus = c
+                capi.client.focus = c
                 c:raise()
             end
         end, {description = 'restore minimized', group = 'client'}
+    ), awful.key(
+        {altkey, "Control"}, "+", function() helpers.gaps_resize(2) end,
+        {description = "increment useless gaps", group = "client"}
+    ), awful.key(
+        {altkey, "Control"}, "-", function() helpers.gaps_resize(-2) end,
+        {description = "decrement useless gaps", group = "client"}
+    ), awful.key(
+        {altkey}, "Tab", helpers.application_switcher,
+        {description = 'restore minimized', group = 'client'}
     ),
     -- [ launcher ]-------------------------------------------------------------
     awful.key(
@@ -255,6 +265,10 @@ module.global_keys = gears.table.join(
     ), awful.key(
         {modkey}, 'b', function() awful.spawn(browser) end,
         {description = 'launch Browser', group = 'launcher'}
+    ), awful.key(
+        {modkey}, 'a', function()
+            awful.spawn.with_shell('$HOME/.emacs.d/bin/org-capture')
+        end, {description = 'launch org capture', group = 'launcher'}
     ),
     -- [ layout ]---------------------------------------------------------------
     awful.key(
@@ -318,13 +332,22 @@ module.global_keys = gears.table.join(
         {modkey, altkey, 'Control'}, 'd', util.set_dark,
         {description = 'set dark colorscheme', group = 'theme'}
     ), awful.key(
-        {modkey, altkey, 'Control'}, '+',
-        function() for s in screen do s.dpi = s.dpi + 10 end end,
+        {modkey, altkey, 'Control'}, '+', function() util.inc_dpi(10) end,
         {description = 'increase dpi', group = 'theme'}
     ), awful.key(
-        {modkey, altkey, 'Control'}, '-',
-        function() for s in screen do s.dpi = s.dpi - 10 end end,
+        {modkey, altkey, 'Control'}, '-', function() util.dec_dpi(10) end,
         {description = 'decrease dpi', group = 'theme'}
+    ),
+    -- [ widgets ]--------------------------------------------------------------
+    awful.key(
+        {modkey, 'Shift'}, 'w', util.toggle_widgets,
+        {description = 'toggle widgets', group = 'widgets'}
+    ), awful.key(
+        {modkey, altkey, 'Shift'}, 'w', util.toggle_desktop_widget_visibility,
+        {description = 'toggle desktop widget visibility', group = 'widgets'}
+    ), awful.key(
+        {modkey, 'Shift'}, 'u', util.update_widgets,
+        {description = 'update widgets', group = 'widgets'}
     )
 )
 
@@ -338,7 +361,10 @@ module.client_keys = gears.table.join(
         {modkey}, 'x', function(c) c:kill() end,
         {description = 'close', group = 'client'}
     ), awful.key(
-        {modkey, 'Control'}, 'space', awful.client.floating.toggle,
+        {modkey, 'Control'}, 'space', function(c)
+            awful.client.floating.toggle(c)
+            c:raise()
+        end,
         {description = 'toggle floating', group = 'client'}
     ), awful.key(
         {modkey, 'Control'}, 'Return',
@@ -346,11 +372,7 @@ module.client_keys = gears.table.join(
         {description = 'move to master', group = 'client'}
     ), awful.key(
         {modkey}, 'o', function(c)
-            if config.tyrannical then
-                helpers.move_to_screen(c)
-            else
-                c:move_to_screen()
-            end
+            c:move_to_screen()
         end, {description = 'move to screen', group = 'client'}
     ), awful.key(
         {modkey}, 't', function(c) c.ontop = not c.ontop end,
@@ -414,18 +436,22 @@ for i = 1, 9 do
         -- [ move client to tag ]-----------------------------------------------
         awful.key(
             {modkey, 'Shift'}, '#' .. i + 9, function()
-                if client.focus then
-                    local tag = client.focus.screen.tags[i]
-                    if tag then client.focus:move_to_tag(tag) end
+                if capi.client.focus then
+                    local tag = capi.client.focus.screen.tags[i]
+                    if tag then
+                        capi.client.focus:move_to_tag(tag)
+                    end
                 end
             end, descr_move
         ),
         -- [ toggle tag on focused client ]-------------------------------------
         awful.key(
             {modkey, 'Control', 'Shift'}, '#' .. i + 9, function()
-                if client.focus then
-                    local tag = client.focus.screen.tags[i]
-                    if tag then client.focus:toggle_tag(tag) end
+                if capi.client.focus then
+                    local tag = capi.client.focus.screen.tags[i]
+                    if tag then
+                        capi.client.focus:toggle_tag(tag)
+                    end
                 end
             end, descr_toggle_focus
         )
