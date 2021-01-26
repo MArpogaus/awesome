@@ -3,13 +3,14 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-19 15:38:22 (Marcel Arpogaus)
--- @Changed: 2021-01-19 16:36:31 (Marcel Arpogaus)
+-- @Changed: 2021-01-25 17:58:24 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
 -- ...
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
+local beautiful = require('beautiful')
 local theme_assets = require('beautiful.theme_assets')
 local utils = require('rc.utils')
 
@@ -17,7 +18,9 @@ local utils = require('rc.utils')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.default = function(theme)
+module.init = function()
+    local theme = beautiful.get()
+
     -- Generate Awesome icon:
     theme.awesome_icon = theme.awesome_icon or
                              theme_assets.awesome_icon(
@@ -37,12 +40,6 @@ module.default = function(theme)
                                       theme_assets.taglist_squares_unsel(
             taglist_square_size, theme.fg_normal
         )
-
-    return theme
-end
-
-module.recolor = function(theme)
-    theme = module.default(theme)
 
     -- Recolor titlebar icons:
     theme = theme_assets.recolor_titlebar(theme, theme.fg_normal, 'normal')

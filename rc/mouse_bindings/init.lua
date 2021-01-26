@@ -64,7 +64,9 @@ local function client_label(c)
     local maximized_vertical = theme.tasklist_maximized_vertical or '⬍'
 
     local name = c.name
-    if c.sticky then name = sticky .. name end
+    if c.sticky then
+        name = sticky .. name
+    end
 
     if c.ontop then
         name = ontop .. name
@@ -74,15 +76,21 @@ local function client_label(c)
         name = below .. name
     end
 
-    if c.minimized then name = minimized .. name end
+    if c.minimized then
+        name = minimized .. name
+    end
     if c.maximized then
         name = maximized .. name
     else
         if c.maximized_horizontal then
             name = maximized_horizontal .. name
         end
-        if c.maximized_vertical then name = maximized_vertical .. name end
-        if c.floating then name = floating .. name end
+        if c.maximized_vertical then
+            name = maximized_vertical .. name
+        end
+        if c.floating then
+            name = floating .. name
+        end
     end
 
     return name
@@ -132,7 +140,11 @@ module.init = function(config, mainmenu)
     local modkey = config.modkey
 
     module.taglist_buttons = gears.table.join(
-        awful.button({}, 1, function(t) t:view_only() end), awful.button(
+        awful.button(
+            {}, 1, function(t)
+                t:view_only()
+            end
+        ), awful.button(
             {modkey}, 1, function(t)
                 if capi.client.focus then
                     capi.client.focus:move_to_tag(t)
@@ -144,17 +156,27 @@ module.init = function(config, mainmenu)
                     capi.client.focus:toggle_tag(t)
                 end
             end
-        ), awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
-        awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end)
+        ), awful.button(
+            {}, 4, function(t)
+                awful.tag.viewnext(t.screen)
+            end
+        ), awful.button(
+            {}, 5, function(t)
+                awful.tag.viewprev(t.screen)
+            end
+        )
     )
     if config.tasklist == 'windows' or beautiful.tasklist == 'windows' then
         module.tasklist_buttons = gears.table.join(
             awful.button({}, 1, client_stack_toggle_fn()),
-            awful.button({}, 3, client_menu_toggle_fn()),
-            awful.button(
-                {}, 4, function() awful.client.focus.byidx(1) end
+            awful.button({}, 3, client_menu_toggle_fn()), awful.button(
+                {}, 4, function()
+                    awful.client.focus.byidx(1)
+                end
             ), awful.button(
-                {}, 5, function() awful.client.focus.byidx(-1) end
+                {}, 5, function()
+                    awful.client.focus.byidx(-1)
+                end
             )
         )
     else
@@ -170,14 +192,17 @@ module.init = function(config, mainmenu)
                     end
                 end
             ), awful.button(
-                {}, 3,
-                function()
+                {}, 3, function()
                     awful.menu.client_list({theme = {width = 250}})
                 end
             ), awful.button(
-                {}, 4, function() awful.client.focus.byidx(1) end
+                {}, 4, function()
+                    awful.client.focus.byidx(1)
+                end
             ), awful.button(
-                {}, 5, function() awful.client.focus.byidx(-1) end
+                {}, 5, function()
+                    awful.client.focus.byidx(-1)
+                end
             )
         )
     end
@@ -192,9 +217,15 @@ module.init = function(config, mainmenu)
         awful.button({modkey}, 3, awful.mouse.client.resize)
     )
     local root = gears.table.join(
-        awful.button({}, 1, function() mainmenu:hide() end),
-        awful.button({}, 3, function() mainmenu:toggle() end),
-        awful.button({}, 4, awful.tag.viewnext),
+        awful.button(
+            {}, 1, function()
+                mainmenu:hide()
+            end
+        ), awful.button(
+            {}, 3, function()
+                mainmenu:toggle()
+            end
+        ), awful.button({}, 4, awful.tag.viewnext),
         awful.button({}, 5, awful.tag.viewprev)
     )
     capi.root.buttons(root)

@@ -15,12 +15,9 @@ local module = {}
 local update_screen
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config,
-    tagnames,
-    taglist_buttons,
-    tasklist_buttons,
-    mainmenu,
-    exitmenu)
+module.init = function(
+    config, tagnames, taglist_buttons, tasklist_buttons, mainmenu, exitmenu
+)
     awful.screen.set_auto_dpi_enabled(config.auto_dpi or true)
     update_screen = function(s)
         -- Each screen has its own tag table.
@@ -31,9 +28,13 @@ module.init = function(config,
             )
         end
 
-        if s.reset then s.reset() end
+        if s.reset then
+            s.reset()
+        end
 
-        if config.dpi then s.dpi = config.dpi end
+        if config.dpi then
+            s.dpi = config.dpi
+        end
 
         -- If wallpaper is a function, call it with the screen
         local wallpaper = config.wallpaper or beautiful.wallpaper
@@ -69,9 +70,13 @@ module.init = function(config,
         s.mylayoutbox:buttons(
             gears.table.join(
                 awful.button(
-                    {}, 4, function() awful.layout.inc(1) end
+                    {}, 4, function()
+                        awful.layout.inc(1)
+                    end
                 ), awful.button(
-                    {}, 5, function() awful.layout.inc(-1) end
+                    {}, 5, function()
+                        awful.layout.inc(-1)
+                    end
                 )
             )
         )
@@ -107,7 +112,9 @@ module.init = function(config,
         s.elements = {}
 
         s.update_elements = function()
-            for e, _ in pairs(s.elements) do e.update(s) end
+            for e, _ in pairs(s.elements) do
+                e.update(s)
+            end
         end
         s.reregister_elements = function()
             for e, _ in pairs(s.elements) do
@@ -119,7 +126,9 @@ module.init = function(config,
 
         -- show systray on focused screen
         s.reset = function()
-            for e, _ in pairs(s.elements) do e.unregister(s) end
+            for e, _ in pairs(s.elements) do
+                e.unregister(s)
+            end
 
             if s.promptbox then
                 s.promptbox:reset()
@@ -143,9 +152,14 @@ module.register = function(element)
 end
 module.unregister = function(element)
     awful.screen.disconnect_for_each_screen(element.register)
-    for s in capi.screen do element.unregister(s) end
+    for s in capi.screen do
+        element.unregister(s)
+    end
 end
-module.update =
-    function() for s in capi.screen do s.reregister_elements() end end
+module.update = function()
+    for s in capi.screen do
+        s.reregister_elements()
+    end
+end
 -- [ return module ] -----------------------------------------------------------
 return module

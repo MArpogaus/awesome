@@ -56,7 +56,9 @@ local function client_label(c)
     local maximized_vertical = theme.tasklist_maximized_vertical or '⬍'
 
     local name = c.name
-    if c.sticky then name = sticky .. name end
+    if c.sticky then
+        name = sticky .. name
+    end
 
     if c.ontop then
         name = ontop .. name
@@ -66,15 +68,21 @@ local function client_label(c)
         name = below .. name
     end
 
-    if c.minimized then name = minimized .. name end
+    if c.minimized then
+        name = minimized .. name
+    end
     if c.maximized then
         name = maximized .. name
     else
         if c.maximized_horizontal then
             name = maximized_horizontal .. name
         end
-        if c.maximized_vertical then name = maximized_vertical .. name end
-        if c.floating then name = floating .. name end
+        if c.maximized_vertical then
+            name = maximized_vertical .. name
+        end
+        if c.floating then
+            name = floating .. name
+        end
     end
 
     return name
@@ -83,13 +91,19 @@ local function set_xconf(property, value, sleep)
     local xconf = string.format(
         'xfconf-query -c xsettings --property %s --set \'%s\'', property, value
     )
-    if sleep then xconf = string.format('sleep %.1f && %s', sleep, xconf) end
+    if sleep then
+        xconf = string.format('sleep %.1f && %s', sleep, xconf)
+    end
     awful.spawn.with_shell(xconf)
 end
-local function set_color_scheme(cs, ico) error('not implemented') end
+local function set_color_scheme(cs, ico)
+    error('not implemented')
+end
 
 -- [ module functions ] --------------------------------------------------------
-function module.sleep(n) os.execute('sleep ' .. tonumber(n)) end
+function module.sleep(n)
+    os.execute('sleep ' .. tonumber(n))
+end
 
 -- Helper functions for modifying hex colors -----------------------------------
 local hex_color_match = '[a-fA-F0-9][a-fA-F0-9]'
@@ -166,7 +180,9 @@ end
 -- Delete the current tag
 function module.delete_tag()
     local t = awful.screen.focused().selected_tag
-    if not t then return end
+    if not t then
+        return
+    end
     t:delete()
 end
 
@@ -176,7 +192,9 @@ function module.add_tag()
         prompt = 'New tag name: ',
         textbox = awful.screen.focused().mypromptbox.widget,
         exe_callback = function(new_name)
-            if not new_name or #new_name == 0 then return end
+            if not new_name or #new_name == 0 then
+                return
+            end
 
             awful.tag.add(
                 new_name, {
@@ -194,10 +212,14 @@ function module.rename_tag()
         prompt = 'Rename tag: ',
         textbox = awful.screen.focused().mypromptbox.widget,
         exe_callback = function(new_name)
-            if not new_name or #new_name == 0 then return end
+            if not new_name or #new_name == 0 then
+                return
+            end
 
             local t = awful.screen.focused().selected_tag
-            if t then t.name = new_name end
+            if t then
+                t.name = new_name
+            end
         end
     }
 end
@@ -227,7 +249,9 @@ end
 function module.fork_tag()
     local s = awful.screen.focused()
     local t = s.selected_tag
-    if not t then return end
+    if not t then
+        return
+    end
 
     local clients = t:clients()
     local t2 = awful.tag.add(t.name, awful.tag.getdata(t))
@@ -237,16 +261,22 @@ function module.fork_tag()
 end
 
 function module.move_to_screen(c)
-    if not c then return end
+    if not c then
+        return
+    end
 
     local sc = capi.screen.count()
     local s = c.screen.index + 1
-    if s > sc then s = 1 end
+    if s > sc then
+        s = 1
+    end
 
     local s1 = awful.screen.focused()
     local s2 = capi.screen[s]
 
-    if s1 == s2 then return end
+    if s1 == s2 then
+        return
+    end
 
     local t1 = s1.selected_tag
 
@@ -330,21 +360,37 @@ function module.inc_dpi(inc)
         set_xconf('/Xft/DPI', math.floor(s.dpi))
     end
 end
-function module.dec_dpi(dec) module.inc_dpi(-dec) end
+function module.dec_dpi(dec)
+    module.inc_dpi(-dec)
+end
 
 -- manage widgets
-function module.update_widgets() for s in capi.screen do s.update_elements() end end
+function module.update_widgets()
+    for s in capi.screen do
+        s.update_elements()
+    end
+end
 function module.toggle_wibar_widgets()
-    for s in capi.screen do s.toggle_wibar_widgets() end
+    for s in capi.screen do
+        s.toggle_wibar_widgets()
+    end
 end
 function module.toggle_desktop_widget_visibility()
-    for s in capi.screen do s.toggle_desktop_widget_visibility() end
+    for s in capi.screen do
+        s.toggle_desktop_widget_visibility()
+    end
 end
 
 -- change colorschemes
-function module.set_dark() set_color_scheme('dark', 'flattrcolor') end
-function module.set_mirage() set_color_scheme('mirage', 'flattrcolor') end
-function module.set_light() set_color_scheme('light', 'flattrcolor-dark') end
+function module.set_dark()
+    set_color_scheme('dark', 'flattrcolor')
+end
+function module.set_mirage()
+    set_color_scheme('mirage', 'flattrcolor')
+end
+function module.set_light()
+    set_color_scheme('light', 'flattrcolor-dark')
+end
 
 -- [ return module ]------------------------------------------------------------
 return module

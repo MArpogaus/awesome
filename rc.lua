@@ -35,6 +35,7 @@ local awful = require('awful')
 -- rc modules
 local error_handling = require('rc.error_handling')
 local elements = require("rc.elements")
+local assets = require("rc.assets")
 local key_bindings = require('rc.key_bindings')
 local layouts = require('rc.layouts')
 local menu = require('rc.menu')
@@ -70,6 +71,9 @@ layouts.init(config)
 
 -- theme
 themes.init(config)
+
+-- assets
+assets.init(config)
 
 -- wibars and widgest
 elements.init(config)

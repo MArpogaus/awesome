@@ -66,9 +66,13 @@ theme.at_screen_connect = function(s)
         )
     end
 
-    if s.reset then s.reset() end
+    if s.reset then
+        s.reset()
+    end
 
-    if config.dpi then s.dpi = config.dpi end
+    if config.dpi then
+        s.dpi = config.dpi
+    end
 
     -- If wallpaper is a function, call it with the screen
     local wallpaper = config.wallpaper or theme.wallpaper
@@ -100,10 +104,23 @@ theme.at_screen_connect = function(s)
     s.mylayoutbox = awful.widget.layoutbox(s)
     s.mylayoutbox:buttons(
         gears.table.join(
-            awful.button({}, 1, function() awful.layout.inc(1) end),
-            awful.button({}, 3, function() awful.layout.inc(-1) end),
-            awful.button({}, 4, function() awful.layout.inc(1) end),
-            awful.button({}, 5, function() awful.layout.inc(-1) end)
+            awful.button(
+                {}, 1, function()
+                    awful.layout.inc(1)
+                end
+            ), awful.button(
+                {}, 3, function()
+                    awful.layout.inc(-1)
+                end
+            ), awful.button(
+                {}, 4, function()
+                    awful.layout.inc(1)
+                end
+            ), awful.button(
+                {}, 5, function()
+                    awful.layout.inc(-1)
+                end
+            )
         )
     )
 
@@ -182,7 +199,9 @@ theme.at_screen_connect = function(s)
                 end
             end
             local ret = {}
-            for _, v in pairs(clients) do table.insert(ret, v) end
+            for _, v in pairs(clients) do
+                table.insert(ret, v)
+            end
             return ret
         end
     }
@@ -351,7 +370,9 @@ theme.at_screen_connect = function(s)
 
     -- show systray on focused screen
     s.systray_set_screen = function()
-        if s.systray then s.systray:set_screen(s) end
+        if s.systray then
+            s.systray:set_screen(s)
+        end
     end
     s.unregister_widgets = function()
         if s.registered_wibar_widgets then
@@ -471,12 +492,17 @@ theme.at_screen_connect = function(s)
     s.update_widgets()
 end
 
-theme.set_dark = function(self) self:set_color_scheme(color_schemes.dark) end
+theme.set_dark = function(self)
+    self:set_color_scheme(color_schemes.dark)
+end
 
-theme.set_light = function(self) self:set_color_scheme(color_schemes.light) end
+theme.set_light = function(self)
+    self:set_color_scheme(color_schemes.light)
+end
 
-theme.set_mirage =
-    function(self) self:set_color_scheme(color_schemes.mirage) end
+theme.set_mirage = function(self)
+    self:set_color_scheme(color_schemes.mirage)
+end
 
 -- [ sequential code ] ---------------------------------------------------------
 local color_scheme

@@ -95,11 +95,13 @@ end
 -- Helper function that puts a widget inside a box with a specified background color
 -- Invisible margins are added so that the boxes created with this function are evenly separated
 -- The widget_to_be_boxed is vertically and horizontally centered inside the box
-module.create_boxed_widget = function(widget_to_be_boxed,
+module.create_boxed_widget = function(
+    widget_to_be_boxed,
     bg_color,
-    radius,
-    inner_margin,
-    outer_margin)
+        radius,
+        inner_margin,
+        outer_margin
+)
     radius = radius or 15
     inner_margin = inner_margin or 30
     outer_margin = outer_margin or 30
@@ -201,8 +203,9 @@ module.create_arc_widget = function(args)
         widget = wibox.container.arcchart
     }
     arc_container:connect_signal(
-        'widget::value_changed',
-        function(_, usage) arc_container.value = usage end
+        'widget::value_changed', function(_, usage)
+            arc_container.value = usage
+        end
     )
     return arc_container
 end
@@ -210,7 +213,9 @@ end
 module.markup = function(args)
     local style = ''
     local font, fg_color, text = args.font, args.fg_color, args.text
-    if font then style = style .. string.format(' font=\'%s\'', font) end
+    if font then
+        style = style .. string.format(' font=\'%s\'', font)
+    end
     if fg_color then
         style = style .. string.format(' foreground=\'%s\'', fg_color)
     end

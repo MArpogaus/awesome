@@ -97,7 +97,9 @@ module.init = function(config)
             }
 
             s.systray_set_screen = function()
-                if s.systray then s.systray:set_screen(s) end
+                if s.systray then
+                    s.systray:set_screen(s)
+                end
             end
             s.mybottomwibar:connect_signal('mouse::enter', s.systray_set_screen)
 
@@ -113,7 +115,9 @@ module.init = function(config)
             s.mybottomwibar:remove()
             s.mybottomwibar = nil
         end,
-        update_fn = function(s) utils.update_wibar_widgets(s) end
+        update_fn = function(s)
+            utils.update_wibar_widgets(s)
+        end
     }
     return element
 end

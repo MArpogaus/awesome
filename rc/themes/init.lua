@@ -31,46 +31,20 @@ local beautiful = require('beautiful')
 local gears = require('gears')
 local gfs = require('gears.filesystem')
 
-local assets = require('rc.themes.decorations.assets')
-
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 local themes_path = gfs.get_themes_dir()
 local config_path = gfs.get_configuration_dir()
 
--- [ local functions ] ---------------------------------------------------------
-local function add_color_scheme(theme)
-    if theme.cs then return theme end
-    -- abuse table keys to generate a set of used colors
-    local color_set = {}
-    for _, v in pairs(theme) do
-        local c = gears.color.ensure_pango_color(v, 0)
-        if c ~= 0 then color_set[c] = true end
-    end
-    color_set[theme.bg_normal] = nil
-    color_set[theme.fg_normal] = nil
-    theme.cs = {
-        bg = theme.bg_normal,
-        fg = theme.fg_normal,
-        colors = gears.table.find_keys(
-            color_set, function(...) return true end
-        )
-    }
-
-    return theme
-end
-local function decorate_theme(config, theme)
-    add_color_scheme(theme)
-    assets[config.theme_assets or 'default'](theme)
-    gears.debug.print_warning(gears.debug.dump_return(theme.widgets))
-end
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
     local theme_file
     if config.theme then
         for _, path in ipairs {themes_path, config_path .. '/themes'} do
             theme_file = string.format('%s/%s/theme.lua', path, config.theme)
-            if gfs.file_readable(theme_file) then break end
+            if gfs.file_readable(theme_file) then
+                break
+            end
         end
     end
     if not beautiful.init(theme_file) then

@@ -69,14 +69,16 @@ module.init = function(config, mainmenu)
             {modkey, 'Control'}, 'r', capi.awesome.restart,
             {description = 'reload awesome', group = 'awesome'}
         ), awful.key(
-            {modkey}, 'q', function() awful.spawn(lock_command) end,
-            {description = 'lock screen', group = 'awesome'}
+            {modkey}, 'q', function()
+                awful.spawn(lock_command)
+            end, {description = 'lock screen', group = 'awesome'}
         ), awful.key(
             {modkey, 'Shift'}, 'q', capi.awesome.quit,
             {description = 'quit awesome', group = 'awesome'}
         ), awful.key(
-            {modkey}, 'w', function() mainmenu:show() end,
-            {description = 'show main menu', group = 'awesome'}
+            {modkey}, 'w', function()
+                mainmenu:show()
+            end, {description = 'show main menu', group = 'awesome'}
         ), awful.key(
             {modkey, 'Shift'}, 'b', function()
                 for s in capi.screen do
@@ -176,11 +178,13 @@ module.init = function(config, mainmenu)
             {modkey, 'Shift'}, 'r', utils.rename_tag,
             {description = 'rename tag', group = 'tag'}
         ), awful.key(
-            {modkey, 'Shift'}, 'Left', function() utils.move_tag(-1) end,
-            {description = 'move tag to the left', group = 'tag'}
+            {modkey, 'Shift'}, 'Left', function()
+                utils.move_tag(-1)
+            end, {description = 'move tag to the left', group = 'tag'}
         ), awful.key(
-            {modkey, 'Shift'}, 'Right', function() utils.move_tag(1) end,
-            {description = 'move tag to the right', group = 'tag'}
+            {modkey, 'Shift'}, 'Right', function()
+                utils.move_tag(1)
+            end, {description = 'move tag to the right', group = 'tag'}
         ), awful.key(
             {modkey, 'Shift'}, 'd', utils.delete_tag,
             {description = 'delete tag', group = 'tag'}
@@ -190,13 +194,13 @@ module.init = function(config, mainmenu)
         ),
         -- [ screen ]---------------------------------------------------------------
         awful.key(
-            {modkey, 'Control'}, 'j',
-            function() awful.screen.focus_relative(1) end,
-            {description = 'focus the next screen', group = 'screen'}
+            {modkey, 'Control'}, 'j', function()
+                awful.screen.focus_relative(1)
+            end, {description = 'focus the next screen', group = 'screen'}
         ), awful.key(
-            {modkey, 'Control'}, 'k',
-            function() awful.screen.focus_relative(-1) end,
-            {description = 'focus the previous screen', group = 'screen'}
+            {modkey, 'Control'}, 'k', function()
+                awful.screen.focus_relative(-1)
+            end, {description = 'focus the previous screen', group = 'screen'}
         ),
         -- [ client ]---------------------------------------------------------------
         awful.key(
@@ -222,11 +226,13 @@ module.init = function(config, mainmenu)
                 end
             end, {description = 'go back', group = 'client'}
         ), awful.key(
-            {modkey}, 'j', function() awful.client.focus.byidx(1) end,
-            {description = 'focus next by index', group = 'client'}
+            {modkey}, 'j', function()
+                awful.client.focus.byidx(1)
+            end, {description = 'focus next by index', group = 'client'}
         ), awful.key(
-            {modkey}, 'k', function() awful.client.focus.byidx(-1) end,
-            {description = 'focus previous by index', group = 'client'}
+            {modkey}, 'k', function()
+                awful.client.focus.byidx(-1)
+            end, {description = 'focus previous by index', group = 'client'}
         ), awful.key(
             {modkey, 'Control'}, 'n', function()
                 local c = awful.client.restore()
@@ -237,8 +243,9 @@ module.init = function(config, mainmenu)
                 end
             end, {description = 'restore minimized', group = 'client'}
         ), awful.key(
-            {altkey, 'Control'}, '+', function() utils.gaps_resize(2) end,
-            {description = 'increment useless gaps', group = 'client'}
+            {altkey, 'Control'}, '+', function()
+                utils.gaps_resize(2)
+            end, {description = 'increment useless gaps', group = 'client'}
         ), awful.key(
             {altkey, 'Control'}, '-', function()
                 utils.gaps_resize(-2)
@@ -249,12 +256,13 @@ module.init = function(config, mainmenu)
         ),
         -- [ launcher ]-------------------------------------------------------------
         awful.key(
-            {modkey}, 'p', function() menubar.show() end,
-            {description = 'show the menubar', group = 'launcher'}
+            {modkey}, 'p', function()
+                menubar.show()
+            end, {description = 'show the menubar', group = 'launcher'}
         ), awful.key(
-            {modkey}, 'Return',
-            function() awful.spawn(terminal, {intrusive = true}) end,
-            {description = 'open a terminal', group = 'launcher'}
+            {modkey}, 'Return', function()
+                awful.spawn(terminal, {intrusive = true})
+            end, {description = 'open a terminal', group = 'launcher'}
         ), awful.key(
             {modkey, 'Shift'}, 'Return', function()
                 awful.spawn(
@@ -262,13 +270,13 @@ module.init = function(config, mainmenu)
                 )
             end, {description = 'open a floating terminal', group = 'launcher'}
         ), awful.key(
-            {modkey}, 'space',
-            function()
+            {modkey}, 'space', function()
                 awful.spawn('/usr/bin/rofi -show drun -modi drun')
             end, {description = 'launch rofi', group = 'launcher'}
         ), awful.key(
-            {modkey}, 'b', function() awful.spawn(browser) end,
-            {description = 'launch Browser', group = 'launcher'}
+            {modkey}, 'b', function()
+                awful.spawn(browser)
+            end, {description = 'launch Browser', group = 'launcher'}
         ), awful.key(
             {modkey}, 'a', function()
                 awful.spawn.with_shell('$HOME/.emacs.d/bin/org-capture')
@@ -276,30 +284,38 @@ module.init = function(config, mainmenu)
         ),
         -- [ layout ]---------------------------------------------------------------
         awful.key(
-            {modkey}, 'l', function() awful.tag.incmwfact(0.05) end,
+            {modkey}, 'l', function()
+                awful.tag.incmwfact(0.05)
+            end,
             {description = 'increase master width factor', group = 'layout'}
         ), awful.key(
-            {modkey}, 'h', function() awful.tag.incmwfact(-0.05) end,
+            {modkey}, 'h', function()
+                awful.tag.incmwfact(-0.05)
+            end,
             {description = 'decrease master width factor', group = 'layout'}
         ), awful.key(
-            {modkey, 'Shift'}, 'h',
-            function() awful.tag.incnmaster(1, nil, true) end, {
+            {modkey, 'Shift'}, 'h', function()
+                awful.tag.incnmaster(1, nil, true)
+            end, {
                 description = 'increase the number of master clients',
                 group = 'layout'
             }
         ), awful.key(
-            {modkey, 'Shift'}, 'l',
-            function() awful.tag.incnmaster(-1, nil, true) end, {
+            {modkey, 'Shift'}, 'l', function()
+                awful.tag.incnmaster(-1, nil, true)
+            end, {
                 description = 'decrease the number of master clients',
                 group = 'layout'
             }
         ), awful.key(
-            {modkey, 'Control'}, 'h',
-            function() awful.tag.incncol(1, nil, true) end,
+            {modkey, 'Control'}, 'h', function()
+                awful.tag.incncol(1, nil, true)
+            end,
             {description = 'increase the number of columns', group = 'layout'}
         ), awful.key(
-            {modkey, 'Control'}, 'l',
-            function() awful.tag.incncol(-1, nil, true) end,
+            {modkey, 'Control'}, 'l', function()
+                awful.tag.incncol(-1, nil, true)
+            end,
             {description = 'decrease the number of columns', group = 'layout'}
         ), awful.key(
             {modkey, 'Shift'}, 'space', function()
@@ -368,26 +384,30 @@ module.init = function(config, mainmenu)
                 c:raise()
             end, {description = 'toggle fullscreen', group = 'client'}
         ), awful.key(
-            {modkey}, 'x', function(c) c:kill() end,
-            {description = 'close', group = 'client'}
+            {modkey}, 'x', function(c)
+                c:kill()
+            end, {description = 'close', group = 'client'}
         ), awful.key(
             {modkey, 'Control'}, 'space', function(c)
                 awful.client.floating.toggle(c)
                 c:raise()
             end, {description = 'toggle floating', group = 'client'}
         ), awful.key(
-            {modkey, 'Control'}, 'Return',
-            function(c) c:swap(awful.client.getmaster()) end,
-            {description = 'move to master', group = 'client'}
+            {modkey, 'Control'}, 'Return', function(c)
+                c:swap(awful.client.getmaster())
+            end, {description = 'move to master', group = 'client'}
         ), awful.key(
-            {modkey}, 'o', function(c) c:move_to_screen() end,
-            {description = 'move to screen', group = 'client'}
+            {modkey}, 'o', function(c)
+                c:move_to_screen()
+            end, {description = 'move to screen', group = 'client'}
         ), awful.key(
-            {modkey}, 't', function(c) c.ontop = not c.ontop end,
-            {description = 'toggle keep on top', group = 'client'}
+            {modkey}, 't', function(c)
+                c.ontop = not c.ontop
+            end, {description = 'toggle keep on top', group = 'client'}
         ), awful.key(
-            {modkey}, 'n', function(c) c.minimized = true end,
-            {description = 'minimize', group = 'client'}
+            {modkey}, 'n', function(c)
+                c.minimized = true
+            end, {description = 'minimize', group = 'client'}
         ), awful.key(
             {modkey}, 'm', function(c)
                 c.maximized = not c.maximized
@@ -430,7 +450,9 @@ module.init = function(config, mainmenu)
                 {modkey}, '#' .. i + 9, function()
                     local s = awful.screen.focused()
                     local tag = s.tags[i]
-                    if tag then tag:view_only() end
+                    if tag then
+                        tag:view_only()
+                    end
                 end, descr_view
             ),
             -- [ toggle tag display ]-----------------------------------------------
@@ -438,7 +460,9 @@ module.init = function(config, mainmenu)
                 {modkey, 'Control'}, '#' .. i + 9, function()
                     local s = awful.screen.focused()
                     local tag = s.tags[i]
-                    if tag then awful.tag.viewtoggle(tag) end
+                    if tag then
+                        awful.tag.viewtoggle(tag)
+                    end
                 end, descr_toggle
             ),
             -- [ move client to tag ]-----------------------------------------------

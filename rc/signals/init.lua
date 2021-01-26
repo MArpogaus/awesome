@@ -59,7 +59,9 @@ module.init = function()
     -- Add a titlebar if titlebars_enabled is set to true in the rules.
     capi.client.connect_signal(
         'request::titlebars', function(c)
-            if c.requests_no_titlebar then return end
+            if c.requests_no_titlebar then
+                return
+            end
             -- buttons for the titlebar
             local buttons = gears.table.join(
                 awful.button(
@@ -124,10 +126,14 @@ module.init = function()
     )
 
     capi.client.connect_signal(
-        'focus', function(c) c.border_color = beautiful.border_focus end
+        'focus', function(c)
+            c.border_color = beautiful.border_focus
+        end
     )
     capi.client.connect_signal(
-        'unfocus', function(c) c.border_color = beautiful.border_normal end
+        'unfocus', function(c)
+            c.border_color = beautiful.border_normal
+        end
     )
     capi.client.connect_signal(
         'property::screen', function()

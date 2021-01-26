@@ -50,7 +50,9 @@ local function set_xconf(property, value, sleep)
     local xconf = string.format(
         'xfconf-query -c xsettings --property %s --set \'%s\'', property, value
     )
-    if sleep then xconf = string.format('sleep %.1f && %s', sleep, xconf) end
+    if sleep then
+        xconf = string.format('sleep %.1f && %s', sleep, xconf)
+    end
     naughty.notify {text = xconf}
     awful.spawn.with_shell(xconf)
 end
@@ -73,7 +75,9 @@ local function reload_emacs_theme()
     awful.spawn
         .with_shell('pgrep emacs && emacsclient -e "(doom/reload-theme)"')
 end
-local function set_icon_colorscheme(theme) set_xconf('/Net/IconThemeName', theme) end
+local function set_icon_colorscheme(theme)
+    set_xconf('/Net/IconThemeName', theme)
+end
 local function set_gtk_colorscheme()
     set_xconf('/Net/ThemeName', '')
     set_xconf('/Net/ThemeName', 'FlatColor', 1)
@@ -100,7 +104,9 @@ local function set_color_scheme(cs, ico)
     end
     local clients = awful.screen.focused().clients
     for _, c in ipairs(clients) do
-        if c.titlebars_enabled then c:emit_signal('request::titlebars') end
+        if c.titlebars_enabled then
+            c:emit_signal('request::titlebars')
+        end
     end
 
 end
@@ -116,8 +122,12 @@ module.darker = function(color_value, darker_n)
         if channel_counter <= 3 then
             bg_numeric_value = bg_numeric_value - darker_n
         end
-        if bg_numeric_value < 0 then bg_numeric_value = 0 end
-        if bg_numeric_value > 255 then bg_numeric_value = 255 end
+        if bg_numeric_value < 0 then
+            bg_numeric_value = 0
+        end
+        if bg_numeric_value > 255 then
+            bg_numeric_value = 255
+        end
         result = result .. string.format('%02x', bg_numeric_value)
         channel_counter = channel_counter + 1
     end
@@ -128,7 +138,9 @@ module.is_dark = function(color_value)
     local channel_counter = 1
     for s in color_value:gmatch(hex_color_match) do
         bg_numeric_value = bg_numeric_value + tonumber('0x' .. s)
-        if channel_counter == 3 then break end
+        if channel_counter == 3 then
+            break
+        end
         channel_counter = channel_counter + 1
     end
     local is_dark_bg = (bg_numeric_value < 383)
@@ -148,35 +160,36 @@ module.set_alpha = function(color, alpha)
 end
 
 -- create titlebar_button ------------------------------------------------------
-module.titlebar_button =
-    function(size, radius, bg_color, fg_color, border_width)
-        border_width = border_width or 1
-        -- Create a surface
-        local img = cairo.ImageSurface.create(cairo.Format.ARGB32, size, size)
+module.titlebar_button = function(
+    size, radius, bg_color, fg_color, border_width
+)
+    border_width = border_width or 1
+    -- Create a surface
+    local img = cairo.ImageSurface.create(cairo.Format.ARGB32, size, size)
 
-        -- Create a context
-        local cr = cairo.Context(img)
+    -- Create a context
+    local cr = cairo.Context(img)
 
-        -- paint transparent bg
-        cr:set_source(gears.color('#00000000'))
-        cr:paint()
+    -- paint transparent bg
+    cr:set_source(gears.color('#00000000'))
+    cr:paint()
 
-        -- draw border
-        cr:set_source(gears.color(fg_color or '#00000000'))
-        cr:move_to(size / 2 + radius, size / 2)
-        cr:arc(size / 2, size / 2, radius + border_width, 0, 2 * math.pi)
-        cr:close_path()
-        cr:fill()
+    -- draw border
+    cr:set_source(gears.color(fg_color or '#00000000'))
+    cr:move_to(size / 2 + radius, size / 2)
+    cr:arc(size / 2, size / 2, radius + border_width, 0, 2 * math.pi)
+    cr:close_path()
+    cr:fill()
 
-        -- draw circle
-        cr:set_source(gears.color(bg_color))
-        cr:move_to(size / 2 + radius, size / 2)
-        cr:arc(size / 2, size / 2, radius, 0, 2 * math.pi)
-        cr:close_path()
-        cr:fill()
+    -- draw circle
+    cr:set_source(gears.color(bg_color))
+    cr:move_to(size / 2 + radius, size / 2)
+    cr:arc(size / 2, size / 2, radius, 0, 2 * math.pi)
+    cr:close_path()
+    cr:fill()
 
-        return img, cr
-    end
+    return img, cr
+end
 
 -- FontAwesome icons -----------------------------------------------------------
 module.fa_markup = function(col, ico, size)
@@ -229,11 +242,13 @@ end
 -- Helper function that puts a widget inside a box with a specified background color
 -- Invisible margins are added so that the boxes created with this function are evenly separated
 -- The widget_to_be_boxed is vertically and horizontally centered inside the box
-module.create_boxed_widget = function(widget_to_be_boxed,
+module.create_boxed_widget = function(
+    widget_to_be_boxed,
     bg_color,
-    radius,
-    inner_margin,
-    outer_margin)
+        radius,
+        inner_margin,
+        outer_margin
+)
     radius = radius or 15
     inner_margin = inner_margin or 30
     outer_margin = outer_margin or 30
@@ -335,8 +350,9 @@ module.create_arc_widget = function(args)
         widget = wibox.container.arcchart
     }
     arc_container:connect_signal(
-        'widget::value_changed',
-        function(_, usage) arc_container.value = usage end
+        'widget::value_changed', function(_, usage)
+            arc_container.value = usage
+        end
     )
     return arc_container
 end
@@ -344,7 +360,9 @@ end
 module.markup = function(args)
     local style = ''
     local font, fg_color, text = args.font, args.fg_color, args.text
-    if font then style = style .. string.format(' font=\'%s\'', font) end
+    if font then
+        style = style .. string.format(' font=\'%s\'', font)
+    end
     if fg_color then
         style = style .. string.format(' foreground=\'%s\'', fg_color)
     end
@@ -388,9 +406,15 @@ module.load_config = function(config_file)
 end
 
 -- change colorschemes
-module.set_dark = function() set_color_scheme('dark', 'flattrcolor') end
-module.set_mirage = function() set_color_scheme('mirage', 'flattrcolor') end
-module.set_light = function() set_color_scheme('light', 'flattrcolor-dark') end
+module.set_dark = function()
+    set_color_scheme('dark', 'flattrcolor')
+end
+module.set_mirage = function()
+    set_color_scheme('mirage', 'flattrcolor')
+end
+module.set_light = function()
+    set_color_scheme('light', 'flattrcolor-dark')
+end
 
 -- change dpi
 module.inc_dpi = function(inc)
@@ -399,16 +423,26 @@ module.inc_dpi = function(inc)
         set_xconf('/Xft/DPI', math.floor(s.dpi))
     end
 end
-module.dec_dpi = function(dec) module.inc_dpi(-dec) end
+module.dec_dpi = function(dec)
+    module.inc_dpi(-dec)
+end
 
 -- manage widgets
-module.toggle_widgets =
-    function() for s in capi.screen do s.toggle_widgets() end end
-module.update_widgets =
-    function() for s in capi.screen do s.update_widgets() end end
+module.toggle_widgets = function()
+    for s in capi.screen do
+        s.toggle_widgets()
+    end
+end
+module.update_widgets = function()
+    for s in capi.screen do
+        s.update_widgets()
+    end
+end
 module.toggle_desktop_widget_visibility =
     function()
-        for s in capi.screen do s.toggle_desktop_widget_visibility() end
+        for s in capi.screen do
+            s.toggle_desktop_widget_visibility()
+        end
     end
 
 -- [ return module ] -----------------------------------------------------------

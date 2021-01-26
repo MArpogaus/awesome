@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-01-25 16:40:33 (Marcel Arpogaus)
+-- @Changed: 2021-01-26 11:00:53 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -13,7 +13,6 @@
 local awful = require('awful')
 local wibox = require('wibox')
 local gears = require('gears')
-local beautiful = require('beautiful')
 
 local abstract_element = require('rc.elements.abstract_element')
 local utils = require('rc.elements.wibar.utils')
@@ -40,7 +39,6 @@ module.init = function(config)
             )
             s.right_widget_container.layout = wibox.layout.fixed.horizontal
 
-
             -- Add widgets to the wibox
             s.mywibar:setup{
                 layout = wibox.layout.align.horizontal,
@@ -56,7 +54,9 @@ module.init = function(config)
             s.mywibar:remove()
             s.mywibar = nil
         end,
-        update_fn = function(s) utils.update_wibar_widgets(s) end
+        update_fn = function(s)
+            utils.update_wibar_widgets(s)
+        end
     }
     return element
 end
