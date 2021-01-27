@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-01-27 08:39:18 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 15:51:09 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -25,6 +25,7 @@
 -- [ required modules ] --------------------------------------------------------
 -- Standard awesome library
 local awful = require('awful')
+local gears = require('gears')
 
 -- rc modules
 local error_handling = require('rc.error_handling')
@@ -45,7 +46,8 @@ local utils = require('rc.utils')
 local revelation = require('revelation')
 
 -- configuration file
-local config = utils.load_config()
+local defaults = require('rc.defaults')
+local config = gears.table.crush(defaults, require('config'))
 
 -- ensure that there's always a client that has focus
 require('awful.autofocus')

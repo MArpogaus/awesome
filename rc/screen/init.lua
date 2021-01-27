@@ -18,7 +18,7 @@ local update_screen
 module.init = function(
     config, tagnames, taglist_buttons, tasklist_buttons, mainmenu, exitmenu
 )
-    awful.screen.set_auto_dpi_enabled(config.auto_dpi or true)
+    awful.screen.set_auto_dpi_enabled(config.auto_dpi)
     update_screen = function(s)
         -- Each screen has its own tag table.
         if not s.mytaglist then
@@ -89,11 +89,10 @@ module.init = function(
         }
 
         -- Create a tasklist widget
-        s.mytasklist = tasklist[config.tasklist or beautiful.tasklist or
-                           'default'](s, tasklist_buttons)
+        s.mytasklist = tasklist[config.tasklist](s, tasklist_buttons)
 
         -- menus
-        if config.mainmenu == nil and config.mainmenu ~= false then
+        if config.mainmenu then
             s.mymainmenu = awful.widget.launcher(
                 {image = beautiful.awesome_icon, menu = mainmenu}
             )

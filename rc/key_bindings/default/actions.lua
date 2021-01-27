@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-01-27 11:28:53 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 15:21:37 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -39,7 +39,7 @@ local hotkeys_popup = require('awful.hotkeys_popup').widget
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(terminal, _, _, _, _, mainmenu)
+module.init = function(config, mainmenu)
     local actions = {}
     actions.global = {
         awesome = {
@@ -91,7 +91,7 @@ module.init = function(terminal, _, _, _, _, mainmenu)
         },
         launcher = {
             ['open a terminal'] = function()
-                awful.spawn(terminal)
+                awful.spawn(config.terminal)
             end,
             ['run prompt'] = function()
                 awful.screen.focused().mypromptbox:run()
@@ -180,8 +180,6 @@ module.init = function(terminal, _, _, _, _, mainmenu)
     }
     return actions
 end
-
--- [ sequential code ] ---------------------------------------------------------
 
 -- [ return module ] -----------------------------------------------------------
 return module

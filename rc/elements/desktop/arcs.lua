@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-01-27 08:43:12 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 15:52:58 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -42,8 +42,8 @@ local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
-    local arc_widgets = config.arc_widgets or {'cpu', 'mem', 'fs', 'vol'}
-    local widgets_arg = config.widgets_arg or {}
+    local arc_widgets = config.arc_widgets
+    local widgets_arg = config.widgets_arg
     local element = abstract_element.new {
         register_fn = function(s)
             -- Create the desktop widget popup

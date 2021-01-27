@@ -1,9 +1,9 @@
 -- [ author ] -*- time-stamp-pattern: "@Changed[\s]?:[\s]+%%$"; -*- ------------
--- @File   : init.lua
+-- @File   : defaults.lua
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
--- @Created: 2021-01-22 20:34:11 (Marcel Arpogaus)
--- @Changed: 2021-01-27 15:54:32 (Marcel Arpogaus)
+-- @Created: 2021-01-27 15:12:05 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 15:57:24 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,19 +23,55 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
--- Standard awesome library
+local wibox = require('wibox')
 local awful = require('awful')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
--- [ module functions ] --------------------------------------------------------
-module.init = function(config)
-    -- Table of layouts to cover with awful.layout.inc, order matters.
-    awful.layout.layouts = config.layouts
+-- keys
+module.modkey = 'Mod4'
+module.altkey = 'Mod1'
 
-    awful.layout.default = {awful.layout.layouts[config.default_layout]}
-end
+-- applications
+module.browser = 'firefox'
+module.filemanager = 'thunar'
+module.gui_editor = 'nano'
+module.key_bindings = {'default'}
+module.lock_command = 'light-locker-command -l'
+module.terminal = 'xterm'
+
+-- layouts
+module.default_layout = 0
+module.layouts = {
+    awful.layout.suit.floating,
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.left,
+    awful.layout.suit.tile.bottom,
+    awful.layout.suit.tile.top,
+    awful.layout.suit.fair,
+    awful.layout.suit.fair.horizontal,
+    awful.layout.suit.spiral,
+    awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.max,
+    awful.layout.suit.max.fullscreen,
+    awful.layout.suit.magnifier,
+    awful.layout.suit.corner.nw
+    -- awful.layout.suit.corner.ne,
+    -- awful.layout.suit.corner.sw,
+    -- awful.layout.suit.corner.se,
+}
+
+-- appearance
+module.auto_dpi = true
+module.tasklist = 'default'
+module.mainmenu = true
+
+-- widgets
+module.arc_widgets = {'cpu', 'mem', 'fs', 'vol'}
+module.desktop_widgets_visible = true
+module.wibar_widgets = {wibox.widget.textclock()}
+module.widgets_arg = {}
 
 -- [ return module ] -----------------------------------------------------------
 return module

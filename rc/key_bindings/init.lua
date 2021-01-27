@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:44 (Marcel Arpogaus)
--- @Changed: 2021-01-27 11:45:37 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 15:53:52 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,41 +28,57 @@ local capi = {root = root, client = client}
 
 local awful = require('awful')
 local gears = require('gears')
+local gfs = require('gears.filesystem')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
+local config_path = gfs.get_configuration_dir()
+
+local function deep_merge(t1, t2)
+    for k, v in pairs(t2) do
+        if type(v) == 'table' then
+            t1[k] = deep_merge(t1[k] or {}, v)
+        else
+            t1[k] = v
+        end
+    end
+    return t1
+end
+
+local function load_bindings(binding, file)
+    local file_name
+    for _, path in ipairs {'config', 'rc'} do
+        file_name = string.format('%s/key_bindings/%s/%s', path, binding, file)
+        if gfs.file_readable(config_path .. file_name .. '.lua') then
+            return require(file_name:gsub('/', '.'))
+        end
+    end
+    return {
+        init = function(_)
+            return {}
+        end
+    }
+end
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config, mainmenu)
-    local browser = config.browser or 'firefox'
-    local filemanager = config.filemanager or 'thunar'
-    local gui_editor = config.gui_editor or 'nano'
-    local lock_command = config.lock_command or 'light-locker-command -l'
-    local terminal = config.terminal or 'thunar'
-
-    local modkey = config.modkey
-    local altkey = config.altkey
-
-    local keys = require(
-                     string.format(
-            'rc.key_bindings.%s.keys', config.key_bindings or 'default'
+    local keys = {}
+    local actions = {}
+    for _, binding in ipairs(config.key_bindings) do
+        keys = deep_merge(keys, load_bindings(binding, 'keys').init(config))
+        actions = deep_merge(
+            actions, load_bindings(binding, 'actions').init(config, mainmenu)
         )
-                 ).init(modkey, altkey)
-    local actions = require(
-                        string.format(
-            'rc.key_bindings.%s.actions', config.key_bindings or 'default'
-        )
-                    ).init(
-        terminal, browser, filemanager, gui_editor, lock_command, mainmenu
-    )
+    end
+    gears.debug.print_warning(gears.debug.dump_return(keys))
 
-    for _, level in ipairs({'global', 'client'}) do
+    for level, level_keys in pairs(keys) do
         local key_tables = {}
-        for group, group_keys in pairs(keys[level]) do
+        for group, group_keys in pairs(level_keys) do
             for desc, key in pairs(group_keys) do
                 table.insert(
                     key_tables, awful.key(
-                        key[1], key[2], actions.global[group][desc],
+                        key[1], key[2], actions[level][group][desc],
                         {description = desc, group = group}
                     )
                 )
@@ -71,7 +87,7 @@ module.init = function(config, mainmenu)
         module[level .. '_keys'] = gears.table.join(table.unpack(key_tables))
     end
 
-    if config.numbers_to_tags == nil or config.numbers_to_tags then
+    if config.bind_numbers_to_tags == nil or config.bind_numbers_to_tags then
         -- Bind all key numbers to tags.
         -- Be careful: we use keycodes to make it works on any keyboard layout.
         -- This should map on the top row of your keyboard, usually 1 to 9.
@@ -93,7 +109,7 @@ module.init = function(config, mainmenu)
             module.global_keys = gears.table.join(
                 module.global_keys, -- View tag only.
                 awful.key(
-                    {modkey}, '#' .. i + 9, function()
+                    {config.modkey}, '#' .. i + 9, function()
                         local s = awful.screen.focused()
                         local tag = s.tags[i]
                         if tag then
@@ -101,7 +117,7 @@ module.init = function(config, mainmenu)
                         end
                     end, descr_view
                 ), awful.key(
-                    {modkey, 'Control'}, '#' .. i + 9, function()
+                    {config.modkey, 'Control'}, '#' .. i + 9, function()
                         local s = awful.screen.focused()
                         local tag = s.tags[i]
                         if tag then
@@ -109,7 +125,7 @@ module.init = function(config, mainmenu)
                         end
                     end, descr_toggle
                 ), awful.key(
-                    {modkey, 'Shift'}, '#' .. i + 9, function()
+                    {config.modkey, 'Shift'}, '#' .. i + 9, function()
                         if capi.client.focus then
                             local tag = capi.client.focus.screen.tags[i]
                             if tag then
@@ -118,7 +134,8 @@ module.init = function(config, mainmenu)
                         end
                     end, descr_move
                 ), awful.key(
-                    {modkey, 'Control', 'Shift'}, '#' .. i + 9, function()
+                    {config.modkey, 'Control', 'Shift'}, '#' .. i + 9,
+                    function()
                         if capi.client.focus then
                             local tag = capi.client.focus.screen.tags[i]
                             if tag then

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 10:39:56 (Marcel Arpogaus)
--- @Changed: 2021-01-27 11:05:18 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 14:44:03 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -26,68 +26,80 @@
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(modkey, _)
+module.init = function(config)
     local keys = {}
     keys.global = {
         awesome = {
-            ['lua execute prompt'] = {{modkey}, 'x'},
-            ['quit awesome'] = {{modkey, 'Shift'}, 'q'},
-            ['reload awesome'] = {{modkey, 'Control'}, 'r'},
-            ['show help'] = {{modkey}, 's'},
-            ['show main menu'] = {{modkey}, 'w'}
+            ['lua execute prompt'] = {{config.modkey}, 'x'},
+            ['quit awesome'] = {{config.modkey, 'Shift'}, 'q'},
+            ['reload awesome'] = {{config.modkey, 'Control'}, 'r'},
+            ['show help'] = {{config.modkey}, 's'},
+            ['show main menu'] = {{config.modkey}, 'w'}
         },
         client = {
-            ['focus next by index'] = {{modkey}, 'j'},
-            ['focus previous by index'] = {{modkey}, 'k'},
-            ['go back'] = {{modkey}, 'Tab'},
-            ['jump to urgent client'] = {{modkey}, 'u'},
-            ['restore minimized'] = {{modkey, 'Control'}, 'n'},
-            ['swap with next client by index'] = {{modkey, 'Shift'}, 'j'},
-            ['swap with previous client by index'] = {{modkey, 'Shift'}, 'k'}
+            ['focus next by index'] = {{config.modkey}, 'j'},
+            ['focus previous by index'] = {{config.modkey}, 'k'},
+            ['go back'] = {{config.modkey}, 'Tab'},
+            ['jump to urgent client'] = {{config.modkey}, 'u'},
+            ['restore minimized'] = {{config.modkey, 'Control'}, 'n'},
+            ['swap with next client by index'] = {
+                {config.modkey, 'Shift'},
+                'j'
+            },
+            ['swap with previous client by index'] = {
+                {config.modkey, 'Shift'},
+                'k'
+            }
         },
         launcher = {
-            ['open a terminal'] = {{modkey}, 'Return'},
-            ['run prompt'] = {{modkey}, 'r'},
-            ['show the menubar'] = {{modkey}, 'p'}
+            ['open a terminal'] = {{config.modkey}, 'Return'},
+            ['run prompt'] = {{config.modkey}, 'r'},
+            ['show the menubar'] = {{config.modkey}, 'p'}
         },
         layout = {
-            ['decrease master width factor'] = {{modkey}, 'h'},
-            ['decrease the number of columns'] = {{modkey, 'Control'}, 'l'},
-            ['decrease the number of master clients'] = {
-                {modkey, 'Shift'},
+            ['decrease master width factor'] = {{config.modkey}, 'h'},
+            ['decrease the number of columns'] = {
+                {config.modkey, 'Control'},
                 'l'
             },
-            ['increase master width factor'] = {{modkey}, 'l'},
-            ['increase the number of columns'] = {{modkey, 'Control'}, 'h'},
-            ['increase the number of master clients'] = {
-                {modkey, 'Shift'},
+            ['decrease the number of master clients'] = {
+                {config.modkey, 'Shift'},
+                'l'
+            },
+            ['increase master width factor'] = {{config.modkey}, 'l'},
+            ['increase the number of columns'] = {
+                {config.modkey, 'Control'},
                 'h'
             },
-            ['select next'] = {{modkey}, 'space'},
-            ['select previous'] = {{modkey, 'Shift'}, 'space'}
+            ['increase the number of master clients'] = {
+                {config.modkey, 'Shift'},
+                'h'
+            },
+            ['select next'] = {{config.modkey}, 'space'},
+            ['select previous'] = {{config.modkey, 'Shift'}, 'space'}
         },
         screen = {
-            ['focus the next screen'] = {{modkey, 'Control'}, 'j'},
-            ['focus the previous screen'] = {{modkey, 'Control'}, 'k'}
+            ['focus the next screen'] = {{config.modkey, 'Control'}, 'j'},
+            ['focus the previous screen'] = {{config.modkey, 'Control'}, 'k'}
         },
         tag = {
-            ['go back'] = {{modkey}, 'Escape'},
-            ['view next'] = {{modkey}, 'Right'},
-            ['view previous'] = {{modkey}, 'Left'}
+            ['go back'] = {{config.modkey}, 'Escape'},
+            ['view next'] = {{config.modkey}, 'Right'},
+            ['view previous'] = {{config.modkey}, 'Left'}
         }
     }
     keys.client = {
         client = {
-            ['(un)maximize horizontally'] = {{modkey, 'Shift'}, 'm'},
-            ['(un)maximize vertically'] = {{modkey, 'Control'}, 'm'},
-            ['(un)maximize'] = {{modkey}, 'm'},
-            ['close'] = {{modkey, 'Shift'}, 'c'},
-            ['minimize'] = {{modkey}, 'n'},
-            ['move to master'] = {{modkey, 'Control'}, 'Return'},
-            ['move to screen'] = {{modkey}, 'o'},
-            ['toggle floating'] = {{modkey, 'Control'}, 'space'},
-            ['toggle fullscreen'] = {{modkey}, 'f'},
-            ['toggle keep on top'] = {{modkey}, 't'}
+            ['(un)maximize horizontally'] = {{config.modkey, 'Shift'}, 'm'},
+            ['(un)maximize vertically'] = {{config.modkey, 'Control'}, 'm'},
+            ['(un)maximize'] = {{config.modkey}, 'm'},
+            ['close'] = {{config.modkey, 'Shift'}, 'c'},
+            ['minimize'] = {{config.modkey}, 'n'},
+            ['move to master'] = {{config.modkey, 'Control'}, 'Return'},
+            ['move to screen'] = {{config.modkey}, 'o'},
+            ['toggle floating'] = {{config.modkey, 'Control'}, 'space'},
+            ['toggle fullscreen'] = {{config.modkey}, 'f'},
+            ['toggle keep on top'] = {{config.modkey}, 't'}
         }
     }
     return keys
