@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 15:25:41 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -102,7 +102,6 @@ function module.sleep(n)
 end
 
 -- Helper functions for modifying hex colors -----------------------------------
-local hex_color_match = '[a-fA-F0-9][a-fA-F0-9]'
 function module.darker(color, ratio)
     local pattern = gears.color(color)
     local kind = pattern:get_type()
@@ -151,26 +150,6 @@ function module.set_alpha(color, alpha)
     else
         return color
     end
-end
-
--- Load configuration file
-function module.load_config(config_file)
-    local config = {
-        -- This is used later as the default terminal, editor etc.
-        browser = 'exo-open --launch WebBrowser' or 'firefox',
-        filemanager = 'exo-open --launch FileManager' or 'thunar',
-        gui_editor = 'subl',
-        terminal = os.getenv('TERMINAL') or 'lxterminal',
-        lock_command = 'light-locker-command -l',
-
-        -- Default modkey.
-        modkey = 'Mod4',
-        altkey = 'Mod1'
-    }
-    if gfs.file_readable(gfs.get_configuration_dir() .. 'config.lua') then
-        config = gears.table.crush(config, require(config_file or 'config'))
-    end
-    return config
 end
 
 -- Delete the current tag

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:02 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 14:28:05 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,7 +36,11 @@ local config_path = gfs.get_configuration_dir()
 module.init = function(config)
     local theme_file
     if config.theme then
-        for _, path in ipairs {themes_path, config_path .. '/themes'} do
+        for _, path in ipairs {
+            themes_path,
+            config_path .. '/config/themes',
+            config_path .. '/rc/themes'
+        } do
             theme_file = string.format('%s/%s/theme.lua', path, config.theme)
             if gfs.file_readable(theme_file) then
                 break

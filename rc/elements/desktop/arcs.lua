@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-01-23 19:55:43 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 15:52:58 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -42,8 +42,8 @@ local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
-    local arc_widgets = config.arc_widgets or {'cpu', 'mem', 'fs', 'vol'}
-    local widgets_arg = config.widgets_arg or {}
+    local arc_widgets = config.arc_widgets
+    local widgets_arg = config.widgets_arg
     local element = abstract_element.new {
         register_fn = function(s)
             -- Create the desktop widget popup
@@ -80,8 +80,8 @@ module.init = function(config)
                         s.registered_desktop_widgets, registered_widgets
                     )
             end
-            local desktop_widgets_clock_container, desktop_widgets_clock_widgets =
-                desktop_widgets.clock()
+            local desktop_widgets_clock_container,
+                desktop_widgets_clock_widgets = desktop_widgets.clock()
             local desktop_widgets_weather_container,
                 desktop_widgets_weather_widgets =
                 desktop_widgets.weather(s, widgets_arg.weather)
@@ -145,11 +145,12 @@ module.init = function(config)
                     local is_visible = s.desktop_popup.visible
                     s.desktop_popup.visible = not is_visible
                 end
-            s.suspend_desktop_widgets = function()
-                for _, w in ipairs(s.registered_desktop_widgets) do
-                    vicious.unregister(w, true)
+            s.suspend_desktop_widgets =
+                function()
+                    for _, w in ipairs(s.registered_desktop_widgets) do
+                        vicious.unregister(w, true)
+                    end
                 end
-            end
             s.activate_desktop_widgets =
                 function()
                     for _, w in ipairs(s.registered_desktop_widgets) do

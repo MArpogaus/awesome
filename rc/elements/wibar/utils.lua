@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-23 16:01:08 (Marcel Arpogaus)
--- @Changed: 2021-01-26 16:20:05 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 15:52:32 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -24,7 +24,6 @@
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 local gears = require('gears')
-local wibox = require('wibox')
 local beautiful = require('beautiful')
 
 local vicious = require('vicious')
@@ -39,8 +38,8 @@ module.gen_wibar_widgets = function(s, config)
     s.wibar_widget_containers = {}
     s.registered_wibar_widgets = {}
 
-    local widgets = config.wibar_widgets or {wibox.widget.textclock()}
-    local widgets_arg = config.widgets_arg or {}
+    local widgets = config.wibar_widgets
+    local widgets_arg = config.widgets_arg
     local fg_wibar_widgets
 
     if beautiful.fg_wibar_widgets and #beautiful.fg_wibar_widgets then
@@ -59,7 +58,8 @@ module.gen_wibar_widgets = function(s, config)
             local widget_container, registered_widgets = wibar_widgets[w](warg)
             table.insert(s.wibar_widget_containers, widget_container)
             s.registered_wibar_widgets =
-                gears.table.join(s.registered_wibar_widgets, registered_widgets)
+                gears.table
+                    .join(s.registered_wibar_widgets, registered_widgets)
         elseif type(w) == 'table' and w.is_widget then
             table.insert(s.wibar_widget_containers, w)
         else

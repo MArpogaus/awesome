@@ -42,7 +42,11 @@ module.init = function(config)
             s.mywibar = awful.wibar({position = 'top', screen = s})
 
             -- Add widgets to the wibox
-            s.left_widget_container = {s.mymainmenu, s.mytaglist, s.mypromptbox}
+            s.left_widget_container = {
+                s.mymainmenu,
+                s.mytaglist,
+                s.mypromptbox
+            }
             s.left_widget_container.layout = wibox.layout.fixed.horizontal
 
             s.right_widget_container = gears.table.join(

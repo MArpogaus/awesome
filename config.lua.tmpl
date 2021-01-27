@@ -1,16 +1,19 @@
 local module = {}
 
 -- [ applications ] ------------------------------------------------------------
-module.browser = 'exo-open --launch WebBrowser' or 'firefox'
-module.filemanager = 'exo-open --launch FileManager' or 'thunar'
-module.gui_editor = os.getenv('EDITOR') or 'nano'
-module.lock_command = 'light-locker-command -l'
-module.terminal = os.getenv('TERMINAL') or 'lxterminal'
+-- module.browser = 'firefox'
+-- module.filemanager = 'thunar'
+-- module.lock_command = 'light-locker-command -l'
+-- module.terminal = 'xterm'
 
 -- [ key bindings ] ------------------------------------------------------------
--- Default modkey.
-module.altkey = 'Mod1'
-module.modkey = 'Mod4'
+-- keybindings to use
+-- module.key_bindings = {'default'}
+-- module.bind_numbers_to_tags = true
+
+-- default modkeys
+-- module.altkey = 'mod1'
+-- module.modkey = 'mod4'
 
 -- [ behavior ] ----------------------------------------------------------------
 -- use dynamic tagging
@@ -37,7 +40,7 @@ module.modkey = 'Mod4'
 -- set custom theme assets ('recolor', 'mac')
 -- module.assets
 
--- Select theme
+-- select theme
 module.theme = 'gtk'
 -- use module.theme_overwrite = { var = val } to overwrite variable var in theme
 

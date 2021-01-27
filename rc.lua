@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-01-26 17:18:28 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 15:51:09 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -23,15 +23,14 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
-local os = os
-
 -- Standard awesome library
 local awful = require('awful')
+local gears = require('gears')
 
 -- rc modules
 local error_handling = require('rc.error_handling')
-local elements = require("rc.elements")
-local assets = require("rc.assets")
+local elements = require('rc.elements')
+local assets = require('rc.assets')
 local key_bindings = require('rc.key_bindings')
 local layouts = require('rc.layouts')
 local menu = require('rc.menu')
@@ -40,14 +39,15 @@ local rules = require('rc.rules')
 local screen = require('rc.screen')
 local signals = require('rc.signals')
 local tags = require('rc.tags')
-local themes = require("rc.themes")
+local themes = require('rc.themes')
 local utils = require('rc.utils')
 
 -- Mac OSX like 'Expose' view of all clients.
 local revelation = require('revelation')
 
 -- configuration file
-local config = utils.load_config()
+local defaults = require('rc.defaults')
+local config = gears.table.crush(defaults, require('config'))
 
 -- ensure that there's always a client that has focus
 require('awful.autofocus')
@@ -93,7 +93,7 @@ screen.init(
 )
 screen.register(elements.wibar)
 if elements.desktop then
-  screen.register(elements.desktop)
+    screen.register(elements.desktop)
 end
 
 -- Initialize revelation
