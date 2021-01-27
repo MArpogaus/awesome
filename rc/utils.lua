@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 08:44:42 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -102,7 +102,6 @@ function module.sleep(n)
 end
 
 -- Helper functions for modifying hex colors -----------------------------------
-local hex_color_match = '[a-fA-F0-9][a-fA-F0-9]'
 function module.darker(color, ratio)
     local pattern = gears.color(color)
     local kind = pattern:get_type()

@@ -1,9 +1,9 @@
 -- [ author ] -*- time-stamp-pattern: "@Changed[\s]?:[\s]+%%$"; -*- ------------
--- @File   : /home/marcel/.config/awesome/themes/decorations/assets.lua 
+-- @File   : assets.lua
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-19 15:38:22 (Marcel Arpogaus)
--- @Changed: 2021-01-25 17:58:24 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 08:40:03 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------

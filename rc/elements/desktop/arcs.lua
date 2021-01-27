@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-01-23 19:55:43 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 08:43:12 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -80,8 +80,8 @@ module.init = function(config)
                         s.registered_desktop_widgets, registered_widgets
                     )
             end
-            local desktop_widgets_clock_container, desktop_widgets_clock_widgets =
-                desktop_widgets.clock()
+            local desktop_widgets_clock_container,
+                desktop_widgets_clock_widgets = desktop_widgets.clock()
             local desktop_widgets_weather_container,
                 desktop_widgets_weather_widgets =
                 desktop_widgets.weather(s, widgets_arg.weather)
@@ -145,11 +145,12 @@ module.init = function(config)
                     local is_visible = s.desktop_popup.visible
                     s.desktop_popup.visible = not is_visible
                 end
-            s.suspend_desktop_widgets = function()
-                for _, w in ipairs(s.registered_desktop_widgets) do
-                    vicious.unregister(w, true)
+            s.suspend_desktop_widgets =
+                function()
+                    for _, w in ipairs(s.registered_desktop_widgets) do
+                        vicious.unregister(w, true)
+                    end
                 end
-            end
             s.activate_desktop_widgets =
                 function()
                     for _, w in ipairs(s.registered_desktop_widgets) do

@@ -67,7 +67,8 @@ widget_defs.wibar = function(warg)
                     if args[2] == '🔈' then
                         ico = fa_vol_icons[0]
                     else
-                        ico = fa_vol_icons[math.min(math.ceil(args[1] / 50), 2)]
+                        ico =
+                            fa_vol_icons[math.min(math.ceil(args[1] / 50), 2)]
                     end
                     return utils.fa_markup(color, ico)
                 end
@@ -106,7 +107,8 @@ widget_defs.arc = function(warg)
                     if args[2] == '🔈' then
                         ico = fa_vol_icons[0]
                     else
-                        ico = fa_vol_icons[math.min(math.ceil(args[1] / 50), 2)]
+                        ico =
+                            fa_vol_icons[math.min(math.ceil(args[1] / 50), 2)]
                     end
                     return utils.fa_markup(fg_color, ico, math.floor(150 / 8))
                 end

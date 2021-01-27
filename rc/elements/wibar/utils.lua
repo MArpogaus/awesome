@@ -59,7 +59,8 @@ module.gen_wibar_widgets = function(s, config)
             local widget_container, registered_widgets = wibar_widgets[w](warg)
             table.insert(s.wibar_widget_containers, widget_container)
             s.registered_wibar_widgets =
-                gears.table.join(s.registered_wibar_widgets, registered_widgets)
+                gears.table
+                    .join(s.registered_wibar_widgets, registered_widgets)
         elseif type(w) == 'table' and w.is_widget then
             table.insert(s.wibar_widget_containers, w)
         else

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 11:32:32 (Marcel Arpogaus)
--- @Changed: 2021-01-22 20:04:58 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 08:41:57 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -47,9 +47,8 @@ module.new = function(def)
         else
             if s.elements[element] then
                 gears.debug.print_warning(
-
-                   
-                        'cant register: element is already registered on this screen.'
+                    'cant register:' ..
+                        'element is already registered on this screen.'
                 )
             else
                 s.elements[element] = true
