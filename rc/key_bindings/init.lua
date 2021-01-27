@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:44 (Marcel Arpogaus)
--- @Changed: 2021-01-27 15:53:52 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 17:19:31 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,7 +36,7 @@ local config_path = gfs.get_configuration_dir()
 
 local function deep_merge(t1, t2)
     for k, v in pairs(t2) do
-        if type(v) == 'table' then
+        if type(k) == 'string' and type(v) == 'table'then
             t1[k] = deep_merge(t1[k] or {}, v)
         else
             t1[k] = v
@@ -87,7 +87,7 @@ module.init = function(config, mainmenu)
         module[level .. '_keys'] = gears.table.join(table.unpack(key_tables))
     end
 
-    if config.bind_numbers_to_tags == nil or config.bind_numbers_to_tags then
+    if config.bind_numbers_to_tags then
         -- Bind all key numbers to tags.
         -- Be careful: we use keycodes to make it works on any keyboard layout.
         -- This should map on the top row of your keyboard, usually 1 to 9.

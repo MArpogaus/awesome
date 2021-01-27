@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 15:12:05 (Marcel Arpogaus)
--- @Changed: 2021-01-27 15:57:24 (Marcel Arpogaus)
+-- @Changed: 2021-01-27 17:19:28 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -38,6 +38,7 @@ module.browser = 'firefox'
 module.filemanager = 'thunar'
 module.gui_editor = 'nano'
 module.key_bindings = {'default'}
+module.bind_numbers_to_tags = true
 module.lock_command = 'light-locker-command -l'
 module.terminal = 'xterm'
 
