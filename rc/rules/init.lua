@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:28 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-01-28 11:23:48 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -53,8 +53,7 @@ module.init = function(config, client_buttons, client_keys)
                 placement = awful.placement.center + awful.placement.no_overlap +
                     awful.placement.no_offscreen,
                 switchtotag = true,
-                callback = awful.client.setslave,
-                requests_no_titlebar = true
+                callback = awful.client.setslave
             }
         },
         -- Floating clients.

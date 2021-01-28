@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:38 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-01-28 11:25:56 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -39,6 +39,21 @@ local beautiful = require('beautiful')
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
+-- [ local functions ] ---------------------------------------------------------
+-- Toggle titlebar on or off depending on s. Creates titlebar if it does not
+-- exist.
+-- ref: stackoverflow.com/questions/42376294
+local function setTitlebar(client, s)
+    if s and not client.requests_no_titlebars then
+        if client.titlebar == nil then
+            client:emit_signal("request::titlebars", "rules", {})
+        end
+        awful.titlebar.show(client)
+    else 
+        awful.titlebar.hide(client)
+    end
+end
+
 -- [ module functions ] --------------------------------------------------------
 module.init = function()
     -- Signal function to execute when a new client appears.
@@ -49,6 +64,8 @@ module.init = function()
                 -- Prevent clients from being unreachable after screen count changes.
                 awful.placement.no_offscreen(c)
             end
+
+            setTitlebar(c, c.floating or c.first_tag.layout.name == 'floating')
         end
     )
 
@@ -176,20 +193,17 @@ module.init = function()
     end
     capi.client.connect_signal(
         'property::floating', function(c)
-            if c.floating and not c.requests_no_titlebars then
-                awful.titlebar.show(c)
-            else
-                awful.titlebar.hide(c)
-            end
+            local l = awful.layout.get(c.screen).name
+            setTitlebar(c, c.floating or l == 'floating')
         end
     )
     capi.tag.connect_signal(
         'property::layout', function(t)
             for _, c in pairs(t:clients()) do
-                if t.layout.name == 'floating' and not c.requests_no_titlebars then
-                    awful.titlebar.show(c)
+                if (t.layout.name == 'floating' or c.floating) then
+                    setTitlebar(c, true)
                 else
-                    awful.titlebar.hide(c)
+                    setTitlebar(c, false)
                 end
             end
         end
