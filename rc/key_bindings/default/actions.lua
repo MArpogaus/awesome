@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-01-27 15:21:37 (Marcel Arpogaus)
+-- @Changed: 2021-02-03 18:10:32 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -149,7 +149,12 @@ module.init = function(config, mainmenu)
             ['move to master'] = function(c)
                 c:swap(awful.client.getmaster())
             end,
-            ['move to screen'] = function(c) c:move_to_screen() end,
+            ['move to screen'] = function(c)
+                c:move_to_screen()
+                awful.rules.apply(c)
+                c:emit_signal('request::activate', 'key.movetoscreen',
+                                  {raise = true})
+            end,
             ['toggle floating'] = awful.client.floating.toggle,
             ['toggle fullscreen'] = function(c)
                 c.fullscreen = not c.fullscreen

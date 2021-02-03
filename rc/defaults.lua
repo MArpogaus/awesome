@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 15:12:05 (Marcel Arpogaus)
--- @Changed: 2021-02-03 16:52:16 (Marcel Arpogaus)
+-- @Changed: 2021-02-03 17:50:44 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -64,7 +64,9 @@ module.layouts = {
 }
 
 -- behavior
-module.behavior = {'default', 'floating_titlebars'}
+module.behavior = {'default'}
+
+module.tagnames = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
 
 -- appearance
 module.auto_dpi = true
