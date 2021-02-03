@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-01-27 15:24:07 (Marcel Arpogaus)
+-- @Changed: 2021-01-28 10:49:33 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -24,7 +24,7 @@
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- grab environment
-local capi = {awesome = awesome}
+local capi = {screen = screen}
 
 -- Standard awesome library
 local awful = require('awful')
@@ -46,7 +46,7 @@ module.init = function(config, _)
             ['lock screen'] = function()
                 awful.spawn(config.lock_command)
             end,
-            ['Mac OSX like \'Exposé\' view'] = revelation,
+            ['Mac OSX like \'Exposé\' view'] = revelation.expose,
             ['toggle wibox'] = function()
                 for s in capi.screen do
                     s.mytopwibar.visible = not s.mytopwibar.visible
