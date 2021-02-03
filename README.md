@@ -12,6 +12,7 @@
 - [Installation](#installation)
     - [Optional: Install Fonts](#optional-install-fonts)
 - [Configuration](#configuration)
+    - [Key bindings](#key-bindings)
     - [Widget Parameters](#widget-parameters)
 - [License](#license)
 
