@@ -86,21 +86,13 @@ module.init = function(config, _)
             ['delete tag'] = utils.delete_tag,
             ['fork tag'] = utils.fork_tag,
             ['go back'] = awful.tag.history.restore,
-            ['move tag to the left'] = function()
-                utils.move_tag(-1)
-            end,
-            ['move tag to the right'] = function()
-                utils.move_tag(1)
-            end,
+            ['move tag to the left'] = function() utils.move_tag(-1) end,
+            ['move tag to the right'] = function() utils.move_tag(1) end,
             ['rename tag'] = utils.rename_tag
         },
         theme = {
-            ['decrease dpi'] = function()
-                utils.dec_dpi(10)
-            end,
-            ['increase dpi'] = function()
-                utils.inc_dpi(10)
-            end,
+            ['decrease dpi'] = function() utils.dec_dpi(10) end,
+            ['increase dpi'] = function() utils.inc_dpi(10) end,
             ['set dark colorscheme'] = utils.set_dark,
             ['set light colorscheme'] = utils.set_light,
             ['set mirage colorscheme'] = utils.set_mirage

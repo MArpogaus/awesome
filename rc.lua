@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-02-03 16:21:22 (Marcel Arpogaus)
+-- @Changed: 2021-02-03 16:59:30 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -28,20 +28,17 @@ local awful = require('awful')
 local gears = require('gears')
 
 -- rc modules
-local error_handling = require('rc.error_handling')
-local elements = require('rc.decorations')
 local assets = require('rc.assets')
+local behavior = require('rc.behavior')
+local decorations = require('rc.decorations')
+local error_handling = require('rc.error_handling')
 local key_bindings = require('rc.key_bindings')
 local layouts = require('rc.layouts')
 local menu = require('rc.menu')
 local mouse_bindings = require('rc.mouse_bindings')
-local rules = require('rc.rules')
-local behavior = require('rc.behavior')
 local screen = require('rc.screen')
-local signals = require('rc.signals')
 local tags = require('rc.tags')
 local themes = require('rc.themes')
-local utils = require('rc.utils')
 
 -- Mac OSX like 'Expose' view of all clients.
 local revelation = require('revelation')
@@ -57,9 +54,6 @@ require('awful.autofocus')
 -- error handling
 error_handling.init()
 
--- connect signals
--- signals.init()
-
 -- tags
 tags.init(config)
 
@@ -73,7 +67,7 @@ themes.init(config)
 assets.init(config)
 
 -- wibars and widgest
-elements.init(config)
+decorations.init(config)
 
 -- menues
 menu.init(config)
@@ -84,15 +78,14 @@ mouse_bindings.init(config, menu.mainmenu)
 -- key bindings
 key_bindings.init(config, menu.mainmenu)
 
--- rules
--- rules.init(config, mouse_bindings.client_buttons, key_bindings.client_keys)
+-- behavior
 behavior.init(config, mouse_bindings.client_buttons, key_bindings.client_keys)
 
 -- wibars and widgets
 screen.init(config, tags.tagnames, mouse_bindings.taglist_buttons,
             mouse_bindings.tasklist_buttons, menu.mainmenu, menu.exitmenu)
-screen.register(elements.wibar)
-if elements.desktop then screen.register(elements.desktop) end
+screen.register(decorations.wibar)
+if decorations.desktop then screen.register(decorations.desktop) end
 
 -- Initialize revelation
 revelation.init()

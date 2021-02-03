@@ -46,9 +46,7 @@ module.init = function(config, mainmenu)
             ['quit awesome'] = capi.awesome.quit,
             ['reload awesome'] = capi.awesome.restart,
             ['show help'] = hotkeys_popup.show_help,
-            ['show main menu'] = function()
-                mainmenu:show()
-            end,
+            ['show main menu'] = function() mainmenu:show() end,
             ['lua execute prompt'] = function()
                 awful.prompt.run {
                     prompt = 'Run Lua code: ',
@@ -75,17 +73,14 @@ module.init = function(config, mainmenu)
             end,
             ['go back'] = function()
                 awful.client.focus.history.previous()
-                if client.focus then
-                    client.focus:raise()
-                end
+                if client.focus then client.focus:raise() end
             end,
             ['restore minimized'] = function()
                 local c = awful.client.restore()
                 -- Focus restored client
                 if c then
-                    c:emit_signal(
-                        'request::activate', 'key.unminimize', {raise = true}
-                    )
+                    c:emit_signal('request::activate', 'key.unminimize',
+                                  {raise = true})
                 end
             end
         },
@@ -96,9 +91,7 @@ module.init = function(config, mainmenu)
             ['run prompt'] = function()
                 awful.screen.focused().mypromptbox:run()
             end,
-            ['show the menubar'] = function()
-                menubar.show()
-            end
+            ['show the menubar'] = function() menubar.show() end
         },
         layout = {
             ['decrease master width factor'] = function()
@@ -119,12 +112,8 @@ module.init = function(config, mainmenu)
             ['increase the number of master clients'] = function()
                 awful.tag.incnmaster(1, nil, true)
             end,
-            ['select next'] = function()
-                awful.layout.inc(1)
-            end,
-            ['select previous'] = function()
-                awful.layout.inc(-1)
-            end
+            ['select next'] = function() awful.layout.inc(1) end,
+            ['select previous'] = function() awful.layout.inc(-1) end
         },
         screen = {
             ['focus the next screen'] = function()
@@ -155,18 +144,12 @@ module.init = function(config, mainmenu)
                 c.maximized_horizontal = not c.maximized_horizontal
                 c:raise()
             end,
-            ['close'] = function(c)
-                c:kill()
-            end,
-            ['minimize'] = function(c)
-                c.minimized = true
-            end,
+            ['close'] = function(c) c:kill() end,
+            ['minimize'] = function(c) c.minimized = true end,
             ['move to master'] = function(c)
                 c:swap(awful.client.getmaster())
             end,
-            ['move to screen'] = function(c)
-                c:move_to_screen()
-            end,
+            ['move to screen'] = function(c) c:move_to_screen() end,
             ['toggle floating'] = awful.client.floating.toggle,
             ['toggle fullscreen'] = function(c)
                 c.fullscreen = not c.fullscreen

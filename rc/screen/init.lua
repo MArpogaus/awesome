@@ -38,9 +38,10 @@ module.init = function(
             local command =
                 'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path'
             awful.spawn.easy_async_with_shell(command,
-                                              function(
-                stdout, _, _, exit_code
-            )
+                                              function(stdout,
+                _,
+                _,
+                exit_code)
                 if exit_code == 0 then
                     local file_name = string.gsub(stdout, '\n', '')
                     gears.wallpaper.maximized(file_name, s, true)

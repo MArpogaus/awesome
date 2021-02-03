@@ -36,7 +36,7 @@ local config_path = gfs.get_configuration_dir()
 
 local function deep_merge(t1, t2)
     for k, v in pairs(t2) do
-        if type(k) == 'string' and type(v) == 'table'then
+        if type(k) == 'string' and type(v) == 'table' then
             t1[k] = deep_merge(t1[k] or {}, v)
         else
             t1[k] = v
@@ -53,11 +53,7 @@ local function load_bindings(binding, file)
             return require(file_name:gsub('/', '.'))
         end
     end
-    return {
-        init = function(_)
-            return {}
-        end
-    }
+    return {init = function(_) return {} end}
 end
 
 -- [ module functions ] --------------------------------------------------------
@@ -66,9 +62,8 @@ module.init = function(config, mainmenu)
     local actions = {}
     for _, binding in ipairs(config.key_bindings) do
         keys = deep_merge(keys, load_bindings(binding, 'keys').init(config))
-        actions = deep_merge(
-            actions, load_bindings(binding, 'actions').init(config, mainmenu)
-        )
+        actions = deep_merge(actions, load_bindings(binding, 'actions').init(
+            config, mainmenu))
     end
     gears.debug.print_warning(gears.debug.dump_return(keys))
 
@@ -76,12 +71,10 @@ module.init = function(config, mainmenu)
         local key_tables = {}
         for group, group_keys in pairs(level_keys) do
             for desc, key in pairs(group_keys) do
-                table.insert(
-                    key_tables, awful.key(
-                        key[1], key[2], actions[level][group][desc],
-                        {description = desc, group = group}
-                    )
-                )
+                table.insert(key_tables,
+                             awful.key(key[1], key[2],
+                                       actions[level][group][desc],
+                                       {description = desc, group = group}))
             end
         end
         module[level .. '_keys'] = gears.table.join(table.unpack(key_tables))
@@ -106,45 +99,38 @@ module.init = function(config, mainmenu)
                     group = 'tag'
                 }
             end
-            module.global_keys = gears.table.join(
-                module.global_keys, -- View tag only.
-                awful.key(
-                    {config.modkey}, '#' .. i + 9, function()
-                        local s = awful.screen.focused()
-                        local tag = s.tags[i]
+            module.global_keys = gears.table
+                                     .join(module.global_keys, -- View tag only.
+                                           awful.key({config.modkey},
+                                                     '#' .. i + 9, function()
+                local s = awful.screen.focused()
+                local tag = s.tags[i]
+                if tag then tag:view_only() end
+            end, descr_view),
+                                           awful.key(
+                {config.modkey, 'Control'}, '#' .. i + 9, function()
+                    local s = awful.screen.focused()
+                    local tag = s.tags[i]
+                    if tag then awful.tag.viewtoggle(tag) end
+                end, descr_toggle),
+                                           awful.key({config.modkey, 'Shift'},
+                                                     '#' .. i + 9, function()
+                if capi.client.focus then
+                    local tag = capi.client.focus.screen.tags[i]
+                    if tag then
+                        capi.client.focus:move_to_tag(tag)
+                    end
+                end
+            end, descr_move),
+                                           awful.key(
+                {config.modkey, 'Control', 'Shift'}, '#' .. i + 9, function()
+                    if capi.client.focus then
+                        local tag = capi.client.focus.screen.tags[i]
                         if tag then
-                            tag:view_only()
+                            capi.client.focus:toggle_tag(tag)
                         end
-                    end, descr_view
-                ), awful.key(
-                    {config.modkey, 'Control'}, '#' .. i + 9, function()
-                        local s = awful.screen.focused()
-                        local tag = s.tags[i]
-                        if tag then
-                            awful.tag.viewtoggle(tag)
-                        end
-                    end, descr_toggle
-                ), awful.key(
-                    {config.modkey, 'Shift'}, '#' .. i + 9, function()
-                        if capi.client.focus then
-                            local tag = capi.client.focus.screen.tags[i]
-                            if tag then
-                                capi.client.focus:move_to_tag(tag)
-                            end
-                        end
-                    end, descr_move
-                ), awful.key(
-                    {config.modkey, 'Control', 'Shift'}, '#' .. i + 9,
-                    function()
-                        if capi.client.focus then
-                            local tag = capi.client.focus.screen.tags[i]
-                            if tag then
-                                capi.client.focus:toggle_tag(tag)
-                            end
-                        end
-                    end, descr_toggle_focus
-                )
-            )
+                    end
+                end, descr_toggle_focus))
         end
     end
 

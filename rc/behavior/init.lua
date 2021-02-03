@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 13:55:07 (Marcel Arpogaus)
--- @Changed: 2021-02-03 16:29:19 (Marcel Arpogaus)
+-- @Changed: 2021-02-03 16:53:34 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -11,7 +11,7 @@
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- grab environment
-local capi = {root = root, client = client}
+local capi = {client = client, tag = tag}
 
 local awful = require('awful')
 local gears = require('gears')
@@ -38,10 +38,11 @@ module.init = function(config, client_buttons, client_keys)
     local signals = {}
     for _, behavior in ipairs(config.behavior) do
         rules = gears.table.crush(rules, load_behavior(behavior, 'rules').init(
-            config,client_buttons, client_keys))
-        signals = gears.table.crush(signals,
-                                    load_behavior(behavior, 'signals').init(
-            config))
+            config, client_buttons, client_keys))
+        for target, sig in pairs(
+            load_behavior(behavior, 'signals').init(config)) do
+            signals[target] = gears.table.crush(signals[target] or {}, sig)
+        end
     end
 
     for _, rule in pairs(rules) do table.insert(awful.rules.rules, rule) end
