@@ -94,9 +94,9 @@ end
 module.create_boxed_widget = function(
     widget_to_be_boxed,
     bg_color,
-        radius,
-        inner_margin,
-        outer_margin
+    radius,
+    inner_margin,
+    outer_margin
 )
     radius = radius or 15
     inner_margin = inner_margin or 30
@@ -198,20 +198,16 @@ module.create_arc_widget = function(args)
         start_angle = 0,
         widget = wibox.container.arcchart
     }
-    arc_container:connect_signal(
-        'widget::value_changed', function(_, usage)
-            arc_container.value = usage
-        end
-    )
+    arc_container:connect_signal('widget::value_changed', function(_, usage)
+        arc_container.value = usage
+    end)
     return arc_container
 end
 
 module.markup = function(args)
     local style = ''
     local font, fg_color, text = args.font, args.fg_color, args.text
-    if font then
-        style = style .. string.format(' font=\'%s\'', font)
-    end
+    if font then style = style .. string.format(' font=\'%s\'', font) end
     if fg_color then
         style = style .. string.format(' foreground=\'%s\'', fg_color)
     end

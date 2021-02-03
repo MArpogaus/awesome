@@ -24,8 +24,8 @@
 --------------------------------------------------------------------------------
 -- [ local objects ] -----------------------------------------------------------
 local module = {
-    default = require('rc.elements.wibar.default'),
-    dual = require('rc.elements.wibar.dual')
+    default = require('rc.decorations.wibar.default'),
+    dual = require('rc.decorations.wibar.dual')
 }
 
 -- [ return module ] -----------------------------------------------------------

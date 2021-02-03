@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 09:58:27 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-02-03 15:47:28 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -32,12 +32,11 @@ local beautiful = require('beautiful')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(lb)
+module.init = function(s, lb)
     local p = awful.popup {
         widget = wibox.widget {
             awful.widget.layoutlist {
-                source = awful.widget.layoutlist.source.default_layouts,
-                screen = 1,
+                screen = s,
                 base_layout = wibox.widget {
                     spacing = 5,
                     forced_num_cols = 3,
@@ -64,7 +63,6 @@ module.init = function(lb)
             margins = 4,
             widget = wibox.container.margin
         },
-        placement = awful.placement.under_mouse + awful.placement.no_offscreen,
         border_color = beautiful.border_color,
         border_width = beautiful.border_width,
         ontop = true,
@@ -74,8 +72,6 @@ module.init = function(lb)
     p:bind_to_widget(lb)
     return p
 end
-
--- [ sequential code ] ---------------------------------------------------------
 
 -- [ return module ] -----------------------------------------------------------
 return module

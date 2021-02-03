@@ -88,8 +88,8 @@ local titlebar_button_shapes = {
             local shape_size = 0.4 * size
             local thickness = shape_size / 4
             local shape = gears.shape.transform(gears.shape.cross):translate(
-                size / 2, size / 2
-            ):rotate(math.pi / 4):translate(-shape_size / 2, -shape_size / 2)
+                size / 2, size / 2):rotate(math.pi / 4):translate(
+                -shape_size / 2, -shape_size / 2)
             shape(cr, shape_size, shape_size, thickness)
             cr:fill()
         end
@@ -107,9 +107,8 @@ local titlebar_button_shapes = {
             local thickness = shape_size / 4
             local x = (size - shape_size) / 2
             local y = (size - shape_size) / 2
-            local shape = gears.shape.transform(gears.shape.cross):translate(
-                x, y
-            )
+            local shape = gears.shape.transform(gears.shape.cross):translate(x,
+                                                                             y)
             shape(cr, shape_size, shape_size, thickness)
             cr:fill()
         end
@@ -145,8 +144,7 @@ local titlebar_button_shapes = {
             local y = (size - shape_size) / 2
             local shape =
                 gears.shape.transform(gears.shape.isosceles_triangle):translate(
-                    x, y
-                )
+                    x, y)
             shape(cr, shape_size, shape_size)
             cr:fill()
         end
@@ -163,8 +161,8 @@ local titlebar_button_shapes = {
             local shape_size = 0.3 * size
             local shape =
                 gears.shape.transform(gears.shape.isosceles_triangle):translate(
-                    size / 2, size / 2
-                ):rotate(math.pi):translate(-shape_size / 2, -shape_size / 2)
+                    size / 2, size / 2):rotate(math.pi):translate(
+                    -shape_size / 2, -shape_size / 2)
             shape(cr, shape_size, shape_size)
             cr:fill()
         end
@@ -179,46 +177,37 @@ local titlebar_button = function(theme, state, postfix)
         {shape = 'minimize', state = state}
     }
     for _, a in ipairs({true, false}) do
-        table.insert(
-            titlebar_buttons, {shape = 'ontop', state = state, active = a}
-        )
-        table.insert(
-            titlebar_buttons, {shape = 'sticky', state = state, active = a}
-        )
+        table.insert(titlebar_buttons,
+                     {shape = 'ontop', state = state, active = a})
+        table.insert(titlebar_buttons,
+                     {shape = 'sticky', state = state, active = a})
         -- table.insert(
         --     titlebar_buttons, {shape = 'floating', state = state, active = a}
         -- )
-        table.insert(
-            titlebar_buttons, {shape = 'maximized', state = state, active = a}
-        )
+        table.insert(titlebar_buttons,
+                     {shape = 'maximized', state = state, active = a})
     end
     for _, tb in ipairs(titlebar_buttons) do
-        local fg_color_name = string.format(
-            'titlebar_%s_button_fg_%s', tb.shape, tb.state
-        )
-        local bg_color_name = string.format(
-            'titlebar_%s_button_bg_%s', tb.shape, tb.state
-        )
+        local fg_color_name = string.format('titlebar_%s_button_fg_%s',
+                                            tb.shape, tb.state)
+        local bg_color_name = string.format('titlebar_%s_button_bg_%s',
+                                            tb.shape, tb.state)
         local fg_color = beautiful[fg_color_name] or
                              beautiful['bg_' .. tb.state]
         local bg_color = beautiful[bg_color_name] or
                              beautiful['fg_' .. tb.state]
 
-        local full_name = string.format(
-            'titlebar_%s_button_%s', tb.shape, tb.state
-        )
+        local full_name = string.format('titlebar_%s_button_%s', tb.shape,
+                                        tb.state)
 
         if tb.active ~= nil and tb.active then
             full_name = full_name .. '_active'
         elseif tb.active ~= nil and not tb.active then
             full_name = full_name .. '_inactive'
         end
-        if postfix then
-            full_name = full_name .. '_' .. postfix
-        end
-        local img = titlebar_button_shapes[tb.shape](
-            size, fg_color, bg_color, postfix, tb.active
-        )
+        if postfix then full_name = full_name .. '_' .. postfix end
+        local img = titlebar_button_shapes[tb.shape](size, fg_color, bg_color,
+                                                     postfix, tb.active)
         theme[full_name] = img
     end
     return theme
@@ -237,12 +226,13 @@ module.init = function()
     theme = titlebar_button(theme, 'focus', 'press')
 
     -- exit icon
-    theme.exitmenu_icon = exit_icon(
-        beautiful.wibar_height or
-            gmath.round(beautiful.get_font_height(beautiful.font) * 1.5),
-        theme.exitmenu_icon_fg or beautiful.fg_normal,
-        theme.exitmenu_icon_bg or beautiful.bg_normal
-    )
+    theme.exitmenu_icon = exit_icon(beautiful.wibar_height or
+                                        gmath.round(
+            beautiful.get_font_height(beautiful.font) * 1.5),
+                                    theme.exitmenu_icon_fg or
+                                        beautiful.fg_normal,
+                                    theme.exitmenu_icon_bg or
+                                        beautiful.bg_normal)
     return theme
 end
 

@@ -98,9 +98,7 @@ module.gen_wibar_widgets = function(s, config)
     return s.wibar_widget_containers
 end
 module.unregister_wibar_widgets = function(s)
-    for _, w in ipairs(s.registered_wibar_widgets) do
-        vicious.unregister(w)
-    end
+    for _, w in ipairs(s.registered_wibar_widgets) do vicious.unregister(w) end
     s.activate_wibar_widgets = nil
     s.registered_wibar_widgets = nil
     s.wibar_widget_containers = nil

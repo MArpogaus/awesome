@@ -53,8 +53,7 @@ module.create_wibar_widget = function()
             font = beautiful.font,
             fg_color = beautiful.fg_wibar_widgets_clock,
             text = '%H:%M'
-        }
-    )
+        })
 
     -- popup calendar
     local cal_widget = awful.widget.calendar_popup.month {
@@ -92,13 +91,12 @@ module.create_desktop_widget = function()
                 fg_color = beautiful.fg_desktop_widgets_clock_time or
                     beautiful.fg_normal,
                 text = '%H:%M'
-            }
-        )
-        return utils.create_boxed_widget(
-            deskop_clock,
-            beautiful.bg_desktop_widgets_clock or beautiful.bg_focus,
-            time_font_size / 2, time_font_size, date_font_size * 1.5
-        )
+            })
+        return utils.create_boxed_widget(deskop_clock,
+                                         beautiful.bg_desktop_widgets_clock or
+                                             beautiful.bg_focus,
+                                         time_font_size / 2, time_font_size,
+                                         date_font_size * 1.5)
     end
 
     local create_desktop_widgets_clock_date =
@@ -139,8 +137,7 @@ module.create_desktop_widget = function()
                     fg_color = beautiful.fg_desktop_widgets_clock or
                         beautiful.fg_normal,
                     text = '.'
-                }
-            )
+                })
         end
 
     return wibox.widget {

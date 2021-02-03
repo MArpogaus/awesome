@@ -22,19 +22,13 @@ module.init = function(
     update_screen = function(s)
         -- Each screen has its own tag table.
         if not s.mytaglist then
-            awful.tag(
-                tagnames, s,
-                awful.layout.default[s.index] or awful.layout.layouts[1]
-            )
+            awful.tag(tagnames, s,
+                      awful.layout.default[s.index] or awful.layout.layouts[1])
         end
 
-        if s.reset then
-            s.reset()
-        end
+        if s.reset then s.reset() end
 
-        if config.dpi then
-            s.dpi = config.dpi
-        end
+        if config.dpi then s.dpi = config.dpi end
 
         -- If wallpaper is a function, call it with the screen
         local wallpaper = config.wallpaper or beautiful.wallpaper
@@ -43,19 +37,17 @@ module.init = function(
         elseif wallpaper == 'xfconf-query' then
             local command =
                 'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path'
-            awful.spawn.easy_async_with_shell(
-                command,
-                function(stdout, stderr, reason, exit_code) -- luacheck: no unused args
-                    if exit_code == 0 then
-                        local file_name = string.gsub(stdout, '\n', '')
-                        gears.wallpaper.maximized(file_name, s, true)
-                    else
-                        gears.wallpaper.maximized(
-                            beautiful.wallpaper(s), s, true
-                        )
-                    end
-                end
+            awful.spawn.easy_async_with_shell(command,
+                                              function(
+                stdout, _, _, exit_code
             )
+                if exit_code == 0 then
+                    local file_name = string.gsub(stdout, '\n', '')
+                    gears.wallpaper.maximized(file_name, s, true)
+                else
+                    gears.wallpaper.maximized(beautiful.wallpaper(s), s, true)
+                end
+            end)
         else
             gears.wallpaper.maximized(wallpaper, s, true)
         end
@@ -66,20 +58,10 @@ module.init = function(
         -- Create an imagebox widget which will contain an icon indicating which layout we're using.
         -- We need one layoutbox per screen.
         s.mylayoutbox = awful.widget.layoutbox(s)
-        s.layout_popup = layout_popup.init(s.mylayoutbox)
-        s.mylayoutbox:buttons(
-            gears.table.join(
-                awful.button(
-                    {}, 4, function()
-                        awful.layout.inc(1)
-                    end
-                ), awful.button(
-                    {}, 5, function()
-                        awful.layout.inc(-1)
-                    end
-                )
-            )
-        )
+        s.layout_popup = layout_popup.init(s, s.mylayoutbox)
+        s.mylayoutbox:buttons(gears.table.join(
+            awful.button({}, 4, function() awful.layout.inc(1) end),
+            awful.button({}, 5, function() awful.layout.inc(-1) end)))
 
         -- Create a taglist widget
         s.mytaglist = awful.widget.taglist {
@@ -94,8 +76,7 @@ module.init = function(
         -- menus
         if config.mainmenu then
             s.mymainmenu = awful.widget.launcher(
-                {image = beautiful.awesome_icon, menu = mainmenu}
-            )
+                {image = beautiful.awesome_icon, menu = mainmenu})
         end
         if config.exitmenu then
             s.myexitmenu = awful.widget.launcher(
@@ -103,17 +84,14 @@ module.init = function(
                     image = beautiful.exitmenu_icon or
                         menubar.utils.lookup_icon('system-shutdown'),
                     menu = exitmenu
-                }
-            )
+                })
         end
 
         -- Dynamic widget management
         s.elements = {}
 
         s.update_elements = function()
-            for e, _ in pairs(s.elements) do
-                e.update(s)
-            end
+            for e, _ in pairs(s.elements) do e.update(s) end
         end
         s.reregister_elements = function()
             for e, _ in pairs(s.elements) do
@@ -125,9 +103,7 @@ module.init = function(
 
         -- show systray on focused screen
         s.reset = function()
-            for e, _ in pairs(s.elements) do
-                e.unregister(s)
-            end
+            for e, _ in pairs(s.elements) do e.unregister(s) end
 
             if s.promptbox then
                 s.promptbox:reset()
@@ -151,14 +127,9 @@ module.register = function(element)
 end
 module.unregister = function(element)
     awful.screen.disconnect_for_each_screen(element.register)
-    for s in capi.screen do
-        element.unregister(s)
-    end
+    for s in capi.screen do element.unregister(s) end
 end
-module.update = function()
-    for s in capi.screen do
-        s.reregister_elements()
-    end
-end
+module.update =
+    function() for s in capi.screen do s.reregister_elements() end end
 -- [ return module ] -----------------------------------------------------------
 return module

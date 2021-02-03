@@ -53,9 +53,7 @@ module.init = function(config)
     local myawesomemenu = {
         {
             'hotkeys',
-            function()
-                return false, hotkeys_popup.show_help
-            end,
+            function() return false, hotkeys_popup.show_help end,
             menubar.utils.lookup_icon('preferences-desktop-keyboard-shortcuts')
         },
         {
@@ -102,16 +100,13 @@ module.init = function(config)
                     '/usr/share/awesome/icons/awesome32.png'
                 }
             }
-        }
-    )
+        })
 
     if config.exitmenu then
         local myexitmenu = {
             {
                 'log out',
-                function()
-                    capi.awesome.quit()
-                end,
+                function() capi.awesome.quit() end,
                 menubar.utils.lookup_icon('system-log-out')
             },
             {

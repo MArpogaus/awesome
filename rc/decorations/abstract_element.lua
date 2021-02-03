@@ -34,8 +34,7 @@ module.new = function(def)
     element.unregister = function(s)
         if not s.elements[element] then
             gears.debug.print_warning(
-                'cant unregister: element not registered on this screen.'
-            )
+                'cant unregister: element not registered on this screen.')
         else
             def.unregister_fn(s)
             s.elements[element] = nil
@@ -48,8 +47,7 @@ module.new = function(def)
             if s.elements[element] then
                 gears.debug.print_warning(
                     'cant register:' ..
-                        'element is already registered on this screen.'
-                )
+                        'element is already registered on this screen.')
             else
                 s.elements[element] = true
                 def.register_fn(s)

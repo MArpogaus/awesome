@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 15:12:05 (Marcel Arpogaus)
--- @Changed: 2021-01-27 17:19:28 (Marcel Arpogaus)
+-- @Changed: 2021-02-03 16:22:17 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -62,6 +62,9 @@ module.layouts = {
     -- awful.layout.suit.corner.sw,
     -- awful.layout.suit.corner.se,
 }
+
+-- behavior
+module.behavior = {'default'}
 
 -- appearance
 module.auto_dpi = true

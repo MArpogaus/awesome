@@ -2,8 +2,8 @@
 -- @File   : init.lua
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
--- @Created: 2021-01-22 09:07:01 (Marcel Arpogaus)
--- @Changed: 2021-01-22 11:59:10 (Marcel Arpogaus)
+-- @Created: 2021-01-22 10:47:34 (Marcel Arpogaus)
+-- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -22,22 +22,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
--- [ required modules ] --------------------------------------------------------
-local desktop = require('rc.elements.desktop')
-local wibars = require('rc.elements.wibar')
-
 -- [ local objects ] -----------------------------------------------------------
-local module = {}
-
--- [ module functions ] --------------------------------------------------------
-module.init = function(config)
-    module.wibar = wibars[config.wibar or 'default'].init(config)
-    if config.desktop then
-        module.desktop = desktop[config.desktop].init(config)
-    end
-end
-
--- [ sequential code ] ---------------------------------------------------------
+local module = {arcs = require('rc.decorations.desktop.arcs')}
 
 -- [ return module ] -----------------------------------------------------------
 return module

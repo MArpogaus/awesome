@@ -110,9 +110,7 @@ module.windows = function(s, tasklist_buttons)
                 end
             end
             local ret = {}
-            for _, v in pairs(clients) do
-                table.insert(ret, v)
-            end
+            for _, v in pairs(clients) do table.insert(ret, v) end
             return ret
         end
     }

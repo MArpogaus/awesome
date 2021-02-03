@@ -27,8 +27,8 @@ local awful = require('awful')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
 
-local abstract_element = require('rc.elements.abstract_element')
-local utils = require('rc.elements.wibar.utils')
+local abstract_element = require('rc.decorations.abstract_element')
+local utils = require('rc.decorations.wibar.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -37,15 +37,13 @@ local module = {}
 module.init = function(config)
     local element = abstract_element.new {
         register_fn = function(s)
-            s.mytopwibar = awful.wibar(
-                {
-                    position = 'top',
-                    screen = s,
-                    height = beautiful.top_bar_height,
-                    bg = beautiful.bg_normal,
-                    fg = beautiful.fg_normal
-                }
-            )
+            s.mytopwibar = awful.wibar({
+                position = 'top',
+                screen = s,
+                height = beautiful.top_bar_height,
+                bg = beautiful.bg_normal,
+                fg = beautiful.fg_normal
+            })
 
             -- Add widgets to the wibox
             s.right_widget_container = utils.gen_wibar_widgets(s, config)
@@ -89,8 +87,7 @@ module.init = function(config)
                     height = beautiful.bottom_bar_height,
                     bg = beautiful.bg_normal,
                     fg = beautiful.fg_normal
-                }
-            )
+                })
 
             -- Add widgets to the bottom wibox
             s.systray = wibox.widget.systray()
@@ -110,9 +107,7 @@ module.init = function(config)
             }
 
             s.systray_set_screen = function()
-                if s.systray then
-                    s.systray:set_screen(s)
-                end
+                if s.systray then s.systray:set_screen(s) end
             end
             s.mybottomwibar:connect_signal('mouse::enter', s.systray_set_screen)
 
@@ -128,9 +123,7 @@ module.init = function(config)
             s.mybottomwibar:remove()
             s.mybottomwibar = nil
         end,
-        update_fn = function(s)
-            utils.update_wibar_widgets(s)
-        end
+        update_fn = function(s) utils.update_wibar_widgets(s) end
     }
     return element
 end

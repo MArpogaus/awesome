@@ -36,9 +36,9 @@ module.init = function()
 
     -- Generate Awesome icon:
     theme.awesome_icon = theme.awesome_icon or
-                             theme_assets.awesome_icon(
-            theme.menu_height, theme.bg_focus, theme.fg_focus
-        )
+                             theme_assets.awesome_icon(theme.menu_height,
+                                                       theme.bg_focus,
+                                                       theme.fg_focus)
 
     -- Recolor Layout icons:
     theme = theme_assets.recolor_layout(theme, theme.fg_normal)
@@ -47,28 +47,24 @@ module.init = function()
     local taglist_square_size = theme.taglist_square_size or 4
     theme.taglist_squares_sel = theme.taglist_squares_sel or
                                     theme_assets.taglist_squares_sel(
-            taglist_square_size, theme.fg_normal
-        )
+            taglist_square_size, theme.fg_normal)
     theme.taglist_squares_unsel = theme.taglist_squares_unsel or
                                       theme_assets.taglist_squares_unsel(
-            taglist_square_size, theme.fg_normal
-        )
+            taglist_square_size, theme.fg_normal)
 
     -- Recolor titlebar icons:
     theme = theme_assets.recolor_titlebar(theme, theme.fg_normal, 'normal')
-    theme = theme_assets.recolor_titlebar(
-        theme, utils.darker(theme.fg_normal, -60), 'normal', 'hover'
-    )
-    theme = theme_assets.recolor_titlebar(
-        theme, theme.fg_focus, 'normal', 'press'
-    )
+    theme = theme_assets.recolor_titlebar(theme,
+                                          utils.darker(theme.fg_normal, -60),
+                                          'normal', 'hover')
+    theme = theme_assets.recolor_titlebar(theme, theme.fg_focus, 'normal',
+                                          'press')
     theme = theme_assets.recolor_titlebar(theme, theme.fg_focus, 'focus')
-    theme = theme_assets.recolor_titlebar(
-        theme, utils.darker(theme.fg_focus, -60), 'focus', 'hover'
-    )
-    theme = theme_assets.recolor_titlebar(
-        theme, theme.fg_focus, 'focus', 'press'
-    )
+    theme = theme_assets.recolor_titlebar(theme,
+                                          utils.darker(theme.fg_focus, -60),
+                                          'focus', 'hover')
+    theme = theme_assets.recolor_titlebar(theme, theme.fg_focus, 'focus',
+                                          'press')
 
     return theme
 end

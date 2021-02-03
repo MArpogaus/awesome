@@ -32,7 +32,7 @@ local vicious = require('vicious')
 
 local utils = require('rc.utils')
 
-local abstract_element = require('rc.elements.abstract_element')
+local abstract_element = require('rc.decorations.abstract_element')
 
 -- custom wibox widgets
 local desktop_widgets = require('rc.widgets.desktop')
@@ -76,9 +76,8 @@ module.init = function(config)
                     desktop_widgets.arcs[w](warg)
                 table.insert(arc_widget_containers, widget_container)
                 s.registered_desktop_widgets =
-                    gears.table.join(
-                        s.registered_desktop_widgets, registered_widgets
-                    )
+                    gears.table.join(s.registered_desktop_widgets,
+                                     registered_widgets)
             end
             local desktop_widgets_clock_container,
                 desktop_widgets_clock_widgets = desktop_widgets.clock()
@@ -87,16 +86,13 @@ module.init = function(config)
                 desktop_widgets.weather(s, widgets_arg.weather)
 
             s.registered_desktop_widgets =
-                gears.table.join(
-                    s.registered_desktop_widgets,
-                    desktop_widgets_weather_widgets,
-                    desktop_widgets_clock_widgets
-                )
+                gears.table.join(s.registered_desktop_widgets,
+                                 desktop_widgets_weather_widgets,
+                                 desktop_widgets_clock_widgets)
             s.desktop_widget_containers =
-                gears.table.join(
-                    arc_widget_containers, desktop_widgets_weather_container,
-                    desktop_widgets_clock_container
-                )
+                gears.table.join(arc_widget_containers,
+                                 desktop_widgets_weather_container,
+                                 desktop_widgets_clock_container)
             local desktop_widgets_vertical_spacing =
                 beautiful.desktop_widgets_vertical_spacing or 170
             local desktop_popup_widget =
@@ -131,15 +127,13 @@ module.init = function(config)
             end
 
             s.desktop_popup = awful.popup(desktop_popup_arg)
-            s.desktop_popup:connect_signal(
-                'property::visible', function()
-                    if s.desktop_popup.visible then
-                        s.activate_desktop_widgets()
-                    else
-                        s.suspend_desktop_widgets()
-                    end
+            s.desktop_popup:connect_signal('property::visible', function()
+                if s.desktop_popup.visible then
+                    s.activate_desktop_widgets()
+                else
+                    s.suspend_desktop_widgets()
                 end
-            )
+            end)
             s.toggle_desktop_widget_visibility =
                 function()
                     local is_visible = s.desktop_popup.visible

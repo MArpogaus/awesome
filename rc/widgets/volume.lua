@@ -123,9 +123,8 @@ widget_defs.arc = function(warg)
                         widget:emit_signal_recursive('widget::value_changed', 0)
                     else
                         vol = args[1] .. '%'
-                        widget:emit_signal_recursive(
-                            'widget::value_changed', args[1]
-                        )
+                        widget:emit_signal_recursive('widget::value_changed',
+                                                     args[1])
                     end
                     return utils.markup {
                         font = utils.set_font_size(beautiful.font, 8),

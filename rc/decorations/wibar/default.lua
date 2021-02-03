@@ -27,8 +27,8 @@ local awful = require('awful')
 local wibox = require('wibox')
 local gears = require('gears')
 
-local abstract_element = require('rc.elements.abstract_element')
-local utils = require('rc.elements.wibar.utils')
+local abstract_element = require('rc.decorations.abstract_element')
+local utils = require('rc.decorations.wibar.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -52,8 +52,7 @@ module.init = function(config)
             s.right_widget_container = gears.table.join(
                 {mykeyboardlayout, wibox.widget.systray()},
                 utils.gen_wibar_widgets(s, config),
-                {s.mylayoutbox, s.myexitmenu}
-            )
+                {s.mylayoutbox, s.myexitmenu})
             s.right_widget_container.layout = wibox.layout.fixed.horizontal
 
             -- Add widgets to the wibox
@@ -71,9 +70,7 @@ module.init = function(config)
             s.mywibar:remove()
             s.mywibar = nil
         end,
-        update_fn = function(s)
-            utils.update_wibar_widgets(s)
-        end
+        update_fn = function(s) utils.update_wibar_widgets(s) end
     }
     return element
 end

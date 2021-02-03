@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-01-27 15:51:09 (Marcel Arpogaus)
+-- @Changed: 2021-02-03 16:21:22 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -29,13 +29,14 @@ local gears = require('gears')
 
 -- rc modules
 local error_handling = require('rc.error_handling')
-local elements = require('rc.elements')
+local elements = require('rc.decorations')
 local assets = require('rc.assets')
 local key_bindings = require('rc.key_bindings')
 local layouts = require('rc.layouts')
 local menu = require('rc.menu')
 local mouse_bindings = require('rc.mouse_bindings')
 local rules = require('rc.rules')
+local behavior = require('rc.behavior')
 local screen = require('rc.screen')
 local signals = require('rc.signals')
 local tags = require('rc.tags')
@@ -57,7 +58,7 @@ require('awful.autofocus')
 error_handling.init()
 
 -- connect signals
-signals.init()
+-- signals.init()
 
 -- tags
 tags.init(config)
@@ -84,17 +85,14 @@ mouse_bindings.init(config, menu.mainmenu)
 key_bindings.init(config, menu.mainmenu)
 
 -- rules
-rules.init(config, mouse_bindings.client_buttons, key_bindings.client_keys)
+-- rules.init(config, mouse_bindings.client_buttons, key_bindings.client_keys)
+behavior.init(config, mouse_bindings.client_buttons, key_bindings.client_keys)
 
 -- wibars and widgets
-screen.init(
-    config, tags.tagnames, mouse_bindings.taglist_buttons,
-    mouse_bindings.tasklist_buttons, menu.mainmenu, menu.exitmenu
-)
+screen.init(config, tags.tagnames, mouse_bindings.taglist_buttons,
+            mouse_bindings.tasklist_buttons, menu.mainmenu, menu.exitmenu)
 screen.register(elements.wibar)
-if elements.desktop then
-    screen.register(elements.desktop)
-end
+if elements.desktop then screen.register(elements.desktop) end
 
 -- Initialize revelation
 revelation.init()

@@ -42,9 +42,7 @@ module.init = function(config)
             config_path .. '/rc/themes'
         } do
             theme_file = string.format('%s/%s/theme.lua', path, config.theme)
-            if gfs.file_readable(theme_file) then
-                break
-            end
+            if gfs.file_readable(theme_file) then break end
         end
     end
     if not beautiful.init(theme_file) then

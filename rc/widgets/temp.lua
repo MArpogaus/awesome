@@ -83,9 +83,8 @@ widget_defs.arc = function(warg)
                 wtype = vicious.widgets.thermal,
                 warg = thermal_zone,
                 format = function(widget, args)
-                    widget:emit_signal_recursive(
-                        'widget::value_changed', args[1]
-                    )
+                    widget:emit_signal_recursive('widget::value_changed',
+                                                 args[1])
                     return utils.markup {
                         font = utils.set_font_size(beautiful.font, 8),
                         fg_color = fg_color,
