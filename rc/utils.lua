@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-02-04 09:44:29 (Marcel Arpogaus)
+-- @Changed: 2021-02-04 09:53:13 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -29,7 +29,6 @@ local capi = {screen = screen, client = client}
 local awful = require('awful')
 local beautiful = require('beautiful')
 local gears = require('gears')
-local gfs = require('gears.filesystem')
 
 local lgi = require('lgi')
 local cairo = lgi.cairo
@@ -81,7 +80,7 @@ local function set_xconf(property, value, sleep)
     if sleep then xconf = string.format('sleep %.1f && %s', sleep, xconf) end
     awful.spawn.with_shell(xconf)
 end
-local function set_color_scheme(cs, ico) error('not implemented') end
+local function set_color_scheme(_, _) error('not implemented') end
 
 -- [ module functions ] --------------------------------------------------------
 function module.sleep(n) os.execute('sleep ' .. tonumber(n)) end

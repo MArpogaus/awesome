@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:54 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-02-04 10:17:35 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -53,7 +53,7 @@ module.init = function(config)
     local myawesomemenu = {
         {
             'hotkeys',
-            function() return false, hotkeys_popup.show_help end,
+            function() hotkeys_popup.show_help(nil, awful.screen.focused()) end,
             menubar.utils.lookup_icon('preferences-desktop-keyboard-shortcuts')
         },
         {
@@ -70,6 +70,11 @@ module.init = function(config)
             'restart',
             capi.awesome.restart,
             menubar.utils.lookup_icon('system-restart')
+        },
+        {
+            'quit',
+            capi.awesome.quit,
+            menubar.utils.lookup_icon('system-log-out')
         }
     }
 
