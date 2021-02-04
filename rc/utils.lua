@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-01-27 15:25:41 (Marcel Arpogaus)
+-- @Changed: 2021-02-04 09:44:29 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -306,7 +306,9 @@ end
 function module.dec_dpi(dec) module.inc_dpi(-dec) end
 
 -- manage widgets
-function module.update_widgets() for s in capi.screen do s.update_elements() end end
+function module.update_widgets()
+    for s in capi.screen do s.update_decorations() end
+end
 function module.toggle_wibar_widgets()
     for s in capi.screen do s.toggle_wibar_widgets() end
 end

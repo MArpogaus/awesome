@@ -30,9 +30,7 @@ local awful = require('awful')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config)
-    module.tagnames = config.tagnames
-end
+module.init = function(config) module.tagnames = config.tagnames end
 
 -- [ return module ] -----------------------------------------------------------
 return module

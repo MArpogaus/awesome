@@ -153,7 +153,7 @@ module.init = function(config, mainmenu)
                 c:move_to_screen()
                 awful.rules.apply(c)
                 c:emit_signal('request::activate', 'key.movetoscreen',
-                                  {raise = true})
+                              {raise = true})
             end,
             ['toggle floating'] = awful.client.floating.toggle,
             ['toggle fullscreen'] = function(c)

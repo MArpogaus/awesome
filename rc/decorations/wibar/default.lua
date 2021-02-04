@@ -27,7 +27,7 @@ local awful = require('awful')
 local wibox = require('wibox')
 local gears = require('gears')
 
-local abstract_element = require('rc.decorations.abstract_element')
+local abstract_decoration = require('rc.decorations.abstract_decoration')
 local utils = require('rc.decorations.wibar.utils')
 
 -- [ local objects ] -----------------------------------------------------------
@@ -36,7 +36,7 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
     local mykeyboardlayout = awful.widget.keyboardlayout()
-    local element = abstract_element.new {
+    local decoration = abstract_decoration.new {
         register_fn = function(s)
             -- Create the wibox
             s.mywibar = awful.wibar({position = 'top', screen = s})
@@ -72,7 +72,7 @@ module.init = function(config)
         end,
         update_fn = function(s) utils.update_wibar_widgets(s) end
     }
-    return element
+    return decoration
 end
 
 -- [ sequential code ] ---------------------------------------------------------

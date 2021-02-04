@@ -84,9 +84,8 @@ module.init = function(_)
             -- Enable sloppy focus, so that focus follows mouse.
             ['mouse::enter'] = function(c)
                 if awful.layout.get(c.screen).name ~= 'magnifier' then
-                    c:emit_signal(
-                        'request::activate', 'mouse_enter', {raise = false}
-                    )
+                    c:emit_signal('request::activate', 'mouse_enter',
+                                  {raise = false})
                 end
             end,
 

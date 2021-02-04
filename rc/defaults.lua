@@ -66,7 +66,7 @@ module.layouts = {
 -- behavior
 module.behavior = {'default'}
 
-module.tagnames = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
+module.tagnames = {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 -- appearance
 module.auto_dpi = true

@@ -89,13 +89,13 @@ module.init = function(
         end
 
         -- Dynamic widget management
-        s.elements = {}
+        s.decorations = {}
 
-        s.update_elements = function()
-            for e, _ in pairs(s.elements) do e.update(s) end
+        s.update_decorations = function()
+            for e, _ in pairs(s.decorations) do e.update(s) end
         end
-        s.reregister_elements = function()
-            for e, _ in pairs(s.elements) do
+        s.reregister_decorations = function()
+            for e, _ in pairs(s.decorations) do
                 e.unregister(s)
                 e.register(s)
                 e.update(s)
@@ -104,7 +104,7 @@ module.init = function(
 
         -- show systray on focused screen
         s.reset = function()
-            for e, _ in pairs(s.elements) do e.unregister(s) end
+            for e, _ in pairs(s.decorations) do e.unregister(s) end
 
             if s.promptbox then
                 s.promptbox:reset()
@@ -123,14 +123,15 @@ module.init = function(
     end
     awful.screen.connect_for_each_screen(update_screen)
 end
-module.register = function(element)
-    awful.screen.connect_for_each_screen(element.register)
+module.register = function(decoration)
+    awful.screen.connect_for_each_screen(decoration.register)
 end
-module.unregister = function(element)
-    awful.screen.disconnect_for_each_screen(element.register)
-    for s in capi.screen do element.unregister(s) end
+module.unregister = function(decoration)
+    awful.screen.disconnect_for_each_screen(decoration.register)
+    for s in capi.screen do decoration.unregister(s) end
 end
-module.update =
-    function() for s in capi.screen do s.reregister_elements() end end
+module.update = function()
+    for s in capi.screen do s.reregister_decorations() end
+end
 -- [ return module ] -----------------------------------------------------------
 return module

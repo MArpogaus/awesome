@@ -32,7 +32,7 @@ local vicious = require('vicious')
 
 local utils = require('rc.utils')
 
-local abstract_element = require('rc.decorations.abstract_element')
+local abstract_decoration = require('rc.decorations.abstract_decoration')
 
 -- custom wibox widgets
 local desktop_widgets = require('rc.widgets.desktop')
@@ -44,7 +44,7 @@ local module = {}
 module.init = function(config)
     local arc_widgets = config.arc_widgets
     local widgets_arg = config.widgets_arg
-    local element = abstract_element.new {
+    local decoration = abstract_decoration.new {
         register_fn = function(s)
             -- Create the desktop widget popup
             local arc_widget_containers =
@@ -166,7 +166,7 @@ module.init = function(config)
             vicious.force(s.registered_desktop_widgets)
         end
     }
-    return element
+    return decoration
 end
 
 -- [ return module ] -----------------------------------------------------------
