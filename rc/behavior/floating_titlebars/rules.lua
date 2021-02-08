@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 16:33:30 (Marcel Arpogaus)
--- @Changed: 2021-02-06 13:14:02 (Marcel Arpogaus)
+-- @Changed: 2021-02-08 21:15:22 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -17,7 +17,7 @@ module.init = function(_, _, _)
     return {
         -- Add titlebars to dialogs
         titlebars = {
-            rule_any = {type = {'dialog'}},
+            rule = {type = 'dialog'},
             properties = {titlebars_enabled = true}
         }
     }

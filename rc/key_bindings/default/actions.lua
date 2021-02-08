@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-02-03 18:10:32 (Marcel Arpogaus)
+-- @Changed: 2021-02-08 21:24:13 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -155,7 +155,10 @@ module.init = function(config, mainmenu)
                 c:emit_signal('request::activate', 'key.movetoscreen',
                               {raise = true})
             end,
-            ['toggle floating'] = awful.client.floating.toggle,
+            ['toggle floating'] = function(c)
+                if c.fullscreen then return end
+                awful.client.floating.toggle(c)
+            end,
             ['toggle fullscreen'] = function(c)
                 c.fullscreen = not c.fullscreen
                 c:raise()

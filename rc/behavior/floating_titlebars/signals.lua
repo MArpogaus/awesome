@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 16:34:33 (Marcel Arpogaus)
--- @Changed: 2021-02-08 20:58:23 (Marcel Arpogaus)
+-- @Changed: 2021-02-08 21:24:50 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -24,13 +24,14 @@ local module = {}
 -- exist.
 -- ref: stackoverflow.com/questions/42376294
 local function setTitlebar(client, s)
-    if not client._request_titlebars_called then
-        client:emit_signal('request::titlebars', 'rules', {})
-    end
 
     if s and not client.requests_no_titlebars then
+        if not client._request_titlebars_called then
+            client:emit_signal('request::titlebars', 'rules', {})
+        end
         awful.titlebar.show(client)
     else
+        if not client._request_titlebars_called then return end
         awful.titlebar.hide(client)
     end
 end
@@ -56,6 +57,7 @@ module.init = function(_)
                 end
             end,
             ['property::floating'] = function(c)
+                if c.fullscreen then return end
                 setTitlebar(c, c.floating or
                                 (c.first_tag and c.first_tag.layout.name ==
                                     'floating'))
