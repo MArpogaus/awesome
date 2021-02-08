@@ -53,7 +53,9 @@ module.init = function(config)
     local myawesomemenu = {
         {
             'hotkeys',
-            function() hotkeys_popup.show_help(nil, awful.screen.focused()) end,
+            function()
+                hotkeys_popup.show_help(nil, awful.screen.focused())
+            end,
             menubar.utils.lookup_icon('preferences-desktop-keyboard-shortcuts')
         },
         {

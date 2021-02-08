@@ -7,7 +7,9 @@ include_files = {
 }
 
 -- Warnings to be ignored
-ignore = {}
+ignore = {
+    '631'
+}
 
 -- Not enforced, but preferable
 max_code_line_length = 80

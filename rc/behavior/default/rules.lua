@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 15:57:16 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-02-08 15:34:04 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -27,10 +27,11 @@ module.init = function(_, client_buttons, client_keys)
                 border_color = beautiful.border_normal,
                 focus = awful.client.focus.filter,
                 raise = true,
+                size_hints_honor = false,
                 keys = client_keys,
                 buttons = client_buttons,
                 screen = awful.screen.preferred,
-                placement = awful.placement.no_overlap +
+                placement = awful.placement.center + awful.placement.no_overlap +
                     awful.placement.no_offscreen
             }
         },

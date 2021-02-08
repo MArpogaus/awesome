@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:48 (Marcel Arpogaus)
--- @Changed: 2021-02-03 17:50:55 (Marcel Arpogaus)
+-- @Changed: 2021-02-08 20:59:31 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,9 +23,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
--- Standard awesome library
-local awful = require('awful')
-
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
