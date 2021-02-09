@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-01-23 20:30:11 (Marcel Arpogaus)
+-- @Changed: 2021-02-09 17:24:33 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -113,7 +113,7 @@ module.init = function(config)
 
         end,
         unregister_fn = function(s)
-            utils.unregister_wibar_widgtes(s)
+            utils.unregister_wibar_widgets(s)
 
             s.mytopwibar.widget:reset()
             s.mytopwibar:remove()

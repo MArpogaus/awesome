@@ -20,13 +20,11 @@ module.init = function(
 )
     awful.screen.set_auto_dpi_enabled(config.auto_dpi)
     update_screen = function(s)
+        -- prevent multiple runs
+        if s.mytaglist then return end
         -- Each screen has its own tag table.
-        if not s.mytaglist then
-            awful.tag(tagnames, s,
-                      awful.layout.default[s.index] or awful.layout.layouts[1])
-        end
-
-        if s.reset then s.reset() end
+        awful.tag(tagnames, s,
+                  awful.layout.default[s.index] or awful.layout.layouts[1])
 
         if config.dpi then s.dpi = config.dpi end
 
@@ -102,10 +100,16 @@ module.init = function(
             end
         end
 
-        -- show systray on focused screen
         s.reset = function()
-            for e, _ in pairs(s.decorations) do e.unregister(s) end
-
+            if s.layout_popup then
+                layout_popup.reset(s.layout_popup, s.mylayoutbox)
+                s.layout_popup = nil
+            end
+            if s.mylayoutbox then
+                s.mylayoutbox:reset()
+                s.mylayoutbox:remove()
+                s.mylayoutbox = nil
+            end
             if s.promptbox then
                 s.promptbox:reset()
                 s.promptbox:remove()
@@ -116,10 +120,20 @@ module.init = function(
                 s.mytaglist:remove()
                 s.mytaglist = nil
             end
+
+            for e, _ in pairs(s.decorations) do e.unregister(s) end
             collectgarbage()
         end
 
+        s.move_all_clients = function()
+            for _, c in pairs(s:get_all_clients()) do
+                c:move_to_screen()
+                c:emit_signal('manage', 'screen', {})
+            end
+        end
+
         s:connect_signal('removed', s.reset)
+        s:connect_signal('removed', s.move_all_clients)
     end
     awful.screen.connect_for_each_screen(update_screen)
 end
