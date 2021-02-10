@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 16:02:46 (Marcel Arpogaus)
--- @Changed: 2021-02-04 09:36:26 (Marcel Arpogaus)
+-- @Changed: 2021-02-10 08:21:28 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -31,6 +31,7 @@ module.init = function(_)
     return {
         -- Signal function to execute when a new client appears.
         client = {
+            ['untagged'] = function(c) c:emit_signal('manage') end,
             ['manage'] = function(c)
                 -- Set the windows at the slave,
                 -- i.e. put it at the end of others instead of setting it master.
