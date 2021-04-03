@@ -125,7 +125,15 @@ module.init = function(
             collectgarbage()
         end
 
+        s.move_all_clients = function()
+            for _, c in pairs(s:get_all_clients()) do
+                c:move_to_screen()
+                c:emit_signal('manage', 'screen', {})
+            end
+        end
+
         s:connect_signal('removed', s.reset)
+        s:connect_signal('removed', s.move_all_clients)
     end
     awful.screen.connect_for_each_screen(update_screen)
 end
