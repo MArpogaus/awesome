@@ -32,12 +32,12 @@ local beautiful = require('beautiful')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(lb)
+module.init = function(s)
     local p = awful.popup {
+        screen = s,
         widget = wibox.widget {
             awful.widget.layoutlist {
                 source = awful.widget.layoutlist.source.default_layouts,
-                screen = 1,
                 base_layout = wibox.widget {
                     spacing = 5,
                     forced_num_cols = 3,
@@ -71,7 +71,7 @@ module.init = function(lb)
         hide_on_right_click = true,
         visible = false
     }
-    p:bind_to_widget(lb)
+    p:bind_to_widget(s.mylayoutbox)
     return p
 end
 

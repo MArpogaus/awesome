@@ -66,7 +66,7 @@ module.init = function(
         -- Create an imagebox widget which will contain an icon indicating which layout we're using.
         -- We need one layoutbox per screen.
         s.mylayoutbox = awful.widget.layoutbox(s)
-        s.layout_popup = layout_popup.init(s.mylayoutbox)
+        s.layout_popup = layout_popup.init(s)
         s.mylayoutbox:buttons(
             gears.table.join(
                 awful.button(
