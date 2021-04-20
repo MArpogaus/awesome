@@ -26,8 +26,8 @@ This is my [awesome][awesome] configuration.
 
 The following libraries are used:
 
- * [vicious][vicious] - widget library for the wibar and desktop widgets
- * [revelation][revelation] - Mac OSX like 'Expose' view of all clients. 
+* [vicious][vicious] - widget library for the wibar and desktop widgets
+* [revelation][revelation] - Mac OSX like 'Expose' view of all clients.
 
 They are included as git subtrees in the root of this repository.
 
@@ -35,47 +35,52 @@ They are included as git subtrees in the root of this repository.
 
 This configuration requires [awesome v4.3][awesome].
 
- 1. Backup your current awesome configuration
-    ```shell
-    mv $HOME/.config/awesome $HOME/.config/awesome_$(date -I)
-    ```
+1. Backup your current awesome configuration
 
- 2. Clone my configuration to `~/.config/awesome/`
-    ```shell
-    git clone --recursive https://github.com/MArpogaus/awesome-rc.git $HOME/.config/awesome 
-    ```
+```shell
+mv $HOME/.config/awesome $HOME/.config/awesome_$(date -I)
+```
+
+2. Clone my configuration to `~/.config/awesome/`
+
+```shell
+git clone --recursive https://github.com/MArpogaus/awesome-rc.git $HOME/.config/awesome
+```
 
 ## Optional: Install Fonts
 
 The configuration uses [Font Awesome 4][font-awesome4] for widget and tag icons and [owfont][owfont] for weather icons.
 If you want to use this functionality, make sure to install them on your system.
 
- 1. Install [Font Awesome 4][font-awesome4]
-    ```shell
-    # Debian / Ubuntu
-    apt install fonts-font-awesome 
-    # Manjaro
-    pamac build ttf-font-awesome-4
-    ```
- 
- 1. Download and install [owfont][owfont]
-    ```shell
-    wget -O ~/.local/share/owfont-regular.ttf 'https://github.com/websygen/owfont/blob/master/fonts/owfont-regular.ttf?raw=true'
-    ```
+1. Install [Font Awesome 4][font-awesome4]
 
- 1. Update font cache
-    ```shell
-    fc-cache -v
-    ```
+```shell
+# Debian / Ubuntu
+apt install fonts-font-awesome
+# Manjaro
+pamac build ttf-font-awesome-4
+```
+
+2. Download and install [owfont][owfont]
+
+```shell
+wget -O ~/.local/share/owfont-regular.ttf 'https://github.com/websygen/owfont/blob/master/fonts/owfont-regular.ttf?raw=true'
+```
+
+3. Update font cache
+
+```shell
+fc-cache -v
+```
 
 # Configuration
 
 You can use the provided template to create your initial configuration file:
 
 ```shell
-cd $HOME/.config/awesome 
+cd $HOME/.config/awesome
 cp config.lua.tmpl config.lua
-``` 
+```
 
 The configuration file `config.lua` defines parameters like your default applications, modkeys, the look & feel of awesome, keybindings etc.
 Every parameter has a reasonable fallback value defined in `rc/defaults.lua`.
@@ -93,7 +98,7 @@ The following table gives an overview of all configuration parameters:
 | `altkey`                  | the alt key to use for key bindings                   | string | 'Mod1'                      |
 | `modkey`                  | the mod key to use for key bindings                   | string | 'Mod4'                      |
 | `key_bindings`            | the keybindings to load                               | array  | {'default'}                 |
-| `bind_numbers_to_tags`    | bind number keys 0-9 to the corresponding tags        | book   | true                        |
+| `bind_numbers_to_tags`    | bind number keys 0-9 to the corresponding tags        | bool   | true                        |
 | `dynamic_tagging`         | enable dynamic tagging                                | bool   | nil                         |
 | `exitmenu`                | add exit menu to the wibar                            | bool   | nil                         |
 | `mainmenu`                | add the main menu to the wibar                        | bool   | true                        |
@@ -107,7 +112,7 @@ The following table gives an overview of all configuration parameters:
 | `theme_overwrite`         | overwrite certain theme variables                     | table  | nil                         |
 | `wallpaper`               | path to your wallpaper or 'xfconf-query' to use xconf | string | nil                         |
 | `desktop`                 | select desktop elements ('arcs')                      | string | nil                         |
-| `desktop_widgets_visible` | show / hide desktop widgets                           | book   | true                        |
+| `desktop_widgets_visible` | show / hide desktop widgets                           | bool   | true                        |
 | `arc_widgets`             | widgets to be added to the desktop pop up             | array  | {'cpu', 'mem', 'fs', 'vol'} |
 | `wibar`                   | select wibar configuration ('default' or 'dual')      | string | 'default'                   |
 | `wibar_widgets`           | widgets to be added to the wibar                      | array  | {'cpu', 'mem', 'fs', 'vol'} |
@@ -138,7 +143,7 @@ This configuration comes with two sets of keybindings:
 Do not alter the keybindings in the `rc` folder directly, instead put them in `$HOME/.config/awesome/config`.
 You can copy the default ones as a starting point:
 
-``` shell
+```shell
 cd $HOME/.config/awesome/
 mkdir -p config/key_bindings/my_keys
 cp rc/key_bindings/default/* config/key_bindings/my_keys
@@ -146,7 +151,7 @@ cp rc/key_bindings/default/* config/key_bindings/my_keys
 
 Then apply your changes and add `'my_keys'` to `key_bindings` in your configuration file.
 
-**Note:** Keybindings get merged, so you can omit everything defined inside the keybindings loaded beforehand i.e.: `{'defaults', 'my_keys'}` would extend / overload the default keys.
+> **Note:** Keybindings get merged, so you can omit everything defined inside the keybindings loaded beforehand i.e.: `{'defaults', 'my_keys'}` would extend / overload the default keys.
 
 ## Widget Parameters
 
