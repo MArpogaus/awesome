@@ -30,76 +30,134 @@ module.init = function(config)
     local keys = {}
     keys.global = {
         awesome = {
-            ['lua execute prompt'] = {{config.modkey}, 'x'},
-            ['quit awesome'] = {{config.modkey, 'Shift'}, 'q'},
-            ['reload awesome'] = {{config.modkey, 'Control'}, 'r'},
-            ['show help'] = {{config.modkey}, 's'},
-            ['show main menu'] = {{config.modkey}, 'w'}
+            ['lua execute prompt'] = {
+                {config.modkey}, 'x'
+            },
+            ['quit awesome'] = {
+                {config.modkey, 'Shift'}, 'q'
+            },
+            ['reload awesome'] = {
+                {config.modkey, 'Control'}, 'r'
+            },
+            ['show help'] = {
+                {config.modkey}, 's'
+            },
+            ['show main menu'] = {
+                {config.modkey}, 'w'
+            }
         },
         client = {
-            ['focus next by index'] = {{config.modkey}, 'j'},
-            ['focus previous by index'] = {{config.modkey}, 'k'},
-            ['go back'] = {{config.modkey}, 'Tab'},
-            ['jump to urgent client'] = {{config.modkey}, 'u'},
-            ['restore minimized'] = {{config.modkey, 'Control'}, 'n'},
+            ['focus next by index'] = {
+                {config.modkey}, 'j'
+            },
+            ['focus previous by index'] = {
+                {config.modkey}, 'k'
+            },
+            ['go back'] = {
+                {config.modkey}, 'Tab'
+            },
+            ['jump to urgent client'] = {
+                {config.modkey}, 'u'
+            },
+            ['restore minimized'] = {
+                {config.modkey, 'Control'}, 'n'
+            },
             ['swap with next client by index'] = {
-                {config.modkey, 'Shift'},
-                'j'
+                {config.modkey, 'Shift'}, 'j'
             },
             ['swap with previous client by index'] = {
-                {config.modkey, 'Shift'},
-                'k'
+                {config.modkey, 'Shift'}, 'k'
             }
         },
         launcher = {
-            ['open a terminal'] = {{config.modkey}, 'Return'},
-            ['run prompt'] = {{config.modkey}, 'r'},
-            ['show the menubar'] = {{config.modkey}, 'p'}
+            ['open a terminal'] = {
+                {config.modkey}, 'Return'
+            },
+            ['run prompt'] = {
+                {config.modkey}, 'r'
+            },
+            ['show the menubar'] = {
+                {config.modkey}, 'p'
+            }
         },
         layout = {
-            ['decrease master width factor'] = {{config.modkey}, 'h'},
+            ['decrease master width factor'] = {
+                {config.modkey}, 'h'
+            },
             ['decrease the number of columns'] = {
-                {config.modkey, 'Control'},
-                'l'
+                {config.modkey, 'Control'}, 'l'
             },
             ['decrease the number of master clients'] = {
-                {config.modkey, 'Shift'},
-                'l'
+                {config.modkey, 'Shift'}, 'l'
             },
-            ['increase master width factor'] = {{config.modkey}, 'l'},
+            ['increase master width factor'] = {
+                {config.modkey}, 'l'
+            },
             ['increase the number of columns'] = {
-                {config.modkey, 'Control'},
-                'h'
+                {config.modkey, 'Control'}, 'h'
             },
             ['increase the number of master clients'] = {
-                {config.modkey, 'Shift'},
-                'h'
+                {config.modkey, 'Shift'}, 'h'
             },
-            ['select next'] = {{config.modkey}, 'space'},
-            ['select previous'] = {{config.modkey, 'Shift'}, 'space'}
+            ['select next'] = {
+                {config.modkey}, 'space'
+            },
+            ['select previous'] = {
+                {config.modkey, 'Shift'}, 'space'
+            }
         },
         screen = {
-            ['focus the next screen'] = {{config.modkey, 'Control'}, 'j'},
-            ['focus the previous screen'] = {{config.modkey, 'Control'}, 'k'}
+            ['focus the next screen'] = {
+                {config.modkey, 'Control'}, 'j'
+            },
+            ['focus the previous screen'] = {
+                {config.modkey, 'Control'}, 'k'
+            }
         },
         tag = {
-            ['go back'] = {{config.modkey}, 'Escape'},
-            ['view next'] = {{config.modkey}, 'Right'},
-            ['view previous'] = {{config.modkey}, 'Left'}
+            ['go back'] = {
+                {config.modkey}, 'Escape'
+            },
+            ['view next'] = {
+                {config.modkey}, 'Right'
+            },
+            ['view previous'] = {
+                {config.modkey}, 'Left'
+            }
         }
     }
     keys.client = {
         client = {
-            ['(un)maximize horizontally'] = {{config.modkey, 'Shift'}, 'm'},
-            ['(un)maximize vertically'] = {{config.modkey, 'Control'}, 'm'},
-            ['(un)maximize'] = {{config.modkey}, 'm'},
-            ['close'] = {{config.modkey, 'Shift'}, 'c'},
-            ['minimize'] = {{config.modkey}, 'n'},
-            ['move to master'] = {{config.modkey, 'Control'}, 'Return'},
-            ['move to screen'] = {{config.modkey}, 'o'},
-            ['toggle floating'] = {{config.modkey, 'Control'}, 'space'},
-            ['toggle fullscreen'] = {{config.modkey}, 'f'},
-            ['toggle keep on top'] = {{config.modkey}, 't'}
+            ['(un)maximize horizontally'] = {
+                {config.modkey, 'Shift'}, 'm'
+            },
+            ['(un)maximize vertically'] = {
+                {config.modkey, 'Control'}, 'm'
+            },
+            ['(un)maximize'] = {
+                {config.modkey}, 'm'
+            },
+            ['close'] = {
+                {config.modkey, 'Shift'}, 'c'
+            },
+            ['minimize'] = {
+                {config.modkey}, 'n'
+            },
+            ['move to master'] = {
+                {config.modkey, 'Control'}, 'Return'
+            },
+            ['move to screen'] = {
+                {config.modkey}, 'o'
+            },
+            ['toggle floating'] = {
+                {config.modkey, 'Control'}, 'space'
+            },
+            ['toggle fullscreen'] = {
+                {config.modkey}, 'f'
+            },
+            ['toggle keep on top'] = {
+                {config.modkey}, 't'
+            }
         }
     }
     return keys

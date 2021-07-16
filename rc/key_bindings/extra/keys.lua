@@ -30,65 +30,110 @@ module.init = function(config)
     local keys = {}
     keys.global = {
         awesome = {
-            ['lua execute prompt'] = {{config.modkey, config.altkey}, 'r'},
-            ['lock screen'] = {{config.modkey}, 'q'},
-            ['Mac OSX like \'Exposé\' view'] = {{config.modkey}, 'e'},
-            ['toggle wibox'] = {{config.modkey, 'Shift'}, 'b'}
+            ['lua execute prompt'] = {
+                {config.modkey, config.altkey}, 'r'
+            },
+            ['lock screen'] = {
+                {config.modkey}, 'q'
+            },
+            ['Mac OSX like \'Exposé\' view'] = {
+                {config.modkey}, 'e'
+            },
+            ['toggle wibox'] = {
+                {config.modkey, 'Shift'}, 'b'
+            }
         },
         client = {
-            ['decrement useless gaps'] = {{config.altkey, 'Control'}, '-'},
-            ['increment useless gaps'] = {{config.altkey, 'Control'}, '+'}
+            ['decrement useless gaps'] = {
+                {config.altkey, 'Control'}, '-'
+            },
+            ['increment useless gaps'] = {
+                {config.altkey, 'Control'}, '+'
+            }
         },
         launcher = {
-            ['launch Browser'] = {{config.modkey}, 'b'},
-            ['launch org capture'] = {{config.modkey}, 'a'},
-            ['launch rofi'] = {{config.modkey}, 'space'}
+            ['launch Browser'] = {
+                {config.modkey}, 'b'
+            },
+            ['launch org capture'] = {
+                {config.modkey}, 'a'
+            },
+            ['launch rofi'] = {
+                {config.modkey}, 'space'
+            }
         },
         layout = {
-            ['select next'] = {{config.modkey, 'Shift'}, 'space'},
+            ['select next'] = {
+                {config.modkey, 'Shift'}, 'space'
+            },
             ['select previous'] = {
-                {config.modkey, 'Control', 'Shift'},
-                'space'
+                {config.modkey, 'Control', 'Shift'}, 'space'
             }
         },
         screenshot = {
-            ['capture a screenshot of active window'] = {{'Control'}, 'Print'},
-            ['capture a screenshot of selection'] = {{'Shift'}, 'Print'}
+            ['capture a screenshot of active window'] = {
+                {'Control'}, 'Print'
+            },
+            ['capture a screenshot of selection'] = {
+                {'Shift'}, 'Print'
+            }
         },
         tag = {
-            ['add new tag'] = {{config.modkey, 'Shift'}, 'n'},
-            ['delete tag'] = {{config.modkey, 'Shift'}, 'd'},
-            ['fork tag'] = {{config.modkey, 'Shift'}, 'f'},
-            ['move tag to the left'] = {{config.modkey, 'Shift'}, 'Left'},
-            ['move tag to the right'] = {{config.modkey, 'Shift'}, 'Right'},
-            ['rename tag'] = {{config.modkey, 'Shift'}, 'r'}
+            ['add new tag'] = {
+                {config.modkey, 'Shift'}, 'n'
+            },
+            ['delete tag'] = {
+                {config.modkey, 'Shift'}, 'd'
+            },
+            ['fork tag'] = {
+                {config.modkey, 'Shift'}, 'f'
+            },
+            ['move tag to the left'] = {
+                {config.modkey, 'Shift'}, 'Left'
+            },
+            ['move tag to the right'] = {
+                {config.modkey, 'Shift'}, 'Right'
+            },
+            ['rename tag'] = {
+                {config.modkey, 'Shift'}, 'r'
+            }
         },
         theme = {
-            ['decrease dpi'] = {{config.modkey, config.altkey, 'Control'}, '-'},
-            ['increase dpi'] = {{config.modkey, config.altkey, 'Control'}, '+'},
+            ['decrease dpi'] = {
+                {config.modkey, config.altkey, 'Control'}, '-'
+            },
+            ['increase dpi'] = {
+                {config.modkey, config.altkey, 'Control'}, '+'
+            },
             ['set dark colorscheme'] = {
-                {config.modkey, config.altkey, 'Control'},
-                'd'
+                {config.modkey, config.altkey, 'Control'}, 'd'
             },
             ['set light colorscheme'] = {
-                {config.modkey, config.altkey, 'Control'},
-                'l'
+                {config.modkey, config.altkey, 'Control'}, 'l'
             },
             ['set mirage colorscheme'] = {
-                {config.modkey, config.altkey, 'Control'},
-                'm'
+                {config.modkey, config.altkey, 'Control'}, 'm'
             }
         },
         widgets = {
             ['toggle desktop widget visibility'] = {
-                {config.modkey, config.altkey, 'Shift'},
-                'w'
+                {config.modkey, config.altkey, 'Shift'}, 'w'
             },
-            ['toggle wibar widgets'] = {{config.modkey, 'Shift'}, 'w'},
-            ['update widgets'] = {{config.modkey, 'Shift'}, 'u'}
+            ['toggle wibar widgets'] = {
+                {config.modkey, 'Shift'}, 'w'
+            },
+            ['update widgets'] = {
+                {config.modkey, 'Shift'}, 'u'
+            }
         }
     }
-    keys.client = {client = {['close'] = {{config.modkey}, 'x'}}}
+    keys.client = {
+        client = {
+            ['close'] = {
+                {config.modkey}, 'x'
+            }
+        }
+    }
     return keys
 end
 
