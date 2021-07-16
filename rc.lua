@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-02-03 16:59:30 (Marcel Arpogaus)
+-- @Changed: 2021-07-16 16:53:18 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -25,7 +25,6 @@
 -- [ required modules ] --------------------------------------------------------
 -- Standard awesome library
 local awful = require('awful')
-local gears = require('gears')
 
 -- rc modules
 local assets = require('rc.assets')
@@ -40,12 +39,14 @@ local screen = require('rc.screen')
 local tags = require('rc.tags')
 local themes = require('rc.themes')
 
+-- heper functions
+local utils = require('rc.utils')
+
 -- Mac OSX like 'Expose' view of all clients.
 local revelation = require('revelation')
 
 -- configuration file
-local defaults = require('rc.defaults')
-local config = gears.table.crush(defaults, require('config'))
+local config = utils.load_config()
 
 -- ensure that there's always a client that has focus
 require('awful.autofocus')

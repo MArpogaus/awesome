@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-07-16 16:40:46 (Marcel Arpogaus)
+-- @Changed: 2021-07-16 16:54:09 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -29,6 +29,7 @@ local capi = {screen = screen, client = client}
 local awful = require('awful')
 local beautiful = require('beautiful')
 local gears = require('gears')
+local gfs = require('gears.filesystem')
 
 local lgi = require('lgi')
 local cairo = lgi.cairo
@@ -88,6 +89,14 @@ end
 local function set_color_scheme(_, _) error('not implemented') end
 
 -- [ module functions ] --------------------------------------------------------
+-- Load configuration file
+function module.load_config(config_file)
+    local config = require('rc.defaults')
+    if gfs.file_readable(gfs.get_configuration_dir() .. (config_file or 'config') .. '.lua') then
+        config = gears.table.crush(config, require(config_file or 'config'))
+    end
+    return config
+end
 function module.sleep(n) os.execute('sleep ' .. tonumber(n)) end
 
 -- Helper functions for modifying hex colors -----------------------------------
