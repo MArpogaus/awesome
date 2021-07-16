@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:02 (Marcel Arpogaus)
--- @Changed: 2021-01-27 14:28:05 (Marcel Arpogaus)
+-- @Changed: 2021-07-16 16:31:19 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -26,6 +26,7 @@
 local beautiful = require('beautiful')
 local gears = require('gears')
 local gfs = require('gears.filesystem')
+local protected_call = require('gears.protected_call')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -34,24 +35,37 @@ local config_path = gfs.get_configuration_dir()
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
-    local theme_file
     if config.theme then
         for _, path in ipairs {
             themes_path,
             config_path .. '/config/themes',
             config_path .. '/rc/themes'
         } do
-            theme_file = string.format('%s/%s/theme.lua', path, config.theme)
-            if gfs.file_readable(theme_file) then break end
+            local theme_file = string.format('%s/%s/theme.lua', path,
+                                             config.theme)
+            if gfs.file_readable(theme_file) then
+                module.load_theme = function()
+                    return protected_call(dofile, theme_file)
+                end
+            end
         end
     end
-    if not beautiful.init(theme_file) then
+    if not module.load_theme then
         beautiful.init(themes_path .. '/default/theme.lua')
+    else
+        beautiful.init(module.load_theme())
     end
     if config.theme_overwrite then
         gears.table.crush(beautiful.get(), config.theme_overwrite)
     end
+    module.update = function()
+        if module.load_theme then
+            -- reset cached colors
+            beautiful.gtk.cached_theme_variables = nil
+            gears.table.crush(beautiful.get(), module.load_theme())
+            gears.table.crush(beautiful.get(), config.theme_overwrite)
+        end
+    end
 end
-
 -- [ return module ] -----------------------------------------------------------
 return module

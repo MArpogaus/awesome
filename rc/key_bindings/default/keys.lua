@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 10:39:56 (Marcel Arpogaus)
--- @Changed: 2021-01-27 14:44:03 (Marcel Arpogaus)
+-- @Changed: 2021-07-16 15:41:09 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -33,6 +33,7 @@ module.init = function(config)
             ['lua execute prompt'] = {{config.modkey}, 'x'},
             ['quit awesome'] = {{config.modkey, 'Shift'}, 'q'},
             ['reload awesome'] = {{config.modkey, 'Control'}, 'r'},
+            ['reload theme'] = {{config.modkey, 'Shift', 'Control'}, 'r'},
             ['show help'] = {{config.modkey}, 's'},
             ['show main menu'] = {{config.modkey}, 'w'}
         },

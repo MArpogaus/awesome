@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-02-04 09:53:13 (Marcel Arpogaus)
+-- @Changed: 2021-07-16 16:40:46 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -32,6 +32,11 @@ local gears = require('gears')
 
 local lgi = require('lgi')
 local cairo = lgi.cairo
+
+-- rc modules (for hot theme reload)
+local assets = require('rc.assets')
+local screen = require('rc.screen')
+local themes = require('rc.themes')
 
 -- [ local variables ] ---------------------------------------------------------
 local module = {}
@@ -147,7 +152,7 @@ end
 function module.add_tag()
     awful.prompt.run {
         prompt = 'New tag name: ',
-        textbox = awful.screen.focused().mypromptbox.widget,
+        textbox = awful.screen.focused().promptbox.widget,
         exe_callback = function(new_name)
             if not new_name or #new_name == 0 then return end
 
@@ -163,7 +168,7 @@ end
 function module.rename_tag()
     awful.prompt.run {
         prompt = 'Rename tag: ',
-        textbox = awful.screen.focused().mypromptbox.widget,
+        textbox = awful.screen.focused().promptbox.widget,
         exe_callback = function(new_name)
             if not new_name or #new_name == 0 then return end
 
@@ -319,6 +324,12 @@ end
 function module.set_dark() set_color_scheme('dark', 'flattrcolor') end
 function module.set_mirage() set_color_scheme('mirage', 'flattrcolor') end
 function module.set_light() set_color_scheme('light', 'flattrcolor-dark') end
+
+function module.update_theme()
+    themes.update()
+    assets.apply()
+    screen.update()
+end
 
 -- [ return module ]------------------------------------------------------------
 return module

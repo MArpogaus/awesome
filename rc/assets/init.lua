@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 17:51:53 (Marcel Arpogaus)
--- @Changed: 2021-01-26 11:52:31 (Marcel Arpogaus)
+-- @Changed: 2021-07-16 15:30:37 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,7 +28,10 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
     if config.assets then
-        require('rc/assets/' .. config.assets).init(config)
+        module.apply = function()
+            require('rc/assets/' .. config.assets).init(config)
+        end
+        module.apply()
     end
 end
 

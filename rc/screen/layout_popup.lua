@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 09:58:27 (Marcel Arpogaus)
--- @Changed: 2021-02-09 17:59:14 (Marcel Arpogaus)
+-- @Changed: 2021-07-16 16:37:05 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -32,7 +32,7 @@ local beautiful = require('beautiful')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(s, lb)
+module.init = function(lb)
     if module.popup == nil then
         module.popup = awful.popup {
             widget = wibox.widget {

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-01-26 11:00:53 (Marcel Arpogaus)
+-- @Changed: 2021-07-16 16:33:51 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -42,24 +42,19 @@ module.init = function(config)
             s.mywibar = awful.wibar({position = 'top', screen = s})
 
             -- Add widgets to the wibox
-            s.left_widget_container = {
-                s.mymainmenu,
-                s.mytaglist,
-                s.mypromptbox
-            }
+            s.left_widget_container = {s.mainmenu, s.taglist, s.promptbox}
             s.left_widget_container.layout = wibox.layout.fixed.horizontal
 
             s.right_widget_container = gears.table.join(
                 {mykeyboardlayout, wibox.widget.systray()},
-                utils.gen_wibar_widgets(s, config),
-                {s.mylayoutbox, s.myexitmenu})
+                utils.gen_wibar_widgets(s, config), {s.layoutbox, s.exitmenu})
             s.right_widget_container.layout = wibox.layout.fixed.horizontal
 
             -- Add widgets to the wibox
             s.mywibar:setup{
                 layout = wibox.layout.align.horizontal,
                 s.left_widget_container, -- Left widgets
-                s.mytasklist, -- Middle widget
+                s.tasklist, -- Middle widget
                 s.right_widget_container -- Right widgets
             }
         end,

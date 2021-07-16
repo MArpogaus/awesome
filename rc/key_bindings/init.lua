@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:44 (Marcel Arpogaus)
--- @Changed: 2021-01-27 17:19:31 (Marcel Arpogaus)
+-- @Changed: 2021-07-16 16:15:58 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -65,7 +65,6 @@ module.init = function(config, mainmenu)
         actions = deep_merge(actions, load_bindings(binding, 'actions').init(
             config, mainmenu))
     end
-    gears.debug.print_warning(gears.debug.dump_return(keys))
 
     for level, level_keys in pairs(keys) do
         local key_tables = {}

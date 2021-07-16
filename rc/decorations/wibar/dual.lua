@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-02-09 17:24:33 (Marcel Arpogaus)
+-- @Changed: 2021-07-16 16:03:43 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -48,28 +48,28 @@ module.init = function(config)
             -- Add widgets to the wibox
             s.right_widget_container = utils.gen_wibar_widgets(s, config)
             s.right_widget_container.layout = wibox.layout.fixed.horizontal
-            if s.myexitmenu then
-                local myexitmenu = {
+            if s.exitmenu then
+                local exitmenu = {
                     -- add margins
-                    s.myexitmenu,
+                    s.exitmenu,
                     left = beautiful.wibar_widgets_spacing or 12,
                     widget = wibox.container.margin
                 }
-                table.insert(s.right_widget_container, myexitmenu)
+                table.insert(s.right_widget_container, exitmenu)
             end
 
             s.left_widget_container = {}
-            if s.mymainmenu then
-                local mymainmenu = {
+            if s.mainmenu then
+                local mainmenu = {
                     -- add margins
-                    s.mymainmenu,
+                    s.mainmenu,
                     right = beautiful.wibar_widgets_spacing or 12,
                     widget = wibox.container.margin
                 }
-                table.insert(s.left_widget_container, mymainmenu)
+                table.insert(s.left_widget_container, mainmenu)
             end
-            table.insert(s.left_widget_container, s.mytaglist)
-            table.insert(s.left_widget_container, s.mypromptbox)
+            table.insert(s.left_widget_container, s.taglist)
+            table.insert(s.left_widget_container, s.promptbox)
             s.left_widget_container.layout = wibox.layout.fixed.horizontal
 
             s.mytopwibar:setup{
@@ -96,11 +96,11 @@ module.init = function(config)
                 { -- Left widgets
                     layout = wibox.layout.fixed.horizontal
                 },
-                s.mytasklist, -- Middle widget
+                s.tasklist, -- Middle widget
                 { -- Right widgets
                     s.systray,
                     awful.widget.keyboardlayout(),
-                    s.mylayoutbox,
+                    s.layoutbox,
                     spacing = beautiful.icon_margin_left,
                     layout = wibox.layout.fixed.horizontal
                 }

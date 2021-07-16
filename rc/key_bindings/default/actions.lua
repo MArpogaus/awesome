@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-02-09 18:07:29 (Marcel Arpogaus)
+-- @Changed: 2021-07-16 16:34:31 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -26,14 +26,17 @@
 -- grab environment
 local capi = {awesome = awesome}
 
--- Standard awesome library
+-- standard awesome library
 local awful = require('awful')
 
--- Theme handling library
+-- theme handling library
 local menubar = require('menubar')
 
 -- hotkeys widget
 local hotkeys_popup = require('awful.hotkeys_popup').widget
+
+-- helper functions
+local utils = require('rc.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -45,12 +48,13 @@ module.init = function(config, mainmenu)
         awesome = {
             ['quit awesome'] = capi.awesome.quit,
             ['reload awesome'] = capi.awesome.restart,
+            ['reload theme'] = utils.update_theme,
             ['show help'] = hotkeys_popup.show_help,
             ['show main menu'] = function() mainmenu:show() end,
             ['lua execute prompt'] = function()
                 awful.prompt.run {
                     prompt = 'Run Lua code: ',
-                    textbox = awful.screen.focused().mypromptbox.widget,
+                    textbox = awful.screen.focused().promptbox.widget,
                     exe_callback = awful.util.eval,
                     history_path = awful.util.get_cache_dir() ..
                         '/history_eval'
@@ -89,7 +93,7 @@ module.init = function(config, mainmenu)
                 awful.spawn(config.terminal)
             end,
             ['run prompt'] = function()
-                awful.screen.focused().mypromptbox:run()
+                awful.screen.focused().promptbox:run()
             end,
             ['show the menubar'] = function() menubar.show() end
         },
