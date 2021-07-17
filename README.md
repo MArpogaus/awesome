@@ -12,7 +12,6 @@
 - [Installation](#installation)
     - [Optional: Install Fonts](#optional-install-fonts)
 - [Configuration](#configuration)
-    - [Widget Parameters](#widget-parameters)
 - [License](#license)
 
 <!-- markdown-toc end -->
@@ -80,70 +79,7 @@ The configuration file `config.lua` defines parameters like your default applica
 Every parameter has a reasonable fallback value.
 Without any configuration it should behave like the stock awesome rc.
 
-The following table gives an overview of all configuration parameters:
-
-| Name                      | Description                                           | Type   |
-|:--------------------------|:------------------------------------------------------|:-------|
-| `browser`                 | command to run the web browser                        | string |
-| `filemanager`             | command to run the file manger                        | string |
-| `gui_editor`              | command to run the gui editor                         | string |
-| `terminal`                | command to run the terminal emulator                  | string |
-| `lock_command`            | command to lock the current session                   | string |
-| `altkey`                  | the alt key to use for key bindings                   | string |
-| `modkey`                  | the mod key to use for key bindings                   | string |
-| `theme`                   | theme to load                                         | string |
-| `dynamic_tagging`         | enable dynamic tagging                                | bool   |
-| `exitmenu`                | add exit menu to the wibar                            | bool   |
-| `mainmenu`                | add the main menu to the wibar                        | bool   |
-| `tasklist`                | behavior. set to 'windows' group similar clients      | string |
-| `layouts`                 | overwrite default layout list                         | array  |
-| `default_layout`          | index of default layout to use on new tags            | int    |
-| `dpi`                     | set explicit dpi for every screen                     | int    |
-| `auto_dpi`                | enable automatic calculation of the screen DPI        | bool   |
-| `assets`                  | set custom theme assets ('recolor' or 'mac')          | string |
-| `theme`                   | select theme                                          | string |
-| `theme_overwrite`         | overwrite certain theme variables                     | table  |
-| `wallpaper`               | path to your wallpaper or 'xfconf-query' to use xconf | string |
-| `desktop`                 | select desktop elements ('arcs')                      | string |
-| `desktop_widgets_visible` | show / hide desktop widgets                           | book   |
-| `arc_widgets`             | widgets to be added to the desktop pop up             | array  |
-| `wibar`                   | select wibar configuration ('default' or 'dual')      | string |
-| `wibar_widgets`           | widgets to be added to the wibar                      | array  |
-| `widgets_arg `            | configure widgets                                     | table  |
-
-## Widget Parameters
-
-Some widgets (`weather`, `temp`, `net`) require additional configuration.
-The parameters for each widget are stored in a table under the key `widgets_arg` in the configuration.
-
-A example configuration is shown in the following listing:
-
-```lua
-{
-    weather = {
-        -- Your city for the weather widget
-        city_id = '2643743',
-        app_id = '4c57f0c88d9844630327623633ce269cf826ab99'
-    },
-    temp = {
-        -- Set resource for temperature widget
-        thermal_zone = 'thermal_zone0'
-    },
-    net = {
-        -- Network interface
-        net_interface = 'eth0'
-    }
-}
-```
-
-The following table gives an overview of all widget parameters:
-
-| Name            | Description                                                                                                    | Type   |
-|:----------------|:---------------------------------------------------------------------------------------------------------------|:-------|
-| `city_id`       | open weather map id of your city. Find it here: https://openweathermap.org/find?q=                             | string |
-| `app_id`        | open weather map API key. Sign up here: https://home.openweathermap.org/users/sign_up                          | string |
-| `thermal_zone`  | resource for temperature widget: https://vicious.readthedocs.io/en/latest/widgets.html#vicious-widgets-thermal | string |
-| `net_interface` | network interface to monitor: https://vicious.readthedocs.io/en/latest/widgets.html#vicious-widgets-net        | string |
+> Please refer to the [wiki](https://github.com/MArpogaus/awesome/wiki) for details on the configuration.
 
 # License
 
