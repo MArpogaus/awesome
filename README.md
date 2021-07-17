@@ -8,6 +8,7 @@
 **Table of Contents**
 
 - [About](#about)
+- [Features](#features)
 - [Used libraries](#used-libraries)
 - [Installation](#installation)
     - [Optional: Install Fonts](#optional-install-fonts)
@@ -21,6 +22,40 @@
 # About
 
 This is my [awesome][awesome] configuration.
+
+My goal is to make this configuration as generic and extansible as possible.
+Unconfigured it should give you a user experience close to the default awesome configuration.
+
+Differnet modules can the be used to extend or change the functionality.
+
+# Features
+
+The following features can be higlighted:
+
+### Usage
+
+- easy configuration with reasonable defaults
+- modular abstraction of keybindings
+
+### Behavior
+
+- titlebars only for flowating clienets
+- dynamic tagging
+- windows-like client grouping
+- layout_popup
+- default or dual wibars
+- hot reload of themes to change color schemes
+
+### Theme Asset
+
+- recoloring of theme assets
+- mac like titlebar buttons
+
+### [(Vicious)][vicious] Widgets:
+
+- desktop popup
+- wibar widgets
+
 
 # Used libraries
 
