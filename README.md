@@ -13,8 +13,7 @@
 - [Installation](#installation)
     - [Optional: Install Fonts](#optional-install-fonts)
 - [Configuration](#configuration)
-    - [Key bindings](#key-bindings)
-    - [Widget Parameters](#widget-parameters)
+- [Contributing](#contributing)
 - [License](#license)
 
 <!-- markdown-toc end -->
@@ -121,7 +120,19 @@ The configuration file `config.lua` defines parameters like your default applica
 Every parameter has a reasonable fallback value defined in `rc/defaults.lua`.
 Without any configuration it should behave like the stock awesome rc.
 
-> Please refer to the [wiki](https://github.com/MArpogaus/awesome/wiki) for details on the configuration.
+> Please refer to the [wiki](https://github.com/MArpogaus/awesome/wiki) for details on the configuration and dont hesitate to conatct me if ther re any obscurities.
+
+# Contributing
+
+If you have any technical issues or suggestion regarding my implementation, please feel free to either [contact me](mailto:marcel.arpogaus@gmail.com), [open an issue][open-an-issue] or send me a Pull Request:
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+Any contributions are **greatly appreciated**.
 
 # License
 
@@ -155,3 +166,4 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 [issues-url]: https://github.com/MArpogaus/awesome/issues
 [license-shield]: https://img.shields.io/github/license/MArpogaus/awesome.svg?style=for-the-badge
 [license-url]: https://github.com/MArpogaus/awesome/blob/master/COPYING
+[open-an-issue]: https://github.com/MArpogaus/awesome/issues/new
