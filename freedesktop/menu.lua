@@ -1,3 +1,4 @@
+
 --[[
 
      Awesome-Freedesktop
@@ -11,10 +12,10 @@
 
 --]]
 
+local Gio        = require("lgi").Gio
 local awful_menu = require("awful.menu")
 local menu_gen   = require("menubar.menu_gen")
 local menu_utils = require("menubar.utils")
-local icon_theme = require("menubar.icon_theme")
 
 local io, pairs, string, table, os = io, pairs, string, table, os
 
@@ -25,13 +26,11 @@ menu_utils.wm_name = ""
 -- freedesktop.menu
 local menu = {}
 
--- Determines if a path points to a directory, by checking if it can be read
--- (which is `nil` also for empty files) and if its size is not 0.
--- @author blueyed
--- @param path the path to check
+-- Check if a path is a directory.
+-- @tparam string path The directory path
+-- @treturn boolean True if path exists and is a directory
 function menu.is_dir(path)
-    local f = io.open(path)
-    return f and not f:read(0) and f:seek("end") ~= 0 and f:close()
+    return Gio.File.new_for_path(path):query_file_type({}) == "DIRECTORY"
 end
 
 -- Remove non existent paths in order to avoid issues
@@ -60,7 +59,6 @@ end
 -- @return awful.menu
 function menu.build(args)
     local args       = args or {}
-    local icon_size  = args.icon_size
     local before     = args.before or {}
     local after      = args.after or {}
     local skip_items = args.skip_items or {}
@@ -113,13 +111,6 @@ function menu.build(args)
         for _, v in pairs(result) do _menu:add(v) end
         for _, v in pairs(after)  do _menu:add(v) end
     end)
-
-    -- Set icon size
-    if icon_size then
-        for _,v in pairs(menu_gen.all_categories) do
-            v.icon = icon_theme():find_icon_path(v.icon_name, icon_size)
-        end
-    end
 
     -- Hold the menu in the module
     menu.menu = _menu
