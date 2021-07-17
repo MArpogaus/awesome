@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-07-16 16:34:31 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 13:59:52 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -42,7 +42,7 @@ local utils = require('rc.utils')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config, mainmenu)
+module.init = function(applications, mainmenu)
     local actions = {}
     actions.global = {
         awesome = {
@@ -90,7 +90,7 @@ module.init = function(config, mainmenu)
         },
         launcher = {
             ['open a terminal'] = function()
-                awful.spawn(config.terminal)
+                awful.spawn(applications.terminal)
             end,
             ['run prompt'] = function()
                 awful.screen.focused().promptbox:run()

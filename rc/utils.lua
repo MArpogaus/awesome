@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-07-16 16:54:09 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 14:18:18 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -37,7 +37,7 @@ local cairo = lgi.cairo
 -- rc modules (for hot theme reload)
 local assets = require('rc.assets')
 local screen = require('rc.screen')
-local themes = require('rc.themes')
+local theme = require('rc.theme')
 
 -- [ local variables ] ---------------------------------------------------------
 local module = {}
@@ -45,16 +45,16 @@ local module = {}
 -- [ local functions ] ---------------------------------------------------------
 -- ref.: https://stackoverflow.com/questions/62286322/grouping-windows-in-the-tasklist
 local function client_label(c)
-    local theme = beautiful.get()
-    local sticky = theme.tasklist_sticky or '▪'
-    local ontop = theme.tasklist_ontop or '⌃'
-    local above = theme.tasklist_above or '▴'
-    local below = theme.tasklist_below or '▾'
-    local floating = theme.tasklist_floating or '✈'
-    local minimized = theme.tasklist_maximized or '-'
-    local maximized = theme.tasklist_maximized or '+'
-    local maximized_horizontal = theme.tasklist_maximized_horizontal or '⬌'
-    local maximized_vertical = theme.tasklist_maximized_vertical or '⬍'
+    local active_theme = beautiful.get()
+    local sticky = active_theme.tasklist_sticky or '▪'
+    local ontop = active_theme.tasklist_ontop or '⌃'
+    local above = active_theme.tasklist_above or '▴'
+    local below = active_theme.tasklist_below or '▾'
+    local floating = active_theme.tasklist_floating or '✈'
+    local minimized = active_theme.tasklist_maximized or '-'
+    local maximized = active_theme.tasklist_maximized or '+'
+    local maximized_horizontal = active_theme.tasklist_maximized_horizontal or '⬌'
+    local maximized_vertical = active_theme.tasklist_maximized_vertical or '⬍'
 
     local name = c.name
     if c.sticky then name = sticky .. name end
@@ -92,12 +92,24 @@ local function set_color_scheme(_, _) error('not implemented') end
 -- Load configuration file
 function module.load_config(config_file)
     local config = require('rc.defaults')
-    if gfs.file_readable(gfs.get_configuration_dir() .. (config_file or 'config') .. '.lua') then
-        config = gears.table.crush(config, require(config_file or 'config'))
+    if gfs.file_readable(gfs.get_configuration_dir() ..
+                             (config_file or 'config') .. '.lua') then
+        config = module.deep_merge(config, require(config_file or 'config'))
     end
     return config
 end
 function module.sleep(n) os.execute('sleep ' .. tonumber(n)) end
+
+function module.deep_merge(t1, t2)
+    for k, v in pairs(t2) do
+        if type(k) == 'string' and type(v) == 'table' and not v[1] then
+            t1[k] = module.deep_merge(t1[k] or {}, v)
+        else
+            t1[k] = v
+        end
+    end
+    return t1
+end
 
 -- Helper functions for modifying hex colors -----------------------------------
 function module.darker(color, ratio)
@@ -335,7 +347,7 @@ function module.set_mirage() set_color_scheme('mirage', 'flattrcolor') end
 function module.set_light() set_color_scheme('light', 'flattrcolor-dark') end
 
 function module.update_theme()
-    themes.update()
+    theme.update()
     assets.apply()
     screen.update()
 end

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:54 (Marcel Arpogaus)
--- @Changed: 2021-02-04 10:17:35 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 13:57:26 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -41,14 +41,14 @@ local freedesktop = require('freedesktop')
 local module = {}
 
 -- [ module objects ] ----------------------------------------------------------
-module.init = function(config)
+module.init = function(config, applications)
 
     -- This is used later as the default terminal and editor to run.
-    local browser = config.browser
-    local filemanager = config.filemanager
-    local gui_editor = config.gui_editor
-    local terminal = config.terminal
-    local lock_command = config.lock_command
+    local browser = applications.browser
+    local filemanager = applications.filemanager
+    local gui_editor = applications.gui_editor
+    local lock_command = applications.lock_command
+    local terminal = applications.terminal
 
     local myawesomemenu = {
         {

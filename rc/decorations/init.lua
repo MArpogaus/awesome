@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:07:01 (Marcel Arpogaus)
--- @Changed: 2021-01-22 11:59:10 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 13:16:02 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,8 +36,6 @@ module.init = function(config)
         module.desktop = desktop[config.desktop].init(config)
     end
 end
-
--- [ sequential code ] ---------------------------------------------------------
 
 -- [ return module ] -----------------------------------------------------------
 return module

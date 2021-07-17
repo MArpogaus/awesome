@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:02 (Marcel Arpogaus)
--- @Changed: 2021-07-16 16:31:19 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 12:04:13 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -35,14 +35,14 @@ local config_path = gfs.get_configuration_dir()
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
-    if config.theme then
+    if config.name then
         for _, path in ipairs {
             themes_path,
             config_path .. '/config/themes',
             config_path .. '/rc/themes'
         } do
             local theme_file = string.format('%s/%s/theme.lua', path,
-                                             config.theme)
+                                             config.name)
             if gfs.file_readable(theme_file) then
                 module.load_theme = function()
                     return protected_call(dofile, theme_file)
@@ -55,15 +55,15 @@ module.init = function(config)
     else
         beautiful.init(module.load_theme())
     end
-    if config.theme_overwrite then
-        gears.table.crush(beautiful.get(), config.theme_overwrite)
+    if config.overload then
+        gears.table.crush(beautiful.get(), config.overload)
     end
     module.update = function()
         if module.load_theme then
             -- reset cached colors
             beautiful.gtk.cached_theme_variables = nil
             gears.table.crush(beautiful.get(), module.load_theme())
-            gears.table.crush(beautiful.get(), config.theme_overwrite)
+            gears.table.crush(beautiful.get(), config.overload)
         end
     end
 end

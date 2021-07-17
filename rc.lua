@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-07-16 16:53:18 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 14:05:29 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -33,11 +33,11 @@ local decorations = require('rc.decorations')
 local error_handling = require('rc.error_handling')
 local key_bindings = require('rc.key_bindings')
 local layouts = require('rc.layouts')
-local menu = require('rc.menu')
+local menus = require('rc.menus')
 local mouse_bindings = require('rc.mouse_bindings')
 local screen = require('rc.screen')
 local tags = require('rc.tags')
-local themes = require('rc.themes')
+local theme = require('rc.theme')
 
 -- heper functions
 local utils = require('rc.utils')
@@ -56,35 +56,35 @@ require('awful.autofocus')
 error_handling.init()
 
 -- tags
-tags.init(config)
+tags.init(config.tagnames)
 
 -- layouts
-layouts.init(config)
+layouts.init(config.layouts)
 
 -- theme
-themes.init(config)
+theme.init(config.theme)
 
 -- assets
-assets.init(config)
+assets.init(config.assets)
 
 -- wibars and widgest
-decorations.init(config)
+decorations.init(config.decorations)
 
--- menues
-menu.init(config)
+-- menus
+menus.init(config.menus, config.applications)
 
 -- mouse bindings
-mouse_bindings.init(config, menu.mainmenu)
+mouse_bindings.init(config.bindings, menus.mainmenu)
 
 -- key bindings
-key_bindings.init(config, menu.mainmenu)
+key_bindings.init(config.bindings, config.applications, menus.mainmenu)
 
 -- behavior
-behavior.init(config, mouse_bindings.client_buttons, key_bindings.client_keys)
+behavior.init(config.behavior, mouse_bindings.client_buttons, key_bindings.client_keys)
 
 -- wibars and widgets
-screen.init(config, tags.tagnames, mouse_bindings.taglist_buttons,
-            mouse_bindings.tasklist_buttons, menu.mainmenu, menu.exitmenu)
+screen.init(config.screen, tags.tagnames, mouse_bindings.taglist_buttons,
+            mouse_bindings.tasklist_buttons, menus.mainmenu, menus.exitmenu)
 screen.register(decorations.wibar)
 if decorations.desktop then screen.register(decorations.desktop) end
 

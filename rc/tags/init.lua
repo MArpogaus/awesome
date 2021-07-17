@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:48 (Marcel Arpogaus)
--- @Changed: 2021-02-08 20:59:31 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 11:50:00 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -22,12 +22,11 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
--- [ required modules ] --------------------------------------------------------
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config) module.tagnames = config.tagnames end
+module.init = function(tagnames) module.tagnames = tagnames end
 
 -- [ return module ] -----------------------------------------------------------
 return module

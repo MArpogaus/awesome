@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 17:41:25 (Marcel Arpogaus)
--- @Changed: 2021-02-06 13:11:38 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 11:15:44 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -17,7 +17,7 @@ local gears = require('gears')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config, _, _)
+module.init = function(dynamic_tags, _, _)
     -- workaround for now
     function awful.rules.high_priority_properties.dynamic_tag(c, value, props)
         local tag = awful.tag.find_by_name(c.screen, value.name)
@@ -28,7 +28,7 @@ module.init = function(config, _, _)
     end
 
     local rules = {}
-    for tag, def in pairs(config.dynamic_tags) do
+    for tag, def in pairs(dynamic_tags) do
         local rule = gears.table.clone(def.rule)
         def.rule = nil
         local new_tag = def

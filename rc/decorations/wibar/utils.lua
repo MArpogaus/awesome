@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-23 16:01:08 (Marcel Arpogaus)
--- @Changed: 2021-01-27 15:52:32 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 13:18:13 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -39,7 +39,7 @@ module.gen_wibar_widgets = function(s, config)
     s.registered_wibar_widgets = {}
 
     local widgets = config.wibar_widgets
-    local widgets_arg = config.widgets_arg
+    local widgets_args = config.widgets_args
     local fg_wibar_widgets
 
     if beautiful.fg_wibar_widgets and #beautiful.fg_wibar_widgets then
@@ -51,8 +51,8 @@ module.gen_wibar_widgets = function(s, config)
     for i, w in pairs(widgets) do
         if type(w) == 'string' then
             local cidx = (i - 1) % midx + 1
-            local warg = widgets_arg[w] or
-                             widgets_arg[gears.string.split(w, '_')[1]] or {}
+            local warg = widgets_args[w] or
+                             widgets_args[gears.string.split(w, '_')[1]] or {}
             warg = gears.table.clone(warg)
             warg.color = warg.color or fg_wibar_widgets[cidx]
             local widget_container, registered_widgets = wibar_widgets[w](warg)

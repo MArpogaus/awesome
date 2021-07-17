@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-01-27 15:52:58 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 13:19:17 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -43,7 +43,7 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
     local arc_widgets = config.arc_widgets
-    local widgets_arg = config.widgets_arg
+    local widgets_args = config.widgets_args
     local decoration = abstract_decoration.new {
         register_fn = function(s)
             -- Create the desktop widget popup
@@ -66,8 +66,8 @@ module.init = function(config)
                 local color = fg_arcs[cidx]
                 local fg_color = utils.reduce_contrast(color, 10)
                 local bg_color = utils.set_alpha(fg_color, 50)
-                local warg = widgets_arg[w] or
-                                 widgets_arg[gears.string.split(w, '_')[1]] or
+                local warg = widgets_args[w] or
+                                 widgets_args[gears.string.split(w, '_')[1]] or
                                  {}
                 warg = gears.table.clone(warg)
                 warg.fg_color = warg.fg_color or fg_color
@@ -83,7 +83,7 @@ module.init = function(config)
                 desktop_widgets_clock_widgets = desktop_widgets.clock()
             local desktop_widgets_weather_container,
                 desktop_widgets_weather_widgets =
-                desktop_widgets.weather(s, widgets_arg.weather)
+                desktop_widgets.weather(s, widgets_args.weather)
 
             s.registered_desktop_widgets =
                 gears.table.join(s.registered_desktop_widgets,

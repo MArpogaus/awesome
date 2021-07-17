@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:44 (Marcel Arpogaus)
--- @Changed: 2021-07-16 16:15:58 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 14:05:58 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -30,20 +30,11 @@ local awful = require('awful')
 local gears = require('gears')
 local gfs = require('gears.filesystem')
 
+local utils = require('rc.utils')
+
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 local config_path = gfs.get_configuration_dir()
-
-local function deep_merge(t1, t2)
-    for k, v in pairs(t2) do
-        if type(k) == 'string' and type(v) == 'table' then
-            t1[k] = deep_merge(t1[k] or {}, v)
-        else
-            t1[k] = v
-        end
-    end
-    return t1
-end
 
 local function load_bindings(binding, file)
     local file_name
@@ -57,13 +48,15 @@ local function load_bindings(binding, file)
 end
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config, mainmenu)
+module.init = function(config, applications, mainmenu)
     local keys = {}
     local actions = {}
-    for _, binding in ipairs(config.key_bindings) do
-        keys = deep_merge(keys, load_bindings(binding, 'keys').init(config))
-        actions = deep_merge(actions, load_bindings(binding, 'actions').init(
-            config, mainmenu))
+    for _, binding in ipairs(config.keymaps) do
+        keys = utils.deep_merge(keys,
+                                load_bindings(binding, 'keys').init(config))
+        actions = utils.deep_merge(actions,
+                                   load_bindings(binding, 'actions').init(
+            applications, mainmenu))
     end
 
     for level, level_keys in pairs(keys) do

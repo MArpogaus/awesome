@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:14 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 14:08:34 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -142,8 +142,8 @@ module.init = function(config, mainmenu)
         end),
         awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
         awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end))
-    if config.tasklist == 'windows' or beautiful.tasklist == 'windows' then
-        module.tasklist_buttons = gears.table.join(
+    module.tasklist_buttons = {
+        windows = gears.table.join(
             awful.button({}, 1, client_stack_toggle_fn()),
             awful.button({}, 3, client_menu_toggle_fn()),
             awful.button({}, 4, function()
@@ -151,26 +151,20 @@ module.init = function(config, mainmenu)
             end),
             awful.button({}, 5, function()
                 awful.client.focus.byidx(-1)
-            end))
-    else
-        module.tasklist_buttons = gears.table.join(
-            awful.button({}, 1, function(c)
-                if c == capi.client.focus then
-                    c.minimized = true
-                else
-                    c:emit_signal('request::activate', 'tasklist',
-                                  {raise = true})
-                end
-            end), awful.button({}, 3, function()
-                awful.menu.client_list({theme = {width = 250}})
-            end),
-            awful.button({}, 4, function()
-                awful.client.focus.byidx(1)
-            end),
-            awful.button({}, 5, function()
-                awful.client.focus.byidx(-1)
-            end))
-    end
+            end)),
+        default = gears.table.join(awful.button({}, 1, function(c)
+            if c == capi.client.focus then
+                c.minimized = true
+            else
+                c:emit_signal('request::activate', 'tasklist', {raise = true})
+            end
+        end), awful.button({}, 3, function()
+            awful.menu.client_list({theme = {width = 250}})
+        end), awful.button({}, 4, function() awful.client.focus.byidx(1) end),
+                                   awful.button({}, 5, function()
+            awful.client.focus.byidx(-1)
+        end))
+    }
     module.client_buttons = gears.table.join(
         awful.button({}, 1, function(c)
             capi.client.focus = c;

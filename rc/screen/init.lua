@@ -7,6 +7,7 @@ local awful = require('awful')
 local beautiful = require('beautiful')
 local menubar = require('menubar')
 
+-- rc modules
 local tasklist = require('rc.screen.tasklist')
 local layout_popup = require('rc.screen.layout_popup')
 
@@ -76,14 +77,15 @@ module.init = function(
             }
 
             -- Create a tasklist widget
-            s.tasklist = tasklist[config.tasklist](s, tasklist_buttons)
+            s.tasklist = tasklist[config.tasklist](s,
+                                                   tasklist_buttons[config.tasklist])
 
             -- menus
-            if config.mainmenu then
+            if mainmenu then
                 s.mainmenu = awful.widget.launcher(
                     {image = beautiful.awesome_icon, menu = mainmenu})
             end
-            if config.exitmenu then
+            if exitmenu then
                 s.exitmenu = awful.widget.launcher(
                     {
                         image = beautiful.exitmenu_icon or
@@ -117,15 +119,10 @@ module.init = function(
                 s.layout_popup = nil
             end
             if s.layoutbox then
-                s.layoutbox:reset()
                 s.layoutbox:remove()
                 s.layoutbox = nil
             end
-            if s.promptbox then
-                -- s.promptbox:reset()
-                -- s.promptbox:remove()
-                s.promptbox = nil
-            end
+            if s.promptbox then s.promptbox = nil end
             if s.taglist then
                 s.taglist:reset()
                 s.taglist:remove()
