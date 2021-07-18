@@ -62,6 +62,7 @@ The following libraries are used:
 
 * [vicious][vicious] - widget library for the wibar and desktop widgets
 * [revelation][revelation] - Mac OSX like 'Expose' view of all clients.
+* [freedesktop][freedesktop] - Freedesktop.org menu and desktop icons support.
 
 They are included as git subtrees in the root of this repository.
 
@@ -154,6 +155,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 [awesome]: https://awesomewm.org/
 [vicious]: https://github.com/vicious-widgets/vicious
 [revelation]: https://github.com/guotsuan/awesome-revelation
+[freedesktop]: https://github.com/lcpz/awesome-freedesktop
 [owfont]: http://websygen.github.io/owfont/
 [font-awesome4]: https://github.com/FortAwesome/Font-Awesome
 [contributors-shield]: https://img.shields.io/github/contributors/MArpogaus/awesome.svg?style=for-the-badge
