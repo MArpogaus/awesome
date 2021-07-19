@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:02 (Marcel Arpogaus)
--- @Changed: 2021-07-17 12:04:13 (Marcel Arpogaus)
+-- @Changed: 2021-07-18 22:09:07 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -67,5 +67,6 @@ module.init = function(config)
         end
     end
 end
+
 -- [ return module ] -----------------------------------------------------------
 return module

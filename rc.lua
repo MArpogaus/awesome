@@ -80,7 +80,8 @@ mouse_bindings.init(config.bindings, menus.mainmenu)
 key_bindings.init(config.bindings, config.applications, menus.mainmenu)
 
 -- behavior
-behavior.init(config.behavior, mouse_bindings.client_buttons, key_bindings.client_keys)
+behavior.init(config.behavior, mouse_bindings.client_buttons,
+              key_bindings.client_keys)
 
 -- wibars and widgets
 screen.init(config.screen, tags.tagnames, mouse_bindings.taglist_buttons,

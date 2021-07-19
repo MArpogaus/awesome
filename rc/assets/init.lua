@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 17:51:53 (Marcel Arpogaus)
--- @Changed: 2021-07-17 13:12:04 (Marcel Arpogaus)
+-- @Changed: 2021-07-18 22:51:35 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -22,13 +22,21 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
+-- [ required modules ] --------------------------------------------------------
+-- helper functions
+local utils = require('rc.utils')
+
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(name)
-    if name then
-        module.apply = function() require('rc/assets/' .. name).init() end
+module.init = function(assets)
+    if assets then
+        module.apply = function()
+            for asset, asset_cfg in utils.value_with_cfg(assets) do
+                utils.require_submodule('assets', asset).init(asset_cfg)
+            end
+        end
         module.apply()
     end
 end

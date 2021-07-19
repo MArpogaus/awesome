@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:44 (Marcel Arpogaus)
--- @Changed: 2021-07-17 14:05:58 (Marcel Arpogaus)
+-- @Changed: 2021-07-19 07:57:05 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,35 +28,27 @@ local capi = {root = root, client = client}
 
 local awful = require('awful')
 local gears = require('gears')
-local gfs = require('gears.filesystem')
 
+-- helper functions
 local utils = require('rc.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
-local config_path = gfs.get_configuration_dir()
-
-local function load_bindings(binding, file)
-    local file_name
-    for _, path in ipairs {'config', 'rc'} do
-        file_name = string.format('%s/key_bindings/%s/%s', path, binding, file)
-        if gfs.file_readable(config_path .. file_name .. '.lua') then
-            return require(file_name:gsub('/', '.'))
-        end
-    end
-    return {init = function(_) return {} end}
-end
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config, applications, mainmenu)
     local keys = {}
     local actions = {}
     for _, binding in ipairs(config.keymaps) do
-        keys = utils.deep_merge(keys,
-                                load_bindings(binding, 'keys').init(config))
+        keys = utils.deep_merge(keys, utils.require_submodule('key_bindings',
+                                                              binding ..
+                                                                  '/keys')
+                                    .init(config))
         actions = utils.deep_merge(actions,
-                                   load_bindings(binding, 'actions').init(
-            applications, mainmenu))
+                                   utils.require_submodule('key_bindings',
+                                                           binding ..
+                                                               '/actions')
+                                       .init(applications, mainmenu))
     end
 
     for level, level_keys in pairs(keys) do

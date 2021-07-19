@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-07-17 14:18:18 (Marcel Arpogaus)
+-- @Changed: 2021-07-18 22:50:50 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -34,11 +34,6 @@ local gfs = require('gears.filesystem')
 local lgi = require('lgi')
 local cairo = lgi.cairo
 
--- rc modules (for hot theme reload)
-local assets = require('rc.assets')
-local screen = require('rc.screen')
-local theme = require('rc.theme')
-
 -- [ local variables ] ---------------------------------------------------------
 local module = {}
 
@@ -53,8 +48,10 @@ local function client_label(c)
     local floating = active_theme.tasklist_floating or '✈'
     local minimized = active_theme.tasklist_maximized or '-'
     local maximized = active_theme.tasklist_maximized or '+'
-    local maximized_horizontal = active_theme.tasklist_maximized_horizontal or '⬌'
-    local maximized_vertical = active_theme.tasklist_maximized_vertical or '⬍'
+    local maximized_horizontal = active_theme.tasklist_maximized_horizontal or
+                                     '⬌'
+    local maximized_vertical = active_theme.tasklist_maximized_vertical or
+                                   '⬍'
 
     local name = c.name
     if c.sticky then name = sticky .. name end
@@ -111,6 +108,32 @@ function module.deep_merge(t1, t2)
     return t1
 end
 
+function module.require_submodule(path, file)
+    local config_path = gfs.get_configuration_dir()
+    local file_name
+    for _, pre in ipairs {'config', 'rc'} do
+        file_name = string.format('%s/%s/%s', pre, path, file)
+        if gfs.file_readable(config_path .. file_name .. '.lua') or
+            gfs.file_readable(config_path .. file_name .. '/init.lua') then
+            return require(file_name:gsub('/', '.'))
+        end
+    end
+    return {init = function(_) return {} end}
+end
+
+function module.value_with_cfg(t)
+    local i = nil
+    local function iter()
+        local v
+        i, v = next(t, i)
+        if v and type(i) == 'number' then
+            return v, {}
+        elseif v then
+            return i, v
+        end
+    end
+    return iter
+end
 -- Helper functions for modifying hex colors -----------------------------------
 function module.darker(color, ratio)
     local pattern = gears.color(color)
@@ -347,6 +370,11 @@ function module.set_mirage() set_color_scheme('mirage', 'flattrcolor') end
 function module.set_light() set_color_scheme('light', 'flattrcolor-dark') end
 
 function module.update_theme()
+    -- rc modules
+    local assets = require('rc.assets')
+    local screen = require('rc.screen')
+    local theme = require('rc.theme')
+
     theme.update()
     assets.apply()
     screen.update()
