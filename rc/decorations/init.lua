@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:07:01 (Marcel Arpogaus)
--- @Changed: 2021-07-17 13:16:02 (Marcel Arpogaus)
+-- @Changed: 2021-07-22 10:30:29 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,18 +23,30 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
-local desktop = require('rc.decorations.desktop')
-local wibars = require('rc.decorations.wibar')
+-- helper functions
+local utils = require('rc.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
+local decorations = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
-    module.wibar = wibars[config.wibar or 'default'].init(config)
-    if config.desktop then
-        module.desktop = desktop[config.desktop].init(config)
+    for name, cfg in utils.value_with_cfg(config.wibar) do
+        table.insert(
+            decorations,
+            utils.require_submodule('decorations/wibar',
+                                    name).init(cfg, config.widgets_args))
     end
+    for name, cfg in utils.value_with_cfg(config.desktop) do
+        table.insert(
+            decorations,
+            utils.require_submodule('decorations/desktop',
+                                    name).init(cfg, config.widgets_args))
+    end
+end
+module.get = function ()
+    return decorations
 end
 
 -- [ return module ] -----------------------------------------------------------

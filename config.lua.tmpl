@@ -22,35 +22,38 @@ module.theme = {
 
 -- [ assets ] ------------------------------------------------------------------
 -- set custom theme assets ('recolor', 'mac')
--- module.assets = 'mac'
+-- module.assets = {'mac'}
 
 -- [ decorations ] -------------------------------------------------------------
 -- add widgets to your wibars and desktop
 module.decorations = {
   -- select desktop elements ('arcs')
-  -- desktop = 'arcs',
-
-  -- hide desktop widgets
-  -- desktop_widgets_visible = false,
-
-  -- widgets to be added to the desktop pop up
-  -- arc_widgets = {'cpu', 'mem', 'fs', 'bat'},
+  -- desktop = {
+  --   arcs = {
+  --     -- widgets to be added to the desktop pop up
+  --     widgets = {'cpu', 'mem', 'fs', 'bat'},
+  --     -- hide desktop widgets
+  --     visible = false,
+  --   }
+  -- },
 
   -- select wibar configuration ('default'|'dual')
-  -- wibar = 'dual',
-
-  -- widgets to be added to wibar
-  -- wibar_widgets = {
-  --   'net_down',
-  --   'net_up',
-  --   'vol',
-  --   'mem',
-  --   'cpu',
-  --   'fs',
-  --   'weather',
-  --   'temp',
-  --   'bat',
-  --   'datetime'
+  -- wibar = {
+  --   dual = {
+  --     -- widgets to be added to wibar
+  --     widgets = {
+  --       'net_down',
+  --       'net_up',
+  --       'vol',
+  --       'mem',
+  --       'cpu',
+  --       'fs',
+  --       'weather',
+  --       'temp',
+  --       'bat',
+  --       'datetime'
+  --     },
+  --   }
   -- },
 
   -- configure widgets

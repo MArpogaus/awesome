@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:54 (Marcel Arpogaus)
--- @Changed: 2021-07-17 13:57:26 (Marcel Arpogaus)
+-- @Changed: 2021-07-22 10:08:50 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -30,6 +30,7 @@ local capi = {awesome = awesome}
 local awful = require('awful')
 
 -- Theme handling library
+local beautiful = require('beautiful')
 
 local menubar = require('menubar')
 local hotkeys_popup = require('awful.hotkeys_popup').widget
@@ -104,7 +105,7 @@ module.init = function(config, applications)
                 {
                     'Awesome',
                     myawesomemenu,
-                    '/usr/share/awesome/icons/awesome32.png'
+                    beautiful.awesome_icon
                 }
             }
         })

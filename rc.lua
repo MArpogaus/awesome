@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-07-17 14:05:29 (Marcel Arpogaus)
+-- @Changed: 2021-07-22 10:17:22 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -80,13 +80,15 @@ mouse_bindings.init(config.bindings, menus.mainmenu)
 key_bindings.init(config.bindings, config.applications, menus.mainmenu)
 
 -- behavior
-behavior.init(config.behavior, mouse_bindings.client_buttons, key_bindings.client_keys)
+behavior.init(config.behavior, mouse_bindings.client_buttons,
+              key_bindings.client_keys)
 
 -- wibars and widgets
 screen.init(config.screen, tags.tagnames, mouse_bindings.taglist_buttons,
             mouse_bindings.tasklist_buttons, menus.mainmenu, menus.exitmenu)
-screen.register(decorations.wibar)
-if decorations.desktop then screen.register(decorations.desktop) end
+for _, d in ipairs(decorations.get()) do
+  screen.register(d)
+end
 
 -- Initialize revelation
 revelation.init()

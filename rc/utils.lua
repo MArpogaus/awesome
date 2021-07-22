@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-07-17 14:18:18 (Marcel Arpogaus)
+-- @Changed: 2021-07-22 10:40:48 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -34,11 +34,6 @@ local gfs = require('gears.filesystem')
 local lgi = require('lgi')
 local cairo = lgi.cairo
 
--- rc modules (for hot theme reload)
-local assets = require('rc.assets')
-local screen = require('rc.screen')
-local theme = require('rc.theme')
-
 -- [ local variables ] ---------------------------------------------------------
 local module = {}
 
@@ -53,8 +48,10 @@ local function client_label(c)
     local floating = active_theme.tasklist_floating or '✈'
     local minimized = active_theme.tasklist_maximized or '-'
     local maximized = active_theme.tasklist_maximized or '+'
-    local maximized_horizontal = active_theme.tasklist_maximized_horizontal or '⬌'
-    local maximized_vertical = active_theme.tasklist_maximized_vertical or '⬍'
+    local maximized_horizontal = active_theme.tasklist_maximized_horizontal or
+                                     '⬌'
+    local maximized_vertical = active_theme.tasklist_maximized_vertical or
+                                   '⬍'
 
     local name = c.name
     if c.sticky then name = sticky .. name end
@@ -94,16 +91,19 @@ function module.load_config(config_file)
     local config = require('rc.defaults')
     if gfs.file_readable(gfs.get_configuration_dir() ..
                              (config_file or 'config') .. '.lua') then
-        config = module.deep_merge(config, require(config_file or 'config'))
+        config = module.deep_merge(config, require(config_file or 'config'), 1)
     end
     return config
 end
 function module.sleep(n) os.execute('sleep ' .. tonumber(n)) end
 
-function module.deep_merge(t1, t2)
+function module.deep_merge(t1, t2, max_level)
+    if max_level == nil then
+        max_level = 5
+    end
     for k, v in pairs(t2) do
-        if type(k) == 'string' and type(v) == 'table' and not v[1] then
-            t1[k] = module.deep_merge(t1[k] or {}, v)
+        if max_level > 0 and type(k) == 'string' and type(v) == 'table' and not v[1] then
+            t1[k] = module.deep_merge(t1[k] or {}, v, max_level - 1)
         else
             t1[k] = v
         end
@@ -111,6 +111,32 @@ function module.deep_merge(t1, t2)
     return t1
 end
 
+function module.require_submodule(path, file)
+    local config_path = gfs.get_configuration_dir()
+    local file_name
+    for _, pre in ipairs {'config', 'rc'} do
+        file_name = string.format('%s/%s/%s', pre, path, file)
+        if gfs.file_readable(config_path .. file_name .. '.lua') or
+            gfs.file_readable(config_path .. file_name .. '/init.lua') then
+            return require(file_name:gsub('/', '.'))
+        end
+    end
+    return {init = function(_) return {} end}
+end
+
+function module.value_with_cfg(t)
+    local i = nil
+    local function iter()
+        local v
+        i, v = next(t, i)
+        if v and type(i) == 'number' then
+            return v, {}
+        elseif v then
+            return i, v
+        end
+    end
+    return iter
+end
 -- Helper functions for modifying hex colors -----------------------------------
 function module.darker(color, ratio)
     local pattern = gears.color(color)
@@ -347,6 +373,11 @@ function module.set_mirage() set_color_scheme('mirage', 'flattrcolor') end
 function module.set_light() set_color_scheme('light', 'flattrcolor-dark') end
 
 function module.update_theme()
+    -- rc modules
+    local assets = require('rc.assets')
+    local screen = require('rc.screen')
+    local theme = require('rc.theme')
+
     theme.update()
     assets.apply()
     screen.update()

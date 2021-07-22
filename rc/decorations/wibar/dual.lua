@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-07-16 16:03:43 (Marcel Arpogaus)
+-- @Changed: 2021-07-22 10:44:52 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -34,7 +34,8 @@ local utils = require('rc.decorations.wibar.utils')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config)
+module.init = function(config, widgets_args)
+    local widgets = config.widgets or {wibox.widget.textclock()}
     local decoration = abstract_decoration.new {
         register_fn = function(s)
             s.mytopwibar = awful.wibar({
@@ -46,7 +47,7 @@ module.init = function(config)
             })
 
             -- Add widgets to the wibox
-            s.right_widget_container = utils.gen_wibar_widgets(s, config)
+            s.right_widget_container = utils.gen_wibar_widgets(s, widgets, widgets_args)
             s.right_widget_container.layout = wibox.layout.fixed.horizontal
             if s.exitmenu then
                 local exitmenu = {
@@ -127,8 +128,6 @@ module.init = function(config)
     }
     return decoration
 end
-
--- [ sequential code ] ---------------------------------------------------------
 
 -- [ return module ] -----------------------------------------------------------
 return module
