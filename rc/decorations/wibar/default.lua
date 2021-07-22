@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-07-16 16:33:51 (Marcel Arpogaus)
+-- @Changed: 2021-07-22 10:44:40 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -34,7 +34,8 @@ local utils = require('rc.decorations.wibar.utils')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config)
+module.init = function(config, widgets_args)
+    local widgets = config.widgets or {wibox.widget.textclock()}
     local mykeyboardlayout = awful.widget.keyboardlayout()
     local decoration = abstract_decoration.new {
         register_fn = function(s)
@@ -47,7 +48,7 @@ module.init = function(config)
 
             s.right_widget_container = gears.table.join(
                 {mykeyboardlayout, wibox.widget.systray()},
-                utils.gen_wibar_widgets(s, config), {s.layoutbox, s.exitmenu})
+                utils.gen_wibar_widgets(s, widgets, widgets_args), {s.layoutbox, s.exitmenu})
             s.right_widget_container.layout = wibox.layout.fixed.horizontal
 
             -- Add widgets to the wibox

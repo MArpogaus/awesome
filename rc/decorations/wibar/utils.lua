@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-23 16:01:08 (Marcel Arpogaus)
--- @Changed: 2021-07-17 13:18:13 (Marcel Arpogaus)
+-- @Changed: 2021-07-22 10:23:29 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -34,12 +34,10 @@ local wibar_widgets = require('rc.widgets.wibar')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.gen_wibar_widgets = function(s, config)
+module.gen_wibar_widgets = function(s, widgets, widgets_args)
     s.wibar_widget_containers = {}
     s.registered_wibar_widgets = {}
 
-    local widgets = config.wibar_widgets
-    local widgets_args = config.widgets_args
     local fg_wibar_widgets
 
     if beautiful.fg_wibar_widgets and #beautiful.fg_wibar_widgets then

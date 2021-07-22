@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:07:01 (Marcel Arpogaus)
--- @Changed: 2021-07-18 21:59:11 (Marcel Arpogaus)
+-- @Changed: 2021-07-22 10:30:29 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,16 +28,25 @@ local utils = require('rc.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
+local decorations = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
-    module.wibar = utils.require_submodule('decorations/wibar',
-                                           config.wibar or 'default').init(
-        config)
-    if config.desktop then
-        module.desktop = utils.require_submodule('decorations/desktop',
-                                                 config.desktop).init(config)
+    for name, cfg in utils.value_with_cfg(config.wibar) do
+        table.insert(
+            decorations,
+            utils.require_submodule('decorations/wibar',
+                                    name).init(cfg, config.widgets_args))
     end
+    for name, cfg in utils.value_with_cfg(config.desktop) do
+        table.insert(
+            decorations,
+            utils.require_submodule('decorations/desktop',
+                                    name).init(cfg, config.widgets_args))
+    end
+end
+module.get = function ()
+    return decorations
 end
 
 -- [ return module ] -----------------------------------------------------------

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-07-17 13:19:17 (Marcel Arpogaus)
+-- @Changed: 2021-07-22 10:43:21 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -41,9 +41,8 @@ local desktop_widgets = require('rc.widgets.desktop')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config)
-    local arc_widgets = config.arc_widgets
-    local widgets_args = config.widgets_args
+module.init = function(config, widgets_args)
+    local arc_widgets = config.widgets or {'cpu', 'mem', 'fs', 'vol'}
     local decoration = abstract_decoration.new {
         register_fn = function(s)
             -- Create the desktop widget popup
@@ -152,7 +151,7 @@ module.init = function(config)
                     end
                 end
             -- show hide desktop_popup
-            s.desktop_popup.visible = config.desktop_widgets_visible or true
+            s.desktop_popup.visible = config.visible or true
         end,
         unregister_fn = function(s)
             for _, w in ipairs(s.registered_desktop_widgets) do

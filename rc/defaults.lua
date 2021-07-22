@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 15:12:05 (Marcel Arpogaus)
--- @Changed: 2021-07-17 14:19:22 (Marcel Arpogaus)
+-- @Changed: 2021-07-22 10:44:19 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -60,10 +60,9 @@ module.theme = {}
 
 -- decorations
 module.decorations = {
+  wibar = {'default'},
+  desktop = {},
     -- widgets
-    arc_widgets = {'cpu', 'mem', 'fs', 'vol'},
-    desktop_widgets_visible = true,
-    wibar_widgets = {wibox.widget.textclock()},
     widgets_args = {}
 }
 

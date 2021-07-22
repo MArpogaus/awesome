@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-07-18 22:50:50 (Marcel Arpogaus)
+-- @Changed: 2021-07-22 10:40:48 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -91,16 +91,19 @@ function module.load_config(config_file)
     local config = require('rc.defaults')
     if gfs.file_readable(gfs.get_configuration_dir() ..
                              (config_file or 'config') .. '.lua') then
-        config = module.deep_merge(config, require(config_file or 'config'))
+        config = module.deep_merge(config, require(config_file or 'config'), 1)
     end
     return config
 end
 function module.sleep(n) os.execute('sleep ' .. tonumber(n)) end
 
-function module.deep_merge(t1, t2)
+function module.deep_merge(t1, t2, max_level)
+    if max_level == nil then
+        max_level = 5
+    end
     for k, v in pairs(t2) do
-        if type(k) == 'string' and type(v) == 'table' and not v[1] then
-            t1[k] = module.deep_merge(t1[k] or {}, v)
+        if max_level > 0 and type(k) == 'string' and type(v) == 'table' and not v[1] then
+            t1[k] = module.deep_merge(t1[k] or {}, v, max_level - 1)
         else
             t1[k] = v
         end
