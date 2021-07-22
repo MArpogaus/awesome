@@ -67,7 +67,8 @@ widget_defs.wibar = function(warg)
                     if args[2] == '🔈' then
                         ico = fa_vol_icons[0]
                     else
-                        ico = fa_vol_icons[math.min(math.ceil(args[1] / 50), 2)]
+                        ico =
+                            fa_vol_icons[math.min(math.ceil(args[1] / 50), 2)]
                     end
                     return utils.fa_markup(color, ico)
                 end
@@ -106,7 +107,8 @@ widget_defs.arc = function(warg)
                     if args[2] == '🔈' then
                         ico = fa_vol_icons[0]
                     else
-                        ico = fa_vol_icons[math.min(math.ceil(args[1] / 50), 2)]
+                        ico =
+                            fa_vol_icons[math.min(math.ceil(args[1] / 50), 2)]
                     end
                     return utils.fa_markup(fg_color, ico, math.floor(150 / 8))
                 end
@@ -121,9 +123,8 @@ widget_defs.arc = function(warg)
                         widget:emit_signal_recursive('widget::value_changed', 0)
                     else
                         vol = args[1] .. '%'
-                        widget:emit_signal_recursive(
-                            'widget::value_changed', args[1]
-                        )
+                        widget:emit_signal_recursive('widget::value_changed',
+                                                     args[1])
                     end
                     return utils.markup {
                         font = utils.set_font_size(beautiful.font, 8),

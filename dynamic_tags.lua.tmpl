@@ -1,0 +1,130 @@
+-- [ author ] -*- time-stamp-pattern: "@Changed[\s]?:[\s]+%%$"; -*- ------------
+-- @File   : dynamic_tags.lua
+-- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
+--
+-- @Created: 2021-02-03 17:36:53 (Marcel Arpogaus)
+-- @Changed: 2021-02-04 13:11:02 (Marcel Arpogaus)
+-- [ description ] -------------------------------------------------------------
+-- ...
+-- [ license ] -----------------------------------------------------------------
+-- ...
+--------------------------------------------------------------------------------
+-- [ required modules ] --------------------------------------------------------
+local capi = {screen = screen}
+local awful = require('awful')
+
+-- [ local objects ] -----------------------------------------------------------
+local module = {
+    [''] = {
+        rule = {
+            rule_any = {
+                class = {
+                    'Opera',
+                    'firefox',
+                    'Rekonq',
+                    'Dillo',
+                    'Arora',
+                    'chromium',
+                    'nightly',
+                    'minefield'
+                }
+            }
+        },
+        layout = awful.layout.suit.max
+    },
+    [''] = {
+        rule = {
+            rule_any = {class = {'Thunderbird'}},
+            properties = {screen = capi.screen.count() > 1 and 2 or 1}
+        },
+        layout = awful.layout.suit.magnifier,
+        master_width_factor = 0.8
+    },
+    [''] = {
+        rule = {
+            rule_any = {class = {'zoom', 'Franz', 'Pidgin'}},
+            properties = {screen = capi.screen.count() > 1 and 2 or 1}
+        },
+        layout = awful.layout.suit.tile.left,
+        master_width_factor = 0.8
+    },
+    [''] = {
+        rule = {
+            rule_any = {
+                class = {
+                    'Thunar',
+                    'Konqueror',
+                    'Dolphin',
+                    'ark',
+                    'Nautilus',
+                    'emelfm'
+                }
+            }
+        },
+        layout = awful.layout.suit.tile
+    },
+    [''] = {
+        rule = {
+            rule_any = {
+                class = {
+                    'Code::Blocks',
+                    'Codeblocks',
+                    'DDD',
+                    'Emacs',
+                    'KDevelop',
+                    'Kate',
+                    'Sublime_merge',
+                    'Sublime_text',
+                    'URxvt',
+                    'XTerm',
+                    'Xfce4-terminal',
+                    'aterm',
+                    'gnome-terminal',
+                    'kate4',
+                    'konsole',
+                    'lxterminal',
+                    'terminator',
+                    'urxvt',
+                    'xterm'
+                }
+            },
+            except = {name = 'doom-capture'}
+        },
+        layout = awful.layout.suit.tile.bottom,
+        master_width_factor = 0.8
+    },
+    [''] = {
+        rule = {
+            rule_any = {
+                class = {
+                    'Evince',
+                    'Zathura',
+                    'qpdfview',
+                    'Assistant',
+                    'Okular',
+                    'Evince',
+                    'EPDFviewer',
+                    'xpdf',
+                    'Xpdf'
+                }
+            },
+            properties = {screen = capi.screen.count() > 1 and 2 or 1}
+        },
+        layout = awful.layout.suit.max
+    },
+    [''] = {
+        rule = {rule_any = {class = {'Mpv', 'Vlc', 'Gpodder', 'Ristretto'}}},
+        layout = awful.layout.suit.fair
+    },
+    [''] = {
+        rule = {
+            rule_any = {
+                class = {'0ad', 'supertuxkart', 'xonotic', 'hedgewars'}
+            }
+        },
+        layout = awful.layout.suit.fair
+    }
+}
+
+-- [ return module ] -----------------------------------------------------------
+return module

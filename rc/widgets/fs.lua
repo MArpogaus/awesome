@@ -79,9 +79,8 @@ widget_defs.arc = function(warg)
             widget = {
                 wtype = vicious.widgets.fs,
                 format = function(widget, args)
-                    widget:emit_signal_recursive(
-                        'widget::value_changed', args[mount_point]
-                    )
+                    widget:emit_signal_recursive('widget::value_changed',
+                                                 args[mount_point])
                     return utils.markup {
                         font = utils.set_font_size(beautiful.font, 8),
                         fg_color = fg_color,

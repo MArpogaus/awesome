@@ -118,9 +118,8 @@ widget_defs.arc = function(warg)
                 wtype = vicious.widgets.bat,
                 warg = battery,
                 format = function(widget, args)
-                    widget:emit_signal_recursive(
-                        'widget::value_changed', args[2]
-                    )
+                    widget:emit_signal_recursive('widget::value_changed',
+                                                 args[2])
                     return utils.markup {
                         font = utils.set_font_size(beautiful.font, 8),
                         fg_color = fg_color,

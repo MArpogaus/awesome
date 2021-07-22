@@ -1,93 +1,122 @@
 local module = {}
 
--- [ applications ] ------------------------------------------------------------
-module.browser = 'exo-open --launch WebBrowser' or 'firefox'
-module.filemanager = 'exo-open --launch FileManager' or 'thunar'
-module.gui_editor = os.getenv('EDITOR') or 'nano'
-module.lock_command = 'light-locker-command -l'
-module.terminal = os.getenv('TERMINAL') or 'lxterminal'
+-- [ tags ] --------------------------------------------------------------------
+-- define your tags names here
+module.tagnames = {''}
 
--- [ key bindings ] ------------------------------------------------------------
--- Default modkey.
-module.altkey = 'Mod1'
-module.modkey = 'Mod4'
+-- [ layouts ] -----------------------------------------------------------------
+-- specify custom layouts and set the default here
+module.layouts = {
+  -- overwrite default layout list
+  -- layouts = {},
+  -- index of default layout to use on new tags
+  -- default_layout = 3
+}
+
+-- [ theme ] -------------------------------------------------------------------
+-- select a theme and optionally overload some of its variables
+module.theme = {
+  name = 'gtk',
+  -- overload = {icon_theme = 'Papirus'}, -- overload theme variables
+}
+
+-- [ assets ] ------------------------------------------------------------------
+-- set custom theme assets ('recolor', 'mac')
+-- module.assets = 'mac'
+
+-- [ decorations ] -------------------------------------------------------------
+-- add widgets to your wibars and desktop
+module.decorations = {
+  -- select desktop elements ('arcs')
+  -- desktop = 'arcs',
+
+  -- hide desktop widgets
+  -- desktop_widgets_visible = false,
+
+  -- widgets to be added to the desktop pop up
+  -- arc_widgets = {'cpu', 'mem', 'fs', 'bat'},
+
+  -- select wibar configuration ('default'|'dual')
+  -- wibar = 'dual',
+
+  -- widgets to be added to wibar
+  -- wibar_widgets = {
+  --   'net_down',
+  --   'net_up',
+  --   'vol',
+  --   'mem',
+  --   'cpu',
+  --   'fs',
+  --   'weather',
+  --   'temp',
+  --   'bat',
+  --   'datetime'
+  -- },
+
+  -- configure widgets
+  widgets_args = {
+    weather = {
+      -- Your city for the weather forecast widget
+      city_id = 'change_me',
+      app_id = 'chnage_me'
+    },
+    temp = {
+      -- Set resource for temperature widget
+      thermal_zone = 'thermal_zone1'
+    },
+    net = {
+      -- Network interface
+      interface = 'change_me'
+    }
+  }
+}
+
+-- [ applications ] ------------------------------------------------------------
+-- define your default applications here
+module.applications = {
+  -- browser = 'firefox',
+  -- filemanager = 'thunar',
+  -- gui_editor = 'nano',
+  -- lock_command = 'light-locker-command -l',
+  -- terminal = 'xterm',
+}
+
+-- [ menu ] --------------------------------------------------------------------
+-- configure the awesome and exit menu here
+module.menus = {
+  -- add exitmenu to wibar
+  -- exitmenu = true,
+  -- add awesome menu and launcher to wibar
+  -- mainmenu = true
+}
+
+-- [ bindings ] ----------------------------------------------------------------
+-- Configure your keybinding here
+module.bindings = {
+  -- altkey = 'mod1',
+  -- modkey = 'mod4',
+  -- keymaps = {'default'},
+}
 
 -- [ behavior ] ----------------------------------------------------------------
--- use dynamic tagging
--- module.dynamic_tagging = false
+-- Modify the behavior of awesome
+module.behavior = {
+  'default',
+  -- use dynamic tagging
+  -- ['dynamic_tags'] = require('config.dynamic_tags'),
+  -- 'floating_titlebars'
+}
 
--- add exitmenu to wibar
--- module.exitmenu = false
-
--- add awesome menu and launcher to wibar
--- module.mainmenu = true
-
--- behavior of the task list. set to 'windows' to get windows-like client grouping
--- module.tasklist = 'default'
-
--- overwrite default layout list
--- module.layouts = {...} 
--- index of default layout to use on new tags
--- module.default_layout = 0
-
--- [ appearance ] --------------------------------------------------------------
--- module.dpi = 144 -- set explicit dpi for every screen
--- module.auto_dpi = true
-
--- set custom theme assets ('recolor', 'mac')
--- module.assets
-
--- Select theme
-module.theme = 'gtk'
--- use module.theme_overwrite = { var = val } to overwrite variable var in theme
-
--- path to your wallpaper or 'xfconf-query' to use xconf
--- module.wallpaper
-
--- [ widgets ] -----------------------------------------------------------------
-
--- select desktop elements ('arcs')
--- module.desktop = 'arcs'
-
--- hide desktop widgets
--- module.desktop_widgets_visible = false
-
--- widgets to be added to the desktop pop up
--- module.arc_widgets = {'cpu', 'mem', 'fs', 'bat'}
-
--- select wibar configuration ('default'|'dual')
--- module.wibar = 'default'
-
--- widgets to be added to wibar
--- module.wibar_widgets = {
--- 	'net_down',
--- 	'net_up',
--- 	'vol',
--- 	'mem',
--- 	'cpu',
--- 	'fs',
--- 	'weather',
--- 	'temp',
--- 	'bat',
--- 	'datetime'
--- }
-
-
--- configure widgets
--- module.widgets_arg = {
---     weather = {
---         -- city and app id for the weather widget
---         city_id = 'change_me',
---         app_id = 'change_me'
---     },
---     temp = {
---         -- set resource for temperature widget
---         thermal_zone = 'thermal_zone0'
---     },
---     net = {
---         -- network interface
---         net_interface = 'change_me'
---     }
--- }
+-- [ screen ] ------------------------------------------------------------------
+-- configure your screens here
+module.screen = {
+  -- set explicit dpi for every screen
+  -- dpi = 144,
+  -- auto_dpi = true,
+  -- behavior of the task list. set to 'windows' to get windows-like client grouping
+  -- tasklist = 'windows',
+  -- path to your wallpaper or 'xfconf-query' to use xconf
+  -- wallpaper = ...
+}
 
 return module

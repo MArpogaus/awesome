@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-07-17 14:18:18 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -34,27 +34,30 @@ local gfs = require('gears.filesystem')
 local lgi = require('lgi')
 local cairo = lgi.cairo
 
+-- rc modules (for hot theme reload)
+local assets = require('rc.assets')
+local screen = require('rc.screen')
+local theme = require('rc.theme')
+
 -- [ local variables ] ---------------------------------------------------------
 local module = {}
 
 -- [ local functions ] ---------------------------------------------------------
 -- ref.: https://stackoverflow.com/questions/62286322/grouping-windows-in-the-tasklist
 local function client_label(c)
-    local theme = beautiful.get()
-    local sticky = theme.tasklist_sticky or '▪'
-    local ontop = theme.tasklist_ontop or '⌃'
-    local above = theme.tasklist_above or '▴'
-    local below = theme.tasklist_below or '▾'
-    local floating = theme.tasklist_floating or '✈'
-    local minimized = theme.tasklist_maximized or '-'
-    local maximized = theme.tasklist_maximized or '+'
-    local maximized_horizontal = theme.tasklist_maximized_horizontal or '⬌'
-    local maximized_vertical = theme.tasklist_maximized_vertical or '⬍'
+    local active_theme = beautiful.get()
+    local sticky = active_theme.tasklist_sticky or '▪'
+    local ontop = active_theme.tasklist_ontop or '⌃'
+    local above = active_theme.tasklist_above or '▴'
+    local below = active_theme.tasklist_below or '▾'
+    local floating = active_theme.tasklist_floating or '✈'
+    local minimized = active_theme.tasklist_maximized or '-'
+    local maximized = active_theme.tasklist_maximized or '+'
+    local maximized_horizontal = active_theme.tasklist_maximized_horizontal or '⬌'
+    local maximized_vertical = active_theme.tasklist_maximized_vertical or '⬍'
 
     local name = c.name
-    if c.sticky then
-        name = sticky .. name
-    end
+    if c.sticky then name = sticky .. name end
 
     if c.ontop then
         name = ontop .. name
@@ -64,45 +67,51 @@ local function client_label(c)
         name = below .. name
     end
 
-    if c.minimized then
-        name = minimized .. name
-    end
+    if c.minimized then name = minimized .. name end
     if c.maximized then
         name = maximized .. name
     else
         if c.maximized_horizontal then
             name = maximized_horizontal .. name
         end
-        if c.maximized_vertical then
-            name = maximized_vertical .. name
-        end
-        if c.floating then
-            name = floating .. name
-        end
+        if c.maximized_vertical then name = maximized_vertical .. name end
+        if c.floating then name = floating .. name end
     end
 
     return name
 end
 local function set_xconf(property, value, sleep)
     local xconf = string.format(
-        'xfconf-query -c xsettings --property %s --set \'%s\'', property, value
-    )
-    if sleep then
-        xconf = string.format('sleep %.1f && %s', sleep, xconf)
-    end
+        'xfconf-query -c xsettings --property %s --set \'%s\'', property, value)
+    if sleep then xconf = string.format('sleep %.1f && %s', sleep, xconf) end
     awful.spawn.with_shell(xconf)
 end
-local function set_color_scheme(cs, ico)
-    error('not implemented')
-end
+local function set_color_scheme(_, _) error('not implemented') end
 
 -- [ module functions ] --------------------------------------------------------
-function module.sleep(n)
-    os.execute('sleep ' .. tonumber(n))
+-- Load configuration file
+function module.load_config(config_file)
+    local config = require('rc.defaults')
+    if gfs.file_readable(gfs.get_configuration_dir() ..
+                             (config_file or 'config') .. '.lua') then
+        config = module.deep_merge(config, require(config_file or 'config'))
+    end
+    return config
+end
+function module.sleep(n) os.execute('sleep ' .. tonumber(n)) end
+
+function module.deep_merge(t1, t2)
+    for k, v in pairs(t2) do
+        if type(k) == 'string' and type(v) == 'table' and not v[1] then
+            t1[k] = module.deep_merge(t1[k] or {}, v)
+        else
+            t1[k] = v
+        end
+    end
+    return t1
 end
 
 -- Helper functions for modifying hex colors -----------------------------------
-local hex_color_match = '[a-fA-F0-9][a-fA-F0-9]'
 function module.darker(color, ratio)
     local pattern = gears.color(color)
     local kind = pattern:get_type()
@@ -153,32 +162,10 @@ function module.set_alpha(color, alpha)
     end
 end
 
--- Load configuration file
-function module.load_config(config_file)
-    local config = {
-        -- This is used later as the default terminal, editor etc.
-        browser = 'exo-open --launch WebBrowser' or 'firefox',
-        filemanager = 'exo-open --launch FileManager' or 'thunar',
-        gui_editor = 'subl',
-        terminal = os.getenv('TERMINAL') or 'lxterminal',
-        lock_command = 'light-locker-command -l',
-
-        -- Default modkey.
-        modkey = 'Mod4',
-        altkey = 'Mod1'
-    }
-    if gfs.file_readable(gfs.get_configuration_dir() .. 'config.lua') then
-        config = gears.table.crush(config, require(config_file or 'config'))
-    end
-    return config
-end
-
 -- Delete the current tag
 function module.delete_tag()
     local t = awful.screen.focused().selected_tag
-    if not t then
-        return
-    end
+    if not t then return end
     t:delete()
 end
 
@@ -186,18 +173,14 @@ end
 function module.add_tag()
     awful.prompt.run {
         prompt = 'New tag name: ',
-        textbox = awful.screen.focused().mypromptbox.widget,
+        textbox = awful.screen.focused().promptbox.widget,
         exe_callback = function(new_name)
-            if not new_name or #new_name == 0 then
-                return
-            end
+            if not new_name or #new_name == 0 then return end
 
-            awful.tag.add(
-                new_name, {
-                    screen = awful.screen.focused(),
-                    layout = awful.layout.suit.floating
-                }
-            ):view_only()
+            awful.tag.add(new_name, {
+                screen = awful.screen.focused(),
+                layout = awful.layout.suit.floating
+            }):view_only()
         end
     }
 end
@@ -206,16 +189,12 @@ end
 function module.rename_tag()
     awful.prompt.run {
         prompt = 'Rename tag: ',
-        textbox = awful.screen.focused().mypromptbox.widget,
+        textbox = awful.screen.focused().promptbox.widget,
         exe_callback = function(new_name)
-            if not new_name or #new_name == 0 then
-                return
-            end
+            if not new_name or #new_name == 0 then return end
 
             local t = awful.screen.focused().selected_tag
-            if t then
-                t.name = new_name
-            end
+            if t then t.name = new_name end
         end
     }
 end
@@ -245,9 +224,7 @@ end
 function module.fork_tag()
     local s = awful.screen.focused()
     local t = s.selected_tag
-    if not t then
-        return
-    end
+    if not t then return end
 
     local clients = t:clients()
     local t2 = awful.tag.add(t.name, awful.tag.getdata(t))
@@ -257,22 +234,16 @@ function module.fork_tag()
 end
 
 function module.move_to_screen(c)
-    if not c then
-        return
-    end
+    if not c then return end
 
     local sc = capi.screen.count()
     local s = c.screen.index + 1
-    if s > sc then
-        s = 1
-    end
+    if s > sc then s = 1 end
 
     local s1 = awful.screen.focused()
     local s2 = capi.screen[s]
 
-    if s1 == s2 then
-        return
-    end
+    if s1 == s2 then return end
 
     local t1 = s1.selected_tag
 
@@ -324,9 +295,10 @@ function module.client_stack_toggle_fn()
             end
 
             if client_num > 1 then
-                cl_menu = awful.menu(
-                    {items = client_list, theme = {width = 1000}}
-                )
+                cl_menu = awful.menu({
+                    items = client_list,
+                    theme = {width = 1000}
+                })
                 cl_menu:show()
             else
                 capi.client.focus = c
@@ -356,36 +328,28 @@ function module.inc_dpi(inc)
         set_xconf('/Xft/DPI', math.floor(s.dpi))
     end
 end
-function module.dec_dpi(dec)
-    module.inc_dpi(-dec)
-end
+function module.dec_dpi(dec) module.inc_dpi(-dec) end
 
 -- manage widgets
 function module.update_widgets()
-    for s in capi.screen do
-        s.update_elements()
-    end
+    for s in capi.screen do s.update_decorations() end
 end
 function module.toggle_wibar_widgets()
-    for s in capi.screen do
-        s.toggle_wibar_widgets()
-    end
+    for s in capi.screen do s.toggle_wibar_widgets() end
 end
 function module.toggle_desktop_widget_visibility()
-    for s in capi.screen do
-        s.toggle_desktop_widget_visibility()
-    end
+    for s in capi.screen do s.toggle_desktop_widget_visibility() end
 end
 
 -- change colorschemes
-function module.set_dark()
-    set_color_scheme('dark', 'flattrcolor')
-end
-function module.set_mirage()
-    set_color_scheme('mirage', 'flattrcolor')
-end
-function module.set_light()
-    set_color_scheme('light', 'flattrcolor-dark')
+function module.set_dark() set_color_scheme('dark', 'flattrcolor') end
+function module.set_mirage() set_color_scheme('mirage', 'flattrcolor') end
+function module.set_light() set_color_scheme('light', 'flattrcolor-dark') end
+
+function module.update_theme()
+    theme.update()
+    assets.apply()
+    screen.update()
 end
 
 -- [ return module ]------------------------------------------------------------

@@ -7,6 +7,7 @@ local awful = require('awful')
 local beautiful = require('beautiful')
 local menubar = require('menubar')
 
+-- rc modules
 local tasklist = require('rc.screen.tasklist')
 local layout_popup = require('rc.screen.layout_popup')
 
@@ -18,147 +19,145 @@ local update_screen
 module.init = function(
     config, tagnames, taglist_buttons, tasklist_buttons, mainmenu, exitmenu
 )
-    awful.screen.set_auto_dpi_enabled(config.auto_dpi or true)
+    awful.screen.set_auto_dpi_enabled(config.auto_dpi)
     update_screen = function(s)
+
         -- Each screen has its own tag table.
-        if not s.mytaglist then
-            awful.tag(
-                tagnames, s,
-                awful.layout.default[s.index] or awful.layout.layouts[1]
-            )
-        end
+        awful.tag(tagnames, s,
+                  awful.layout.default[s.index] or awful.layout.layouts[1])
 
-        if s.reset then
-            s.reset()
-        end
+        s.init = function()
+            -- prevent multiple runs
+            if s.taglist then return end
 
-        if config.dpi then
-            s.dpi = config.dpi
-        end
+            if config.dpi then s.dpi = config.dpi end
 
-        -- If wallpaper is a function, call it with the screen
-        local wallpaper = config.wallpaper or beautiful.wallpaper
-        if type(wallpaper) == 'function' then
-            gears.wallpaper.maximized(wallpaper(s), s, true)
-        elseif wallpaper == 'xfconf-query' then
-            local command =
-                'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path'
-            awful.spawn.easy_async_with_shell(
-                command,
-                function(stdout, stderr, reason, exit_code) -- luacheck: no unused args
+            -- If wallpaper is a function, call it with the screen
+            local wallpaper = config.wallpaper or beautiful.wallpaper
+            if type(wallpaper) == 'function' then
+                gears.wallpaper.maximized(wallpaper(s), s, true)
+            elseif wallpaper == 'xfconf-query' then
+                local command =
+                    'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path'
+                awful.spawn.easy_async_with_shell(command,
+                                                  function(
+                    stdout, _, _, exit_code
+                )
                     if exit_code == 0 then
                         local file_name = string.gsub(stdout, '\n', '')
                         gears.wallpaper.maximized(file_name, s, true)
                     else
-                        gears.wallpaper.maximized(
-                            beautiful.wallpaper(s), s, true
-                        )
+                        gears.wallpaper.maximized(beautiful.wallpaper(s), s,
+                                                  true)
                     end
-                end
-            )
-        else
-            gears.wallpaper.maximized(wallpaper, s, true)
-        end
+                end)
+            else
+                gears.wallpaper.maximized(wallpaper, s, true)
+            end
 
-        -- Create a promptbox for each screen
-        s.mypromptbox = awful.widget.prompt()
+            -- Create a promptbox for each screen
+            s.promptbox = awful.widget.prompt()
 
-        -- Create an imagebox widget which will contain an icon indicating which layout we're using.
-        -- We need one layoutbox per screen.
-        s.mylayoutbox = awful.widget.layoutbox(s)
-        s.layout_popup = layout_popup.init(s.mylayoutbox)
-        s.mylayoutbox:buttons(
-            gears.table.join(
-                awful.button(
-                    {}, 4, function()
-                        awful.layout.inc(1)
-                    end
-                ), awful.button(
-                    {}, 5, function()
-                        awful.layout.inc(-1)
-                    end
-                )
-            )
-        )
+            -- Create an imagebox widget which will contain an icon indicating which layout we're using.
+            -- We need one layoutbox per screen.
+            s.layoutbox = awful.widget.layoutbox(s)
+            s.layout_popup = layout_popup.init(s.layoutbox)
+            s.layoutbox:buttons(gears.table.join(
+                awful.button({}, 4, function()
+                    awful.layout.inc(1)
+                end), awful.button({}, 5, function()
+                    awful.layout.inc(-1)
+                end)))
 
-        -- Create a taglist widget
-        s.mytaglist = awful.widget.taglist {
-            screen = s,
-            filter = awful.widget.taglist.filter.all,
-            buttons = taglist_buttons
-        }
+            -- Create a taglist widget
+            s.taglist = awful.widget.taglist {
+                screen = s,
+                filter = awful.widget.taglist.filter.all,
+                buttons = taglist_buttons
+            }
 
-        -- Create a tasklist widget
-        s.mytasklist = tasklist[config.tasklist or beautiful.tasklist or
-                           'default'](s, tasklist_buttons)
+            -- Create a tasklist widget
+            s.tasklist = tasklist[config.tasklist](s,
+                                                   tasklist_buttons[config.tasklist])
 
-        -- menus
-        if config.mainmenu == nil and config.mainmenu ~= false then
-            s.mymainmenu = awful.widget.launcher(
-                {image = beautiful.awesome_icon, menu = mainmenu}
-            )
-        end
-        if config.exitmenu then
-            s.myexitmenu = awful.widget.launcher(
-                {
-                    image = beautiful.exitmenu_icon or
-                        menubar.utils.lookup_icon('system-shutdown'),
-                    menu = exitmenu
-                }
-            )
+            -- menus
+            if mainmenu then
+                s.mainmenu = awful.widget.launcher(
+                    {image = beautiful.awesome_icon, menu = mainmenu})
+            end
+            if exitmenu then
+                s.exitmenu = awful.widget.launcher(
+                    {
+                        image = beautiful.exitmenu_icon or
+                            menubar.utils.lookup_icon('system-shutdown'),
+                        menu = exitmenu
+                    })
+            end
         end
 
         -- Dynamic widget management
-        s.elements = {}
+        s.decorations = {}
 
-        s.update_elements = function()
-            for e, _ in pairs(s.elements) do
-                e.update(s)
-            end
+        s.update_decorations = function()
+            for e, _ in pairs(s.decorations) do e.update(s) end
         end
-        s.reregister_elements = function()
-            for e, _ in pairs(s.elements) do
+        s.unregister_decorations = function()
+            for e, _ in pairs(s.decorations) do e.unregister(s) end
+        end
+        s.reregister_decorations = function()
+            for e, _ in pairs(s.decorations) do
                 e.unregister(s)
                 e.register(s)
                 e.update(s)
             end
         end
 
-        -- show systray on focused screen
-        s.reset = function()
-            for e, _ in pairs(s.elements) do
-                e.unregister(s)
+        s.reset = function(soft)
+
+            if s.layout_popup then
+                layout_popup.reset(s.layout_popup, s.layoutbox)
+                s.layout_popup = nil
+            end
+            if s.layoutbox then
+                s.layoutbox:remove()
+                s.layoutbox = nil
+            end
+            if s.promptbox then s.promptbox = nil end
+            if s.taglist then
+                s.taglist:reset()
+                s.taglist:remove()
+                s.taglist = nil
             end
 
-            if s.promptbox then
-                s.promptbox:reset()
-                s.promptbox:remove()
-                s.promptbox = nil
-            end
-            if s.mytaglist then
-                s.mytaglist:reset()
-                s.mytaglist:remove()
-                s.mytaglist = nil
-            end
+            if not soft then s.unregister_decorations() end
             collectgarbage()
         end
 
+        s.move_all_clients = function()
+            for _, c in pairs(s:get_all_clients()) do
+                c:move_to_screen()
+                c:emit_signal('manage', 'screen', {})
+            end
+        end
+
         s:connect_signal('removed', s.reset)
+        s:connect_signal('removed', s.move_all_clients)
+        s.init()
     end
     awful.screen.connect_for_each_screen(update_screen)
 end
-module.register = function(element)
-    awful.screen.connect_for_each_screen(element.register)
+module.register = function(decoration)
+    awful.screen.connect_for_each_screen(decoration.register)
 end
-module.unregister = function(element)
-    awful.screen.disconnect_for_each_screen(element.register)
-    for s in capi.screen do
-        element.unregister(s)
-    end
+module.unregister = function(decoration)
+    awful.screen.disconnect_for_each_screen(decoration.register)
+    for s in capi.screen do decoration.unregister(s) end
 end
 module.update = function()
     for s in capi.screen do
-        s.reregister_elements()
+        s.reset(true)
+        s.init()
+        s.reregister_decorations()
     end
 end
 -- [ return module ] -----------------------------------------------------------
