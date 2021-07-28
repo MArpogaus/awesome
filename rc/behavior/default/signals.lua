@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 16:02:46 (Marcel Arpogaus)
--- @Changed: 2021-02-04 09:36:26 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 16:32:14 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -27,7 +27,15 @@ local beautiful = require('beautiful')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(_)
+module.init = function(config)
+    local titlebar_buttons = config.titlebar_buttons or
+                                 {
+            'floating',
+            'maximized',
+            'sticky',
+            'ontop',
+            'close'
+        }
     return {
         -- Signal function to execute when a new client appears.
         client = {
@@ -56,6 +64,13 @@ module.init = function(_)
                         awful.mouse.client.resize(c)
                     end))
 
+                local titlebar_buttons_container =
+                    {layout = wibox.layout.fixed.horizontal}
+                for _, tb in ipairs(titlebar_buttons) do
+                    table.insert(titlebar_buttons_container,
+                                 awful.titlebar.widget[tb .. 'button'](c))
+                end
+
                 awful.titlebar(c):setup{
                     { -- Left
                         awful.titlebar.widget.iconwidget(c),
@@ -70,14 +85,8 @@ module.init = function(_)
                         buttons = buttons,
                         layout = wibox.layout.flex.horizontal
                     },
-                    { -- Right
-                        awful.titlebar.widget.floatingbutton(c),
-                        awful.titlebar.widget.maximizedbutton(c),
-                        awful.titlebar.widget.stickybutton(c),
-                        awful.titlebar.widget.ontopbutton(c),
-                        awful.titlebar.widget.closebutton(c),
-                        layout = wibox.layout.fixed.horizontal()
-                    },
+                    -- Right
+                    titlebar_buttons_container,
                     layout = wibox.layout.align.horizontal
                 }
             end,
