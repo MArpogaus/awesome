@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:17 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 15:18:59 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -31,15 +31,13 @@ local beautiful = require('beautiful')
 local vicious = require('vicious')
 local vicious_contrib = require('vicious.contrib')
 
-local utils = require('rc.widgets.utils')
-local widgets = require('rc.widgets')
+local utils = require('rc.decorations.widgets.utils')
+local widgets = require('rc.decorations.widgets')
 
 -- [ local objects ] -----------------------------------------------------------
-local widget_defs = {}
+local module = {}
 
 local default_timeout = 1800
-
-local default_color = beautiful.fg_normal
 
 local default_city_id = ''
 local default_app_id = ''
@@ -129,41 +127,7 @@ end
 vicious.cache(vicious_contrib.openweather)
 
 -- [ define widget ] -----------------------------------------------------------
-widget_defs.wibar = function(warg)
-    local color = warg.color or default_color
-    local city_id = warg.city_id or default_city_id
-    local app_id = warg.app_id or default_app_id
-
-    return {
-        default_timeout = default_timeout,
-        container_args = {color = color},
-        widgets = {
-            icon = {
-                widget = utils.owf_ico(color),
-                wtype = vicious_contrib.openweather,
-                warg = {city_id = city_id, app_id = app_id},
-                format = function(_, args)
-                    local weather = args['{weather}']
-                    local sunrise = args['{sunrise}']
-                    local sunset = args['{sunset}']
-
-                    return utils.owf_markup(color, weather, sunrise, sunset)
-                end
-            },
-            widget = {
-                wtype = vicious_contrib.openweather,
-                warg = {city_id = city_id, app_id = app_id},
-                format = function(_, args)
-                    return utils.markup {
-                        fg_color = color,
-                        text = args['{temp c}'] .. '°C'
-                    }
-                end
-            }
-        }
-    }
-end
-widget_defs.desktop = function(warg)
+module.init = widgets.new('desktop', function(warg)
     local city_id = warg.city_id or default_city_id
     local app_id = warg.app_id or default_app_id
 
@@ -239,7 +203,7 @@ widget_defs.desktop = function(warg)
             }
         }
     }
-end
+end)
 
 -- [ return module ] -----------------------------------------------------------
-return widgets.new(widget_defs)
+return module

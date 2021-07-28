@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 13:55:07 (Marcel Arpogaus)
--- @Changed: 2021-07-18 22:51:02 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 14:55:00 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,13 +28,13 @@ module.init = function(config, client_buttons, client_keys)
     for behavior, behavior_cfg in utils.value_with_cfg(config) do
         rules = gears.table.crush(rules,
                                   utils.require_submodule('behavior',
-                                                          behavior .. '/rules')
-                                      .init(behavior_cfg, client_buttons,
-                                            client_keys))
+                                                          behavior .. '/rules',
+                                                          true).init(
+            behavior_cfg, client_buttons, client_keys))
         for target, sigs in pairs(utils.require_submodule('behavior',
                                                           behavior ..
-                                                              '/signals').init(
-            behavior_cfg)) do
+                                                              '/signals', true)
+                                      .init(behavior_cfg)) do
             for sig_name, sig_fn in pairs(sigs) do
                 capi[target].connect_signal(sig_name, sig_fn)
             end

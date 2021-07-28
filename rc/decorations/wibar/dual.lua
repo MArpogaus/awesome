@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-07-22 10:44:52 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 14:45:42 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -24,8 +24,9 @@
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 local awful = require('awful')
-local wibox = require('wibox')
 local beautiful = require('beautiful')
+local gears = require('gears')
+local wibox = require('wibox')
 
 local abstract_decoration = require('rc.decorations.abstract_decoration')
 local utils = require('rc.decorations.wibar.utils')
@@ -38,6 +39,10 @@ module.init = function(config, widgets_args)
     local widgets = config.widgets or {wibox.widget.textclock()}
     local decoration = abstract_decoration.new {
         register_fn = function(s)
+            if config.screens and
+                not gears.table.hasitem(config.screens, s.index) then
+                return
+            end
             s.mytopwibar = awful.wibar({
                 position = 'top',
                 screen = s,
@@ -47,7 +52,8 @@ module.init = function(config, widgets_args)
             })
 
             -- Add widgets to the wibox
-            s.right_widget_container = utils.gen_wibar_widgets(s, widgets, widgets_args)
+            s.right_widget_container = utils.gen_wibar_widgets(s, widgets,
+                                                               widgets_args)
             s.right_widget_container.layout = wibox.layout.fixed.horizontal
             if s.exitmenu then
                 local exitmenu = {

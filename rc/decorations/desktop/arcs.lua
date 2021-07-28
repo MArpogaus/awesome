@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-07-22 10:43:21 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 15:20:14 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -34,17 +34,19 @@ local utils = require('rc.utils')
 
 local abstract_decoration = require('rc.decorations.abstract_decoration')
 
--- custom wibox widgets
-local desktop_widgets = require('rc.widgets.desktop')
-
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config, widgets_args)
-    local arc_widgets = config.widgets or {'cpu', 'mem', 'fs', 'vol'}
+    local arc_widgets = config.widgets or {'cpu', 'memory', 'fs', 'volume'}
     local decoration = abstract_decoration.new {
         register_fn = function(s)
+            if config.screens and
+                not gears.table.hasitem(config.screens, s.index) then
+                return
+            end
+
             -- Create the desktop widget popup
             local arc_widget_containers =
                 {
@@ -72,17 +74,21 @@ module.init = function(config, widgets_args)
                 warg.fg_color = warg.fg_color or fg_color
                 warg.bg_color = warg.bg_color or bg_color
                 local widget_container, registered_widgets =
-                    desktop_widgets.arcs[w](warg)
+                    utils.require_submodule('decorations/widgets/arcs', w)
+                        .init(warg)
                 table.insert(arc_widget_containers, widget_container)
                 s.registered_desktop_widgets =
                     gears.table.join(s.registered_desktop_widgets,
                                      registered_widgets)
             end
             local desktop_widgets_clock_container,
-                desktop_widgets_clock_widgets = desktop_widgets.clock()
+                desktop_widgets_clock_widgets =
+                utils.require_submodule('decorations/widgets/desktop',
+                                        'date_time').init()
             local desktop_widgets_weather_container,
                 desktop_widgets_weather_widgets =
-                desktop_widgets.weather(s, widgets_args.weather)
+                utils.require_submodule('decorations/widgets/desktop',
+                                        'weather').init(widgets_args.weather)
 
             s.registered_desktop_widgets =
                 gears.table.join(s.registered_desktop_widgets,
@@ -133,6 +139,7 @@ module.init = function(config, widgets_args)
                     s.suspend_desktop_widgets()
                 end
             end)
+
             s.toggle_desktop_widget_visibility =
                 function()
                     local is_visible = s.desktop_popup.visible

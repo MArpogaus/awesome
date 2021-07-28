@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-07-22 10:44:40 (Marcel Arpogaus)
+-- @Changed: 2021-07-23 16:19:47 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,24 +36,31 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config, widgets_args)
     local widgets = config.widgets or {wibox.widget.textclock()}
+    local position = config.position or 'top'
+    local layouts = wibox.layout.fixed.horizontal
     local mykeyboardlayout = awful.widget.keyboardlayout()
     local decoration = abstract_decoration.new {
         register_fn = function(s)
+            if config.screens and
+                not gears.table.hasitem(config.screens, s.index) then
+                return
+            end
             -- Create the wibox
-            s.mywibar = awful.wibar({position = 'top', screen = s})
+            s.mywibar = awful.wibar({position = position, screen = s})
 
             -- Add widgets to the wibox
             s.left_widget_container = {s.mainmenu, s.taglist, s.promptbox}
-            s.left_widget_container.layout = wibox.layout.fixed.horizontal
+            s.left_widget_container.layout = layouts
 
             s.right_widget_container = gears.table.join(
                 {mykeyboardlayout, wibox.widget.systray()},
-                utils.gen_wibar_widgets(s, widgets, widgets_args), {s.layoutbox, s.exitmenu})
-            s.right_widget_container.layout = wibox.layout.fixed.horizontal
+                utils.gen_wibar_widgets(s, widgets, widgets_args),
+                {s.layoutbox, s.exitmenu})
+            s.right_widget_container.layout = layouts
 
             -- Add widgets to the wibox
             s.mywibar:setup{
-                layout = wibox.layout.align.horizontal,
+                layout = layouts,
                 s.left_widget_container, -- Left widgets
                 s.tasklist, -- Middle widget
                 s.right_widget_container -- Right widgets

@@ -1,9 +1,9 @@
 -- [ author ] -*- time-stamp-pattern: "@Changed[\s]?:[\s]+%%$"; -*- ------------
--- @File   : init.lua
+-- @File   : fs.lua
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
--- @Created: 2021-01-22 09:07:01 (Marcel Arpogaus)
--- @Changed: 2021-07-22 10:30:29 (Marcel Arpogaus)
+-- @Created: 2021-01-26 16:55:52 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 14:27:49 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,27 +23,48 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
--- helper functions
-local utils = require('rc.utils')
+local beautiful = require('beautiful')
+
+local vicious = require('vicious')
+
+local utils = require('rc.decorations.widgets.utils')
+local widgets = require('rc.decorations.widgets')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
-local decorations = {}
 
--- [ module functions ] --------------------------------------------------------
-module.init = function(config)
-    for name, cfg in utils.value_with_cfg(config.wibar) do
-        table.insert(decorations,
-                     utils.require_submodule('decorations/wibar', name).init(
-            cfg, config.widgets_args))
-    end
-    for name, cfg in utils.value_with_cfg(config.desktop) do
-        table.insert(decorations,
-                     utils.require_submodule('decorations/desktop', name).init(
-            cfg, config.widgets_args))
-    end
-end
-module.get = function() return decorations end
+local fs_icon = ''
+
+local default_timeout = 60
+local default_fg_color = beautiful.fg_normal
+local default_mount_point = '{/ used_p}'
+
+-- [ sequential code ] ---------------------------------------------------------
+-- enable caching
+vicious.cache(vicious.widgets.fs)
+
+-- [ define widget ] -----------------------------------------------------------
+module.init = widgets.new('wibar', function(warg)
+    local color = warg.color or default_fg_color
+    local mount_point = warg.mount_point or default_mount_point
+
+    return {
+        default_timeout = default_timeout,
+        container_args = {color = color},
+        widgets = {
+            icon = {widget = fs_icon},
+            widget = {
+                wtype = vicious.widgets.fs,
+                format = function(_, args)
+                    return utils.markup {
+                        fg_color = color,
+                        text = args[mount_point] .. '%'
+                    }
+                end
+            }
+        }
+    }
+end)
 
 -- [ return module ] -----------------------------------------------------------
 return module

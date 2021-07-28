@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-07-22 10:40:48 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 14:54:09 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -98,11 +98,10 @@ end
 function module.sleep(n) os.execute('sleep ' .. tonumber(n)) end
 
 function module.deep_merge(t1, t2, max_level)
-    if max_level == nil then
-        max_level = 5
-    end
+    if max_level == nil then max_level = 5 end
     for k, v in pairs(t2) do
-        if max_level > 0 and type(k) == 'string' and type(v) == 'table' and not v[1] then
+        if max_level > 0 and type(k) == 'string' and type(v) == 'table' and
+            not v[1] then
             t1[k] = module.deep_merge(t1[k] or {}, v, max_level - 1)
         else
             t1[k] = v
@@ -111,7 +110,7 @@ function module.deep_merge(t1, t2, max_level)
     return t1
 end
 
-function module.require_submodule(path, file)
+function module.require_submodule(path, file, ignore_error)
     local config_path = gfs.get_configuration_dir()
     local file_name
     for _, pre in ipairs {'config', 'rc'} do
@@ -121,7 +120,12 @@ function module.require_submodule(path, file)
             return require(file_name:gsub('/', '.'))
         end
     end
-    return {init = function(_) return {} end}
+    if ignore_error then
+        return {init = function(_) return {} end}
+    else
+        error(
+            string.format('submodule \'%s\' not found in \'%s\'.', file, path))
+    end
 end
 
 function module.value_with_cfg(t)
@@ -361,10 +365,16 @@ function module.update_widgets()
     for s in capi.screen do s.update_decorations() end
 end
 function module.toggle_wibar_widgets()
-    for s in capi.screen do s.toggle_wibar_widgets() end
+    for s in capi.screen do
+        if s.toggle_wibar_widgets then s.toggle_wibar_widgets() end
+    end
 end
 function module.toggle_desktop_widget_visibility()
-    for s in capi.screen do s.toggle_desktop_widget_visibility() end
+    for s in capi.screen do
+        if s.toggle_desktop_widget_visibility then
+            s.toggle_desktop_widget_visibility()
+        end
+    end
 end
 
 -- change colorschemes

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-23 16:01:08 (Marcel Arpogaus)
--- @Changed: 2021-07-22 10:23:29 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 14:40:05 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,7 +28,7 @@ local beautiful = require('beautiful')
 
 local vicious = require('vicious')
 
-local wibar_widgets = require('rc.widgets.wibar')
+local utils = require('rc.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -53,7 +53,9 @@ module.gen_wibar_widgets = function(s, widgets, widgets_args)
                              widgets_args[gears.string.split(w, '_')[1]] or {}
             warg = gears.table.clone(warg)
             warg.color = warg.color or fg_wibar_widgets[cidx]
-            local widget_container, registered_widgets = wibar_widgets[w](warg)
+            local widget_container, registered_widgets =
+                utils.require_submodule('decorations/widgets/wibar', w).init(
+                    warg)
             table.insert(s.wibar_widget_containers, widget_container)
             s.registered_wibar_widgets =
                 gears.table

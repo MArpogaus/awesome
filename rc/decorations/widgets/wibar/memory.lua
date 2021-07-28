@@ -1,9 +1,9 @@
 -- [ author ] -*- time-stamp-pattern: "@Changed[\s]?:[\s]+%%$"; -*- ------------
--- @File   : desktop.lua
+-- @File   : memory.lua
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
--- @Created: 2021-01-26 16:55:47 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Created: 2021-01-26 16:55:58 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 14:29:05 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,40 +23,47 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
-local battery = require('rc.widgets.battery')
-local cpu = require('rc.widgets.cpu')
-local date_time = require('rc.widgets.date_time')
-local fs = require('rc.widgets.fs')
-local memory = require('rc.widgets.memory')
-local net = require('rc.widgets.net')
-local temp = require('rc.widgets.temp')
-local volume = require('rc.widgets.volume')
-local weather = require('rc.widgets.weather')
+local beautiful = require('beautiful')
+
+local vicious = require('vicious')
+
+local utils = require('rc.decorations.widgets.utils')
+local widgets = require('rc.decorations.widgets')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
--- [ module functions ] --------------------------------------------------------
-module.clock = date_time.create_desktop_widget
-module.weather = weather.create_desktop_widget
+local mem_icon = ''
 
--- [ arcs ] --------------------------------------------------------------------
-module.arcs = {
-    net_down = function(warg)
-        warg.value = 'down'
-        return net.create_arc_widget(warg)
-    end,
-    net_up = function(warg)
-        warg.value = 'up'
-        return net.create_arc_widget(warg)
-    end,
-    vol = volume.create_arc_widget,
-    mem = memory.create_arc_widget,
-    cpu = cpu.create_arc_widget,
-    temp = temp.create_arc_widget,
-    bat = battery.create_arc_widget,
-    fs = fs.create_arc_widget
-}
+local default_timeout = 7
+
+local default_fg_color = beautiful.fg_normal
+
+-- [ sequential code ] ---------------------------------------------------------
+-- enable caching
+vicious.cache(vicious.widgets.mem)
+
+-- [ define widget ] -----------------------------------------------------------
+module.init = widgets.new('wibar', function(warg)
+    local color = warg.color or default_fg_color
+
+    return {
+        default_timeout = default_timeout,
+        container_args = {color = color},
+        widgets = {
+            icon = {widget = mem_icon},
+            widget = {
+                wtype = vicious.widgets.mem,
+                format = function(_, args)
+                    return utils.markup {
+                        fg_color = color,
+                        text = args[1] .. '%'
+                    }
+                end
+            }
+        }
+    }
+end)
 
 -- [ return module ] -----------------------------------------------------------
 return module

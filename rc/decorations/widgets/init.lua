@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:55:55 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 14:20:21 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -27,7 +27,7 @@ local wibox = require('wibox')
 
 local vicious = require('vicious')
 
-local utils = require('rc.widgets.utils')
+local utils = require('rc.decorations.widgets.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -62,26 +62,20 @@ local function create_widget(widget_def, widget_container, timeout)
 end
 
 -- [ module functions ] --------------------------------------------------------
-module.new = function(args)
-    local widget_generator = {}
-
-    for k, wd in pairs(args) do
-        widget_generator['create_' .. k .. '_widget'] =
-            function(wargs)
-                wargs = wargs or {}
-                local widget_def = wd(wargs)
-                local timeout = wargs.timeout or widget_def.default_timeout
-                if k == 'wibar' then
-                    return create_widget(widget_def, utils.create_wibar_widget,
-                                         timeout)
-                elseif k == 'arc' then
-                    return create_widget(widget_def, utils.create_arc_widget,
-                                         timeout)
-                else
-                    return create_widget(widget_def,
-                                         widget_def.widget_container, timeout)
-                end
-            end
+module.new = function(wtype, widget_def_fn)
+    local function widget_generator(wargs)
+        wargs = wargs or {}
+        local widget_def = widget_def_fn(wargs)
+        local timeout = wargs.timeout or widget_def.default_timeout
+        if wtype == 'wibar' then
+            return
+                create_widget(widget_def, utils.create_wibar_widget, timeout)
+        elseif wtype == 'arc' then
+            return create_widget(widget_def, utils.create_arc_widget, timeout)
+        else
+            return create_widget(widget_def, widget_def.widget_container,
+                                 timeout)
+        end
     end
 
     return widget_generator

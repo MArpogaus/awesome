@@ -101,13 +101,7 @@ module.init = function(config, applications)
                     menubar.utils.lookup_icon('system-file-manager')
                 }
             },
-            after = {
-                {
-                    'Awesome',
-                    myawesomemenu,
-                    beautiful.awesome_icon
-                }
-            }
+            after = {{'Awesome', myawesomemenu, beautiful.awesome_icon}}
         })
 
     if config.exitmenu then

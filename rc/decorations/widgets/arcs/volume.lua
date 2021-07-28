@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:10 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 15:06:45 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -27,11 +27,11 @@ local beautiful = require('beautiful')
 
 local vicious = require('vicious')
 
-local utils = require('rc.widgets.utils')
-local widgets = require('rc.widgets')
+local utils = require('rc.decorations.widgets.utils')
+local widgets = require('rc.decorations.widgets')
 
 -- [ local objects ] -----------------------------------------------------------
-local widget_defs = {}
+local module = {}
 
 local fa_vol_icons = {}
 fa_vol_icons[0] = '' -- fa-volume-off
@@ -50,46 +50,7 @@ local default_device = 'Master'
 vicious.cache(vicious.widgets.volume)
 
 -- [ define widget ] -----------------------------------------------------------
-widget_defs.wibar = function(warg)
-    local color = warg.color or default_fg_color
-    local device = warg.device or default_device
-
-    return {
-        default_timeout = default_timeout,
-        container_args = {color = color},
-        widgets = {
-            icon = {
-                widget = utils.fa_ico(color, 'N/A'),
-                wtype = vicious.widgets.volume,
-                warg = device,
-                format = function(_, args)
-                    local ico
-                    if args[2] == '🔈' then
-                        ico = fa_vol_icons[0]
-                    else
-                        ico =
-                            fa_vol_icons[math.min(math.ceil(args[1] / 50), 2)]
-                    end
-                    return utils.fa_markup(color, ico)
-                end
-            },
-            widget = {
-                wtype = vicious.widgets.volume,
-                warg = device,
-                format = function(_, args)
-                    local vol
-                    if args[2] == '🔈' then
-                        vol = 'M'
-                    else
-                        vol = args[1] .. '%'
-                    end
-                    return utils.fa_markup(color, vol)
-                end
-            }
-        }
-    }
-end
-widget_defs.arc = function(warg)
+module.init = widgets.new('arc', function(warg)
     local fg_color = warg.fg_color or default_fg_color
     local bg_color = warg.bg_color or default_bg_color
     local device = warg.device or default_device
@@ -135,7 +96,7 @@ widget_defs.arc = function(warg)
             }
         }
     }
-end
+end)
 
 -- [ return module ] -----------------------------------------------------------
-return widgets.new(widget_defs)
+return module

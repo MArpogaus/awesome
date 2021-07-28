@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 15:12:05 (Marcel Arpogaus)
--- @Changed: 2021-07-22 10:44:19 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 15:20:25 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,7 +23,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
-local wibox = require('wibox')
 local awful = require('awful')
 
 -- [ local objects ] -----------------------------------------------------------
@@ -60,8 +59,8 @@ module.theme = {}
 
 -- decorations
 module.decorations = {
-  wibar = {'default'},
-  desktop = {},
+    wibar = {'default'},
+    desktop = {},
     -- widgets
     widgets_args = {}
 }

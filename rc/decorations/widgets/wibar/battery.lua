@@ -1,9 +1,9 @@
 -- [ author ] -*- time-stamp-pattern: "@Changed[\s]?:[\s]+%%$"; -*- ------------
--- @File   : fs.lua
+-- @File   : battery.lua
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
--- @Created: 2021-01-26 16:55:52 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Created: 2021-01-26 16:55:10 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 14:59:39 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -27,70 +27,72 @@ local beautiful = require('beautiful')
 
 local vicious = require('vicious')
 
-local utils = require('rc.widgets.utils')
-local widgets = require('rc.widgets')
+local utils = require('rc.decorations.widgets.utils')
+local widgets = require('rc.decorations.widgets')
 
 -- [ local objects ] -----------------------------------------------------------
-local widget_defs = {}
+local module = {}
 
-local fs_icon = ''
+local fa_bat_icons = {
+    '', -- fa-battery-0 (alias) [&#xf244;]
+    '', -- fa-battery-1 (alias) [&#xf243;]
+    '', -- fa-battery-2 (alias) [&#xf242;]
+    '', -- fa-battery-3 (alias) [&#xf241;]
+    '' -- fa-battery-4 (alias) [&#xf240;]
+}
 
-local default_timeout = 60
+local default_timeout = 15
+local default_bat = 'BAT0'
 local default_fg_color = beautiful.fg_normal
-local default_bg_color = beautiful.bg_normal
-local default_mount_point = '{/ used_p}'
+
+-- [ local functions ] ---------------------------------------------------------
+local function batt_icon(status, perc)
+    local icon = 'N/A'
+    if status == '+' then
+        icon = ''
+    else
+        if perc ~= nil then
+            icon = fa_bat_icons[math.floor(perc / 25) + 1]
+        end
+    end
+    return icon
+end
 
 -- [ sequential code ] ---------------------------------------------------------
 -- enable caching
-vicious.cache(vicious.widgets.fs)
+vicious.cache(vicious.widgets.bat)
 
 -- [ define widget ] -----------------------------------------------------------
-widget_defs.wibar = function(warg)
+module.init = widgets.new('wibar', function(warg)
     local color = warg.color or default_fg_color
-    local mount_point = warg.mount_point or default_mount_point
+    local battery = warg.battery or default_bat
 
     return {
         default_timeout = default_timeout,
         container_args = {color = color},
         widgets = {
-            icon = {widget = fs_icon},
+            icon = {
+                widget = utils.fa_ico(color, 'N/A'),
+                wtype = vicious.widgets.bat,
+                warg = battery,
+                format = function(_, args)
+                    local icon = batt_icon(args[1], args[2])
+                    return utils.fa_markup(color, icon)
+                end
+            },
             widget = {
-                wtype = vicious.widgets.fs,
+                wtype = vicious.widgets.bat,
+                warg = battery,
                 format = function(_, args)
                     return utils.markup {
                         fg_color = color,
-                        text = args[mount_point] .. '%'
+                        text = args[2] .. '%'
                     }
                 end
             }
         }
     }
-end
-widget_defs.arc = function(warg)
-    local fg_color = warg.fg_color or default_fg_color
-    local bg_color = warg.bg_color or default_bg_color
-    local mount_point = warg.mount_point or default_mount_point
-
-    return {
-        default_timeout = default_timeout,
-        container_args = {bg = bg_color, fg = fg_color},
-        widgets = {
-            icon = {widget = fs_icon},
-            widget = {
-                wtype = vicious.widgets.fs,
-                format = function(widget, args)
-                    widget:emit_signal_recursive('widget::value_changed',
-                                                 args[mount_point])
-                    return utils.markup {
-                        font = utils.set_font_size(beautiful.font, 8),
-                        fg_color = fg_color,
-                        text = args[mount_point] .. '%'
-                    }
-                end
-            }
-        }
-    }
-end
+end)
 
 -- [ return module ] -----------------------------------------------------------
-return widgets.new(widget_defs)
+return module

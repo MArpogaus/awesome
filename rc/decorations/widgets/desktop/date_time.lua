@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:55:28 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 15:13:12 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -26,10 +26,9 @@
 local os = os
 
 local wibox = require('wibox')
-local awful = require('awful')
 local beautiful = require('beautiful')
 
-local utils = require('rc.widgets.utils')
+local utils = require('rc.decorations.widgets.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -37,50 +36,7 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 os.setlocale(os.getenv('LANG')) -- to localize the clock
 
-module.create_wibar_widget = function()
-    local clock_icon = utils.fa_ico(beautiful.fg_wibar_widgets_calendar, '')
-
-    local clock_widget = wibox.widget.textclock(
-        utils.markup {
-            font = beautiful.font,
-            fg_color = beautiful.fg_wibar_widgets_calendar,
-            text = '%A %d %B'
-        } .. utils.markup {
-            font = beautiful.font,
-            fg_color = beautiful.fg_normal,
-            text = ' | '
-        } .. utils.markup {
-            font = beautiful.font,
-            fg_color = beautiful.fg_wibar_widgets_clock,
-            text = '%H:%M'
-        })
-
-    -- popup calendar
-    local cal_widget = awful.widget.calendar_popup.month {
-        font = utils.set_font_size(beautiful.font, 16),
-        week_numbers = true,
-        long_weekdays = true,
-        opacity = 0.9,
-        margin = 5,
-        style_header = {border_width = 0},
-        style_weekday = {border_width = 0},
-        style_weeknumber = {border_width = 0, opacity = 0.5},
-        style_normal = {border_width = 0},
-        style_focus = {border_width = 0}
-    }
-    cal_widget:attach(clock_widget, 'tr')
-
-    beautiful.cal = cal_widget
-
-    return utils.create_wibar_widget {
-        color = beautiful.fg_wibar_widgets_calendar,
-        icon = clock_icon,
-        widget = clock_widget
-
-    }
-end
-
-module.create_desktop_widget = function()
+module.init = function()
     local time_font_size = beautiful.desktop_widgets_time_font_size or 50
     local date_font_size = beautiful.desktop_widgets_date_font_size or
                                time_font_size / 3

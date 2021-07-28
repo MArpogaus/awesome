@@ -30,7 +30,7 @@ local gears = require('gears')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
 
-local owfont = require('rc.widgets.utils.owfont')
+local owfont = require('rc.decorations.widgets.utils.owfont')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

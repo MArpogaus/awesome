@@ -1,9 +1,9 @@
 -- [ author ] -*- time-stamp-pattern: "@Changed[\s]?:[\s]+%%$"; -*- ------------
--- @File   : cpu.lua
+-- @File   : fs.lua
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
--- @Created: 2021-01-26 16:55:20 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Created: 2021-01-26 16:55:52 (Marcel Arpogaus)
+-- @Changed: 2021-07-28 15:05:36 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,104 +23,53 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
-local wibox = require('wibox')
 local beautiful = require('beautiful')
 
 local vicious = require('vicious')
 
-local utils = require('rc.widgets.utils')
-local widgets = require('rc.widgets')
+local utils = require('rc.decorations.widgets.utils')
+local widgets = require('rc.decorations.widgets')
 
 -- [ local objects ] -----------------------------------------------------------
-local widget_defs = {}
+local module = {}
 
-local default_timeout = 1
+local fs_icon = ''
 
+local default_timeout = 60
 local default_fg_color = beautiful.fg_normal
 local default_bg_color = beautiful.bg_normal
-
-local step_width = 8
-local step_spacing = 4
+local default_mount_point = '{/ used_p}'
 
 -- [ sequential code ] ---------------------------------------------------------
 -- enable caching
-vicious.cache(vicious.widgets.cpu)
+vicious.cache(vicious.widgets.fs)
 
 -- [ define widget ] -----------------------------------------------------------
-widget_defs.wibar = function(warg)
-    local color = warg.color or default_fg_color
-
-    return {
-        default_timeout = default_timeout,
-        container_args = {color = color},
-        widgets = {
-            icon = {widget = ''},
-            widget = {
-                wtype = vicious.widgets.cpu,
-                format = function(_, args)
-                    return utils.markup {
-                        fg_color = color,
-                        text = args[1] .. '%'
-                    }
-                end
-            }
-        }
-    }
-end
-widget_defs.arc = function(warg)
+module.init = widgets.new('arc', function(warg)
     local fg_color = warg.fg_color or default_fg_color
     local bg_color = warg.bg_color or default_bg_color
+    local mount_point = warg.mount_point or default_mount_point
 
-    local cpu_graph = wibox.widget {
-        max_value = 100,
-        min_value = 0,
-        step_width = step_width,
-        step_spacing = step_spacing,
-        forced_height = (beautiful.desktop_widgets_arc_size or 220) / 5,
-        color = fg_color,
-        background_color = '#00000000',
-        widget = wibox.widget.graph
-    }
     return {
         default_timeout = default_timeout,
         container_args = {bg = bg_color, fg = fg_color},
         widgets = {
-            icon = {
-                widget = wibox.widget {
-                    nil,
-                    cpu_graph,
-                    nil,
-                    expand = 'outside',
-                    layout = wibox.layout.align.horizontal
-                },
-                wtype = vicious.widgets.cpu,
-                format = function(_, args)
-                    local num_cpus = #args - 1
-                    local width = (num_cpus + 1) * (step_width + step_spacing)
-
-                    cpu_graph:clear()
-                    cpu_graph:set_width(width)
-                    for c = 2, #args do
-                        cpu_graph:add_value(args[c] + 1)
-                    end
-                    cpu_graph:add_value(0)
-                end
-            },
+            icon = {widget = fs_icon},
             widget = {
-                wtype = vicious.widgets.cpu,
+                wtype = vicious.widgets.fs,
                 format = function(widget, args)
                     widget:emit_signal_recursive('widget::value_changed',
-                                                 args[1])
+                                                 args[mount_point])
                     return utils.markup {
                         font = utils.set_font_size(beautiful.font, 8),
                         fg_color = fg_color,
-                        text = args[1] .. '%'
+                        text = args[mount_point] .. '%'
                     }
                 end
             }
         }
     }
-end
+end)
 
 -- [ return module ] -----------------------------------------------------------
-return widgets.new(widget_defs)
+return module
