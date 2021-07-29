@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-07-28 15:20:14 (Marcel Arpogaus)
+-- @Changed: 2021-07-29 16:24:40 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -53,7 +53,8 @@ module.init = function(config, widgets_args)
                     spacing = beautiful.desktop_widgets_arc_spacing or 110,
                     layout = wibox.layout.fixed.horizontal
                 }
-            s.registered_desktop_widgets = {}
+            setmetatable(arc_widget_containers, {__mode = 'kv'})
+            s.registered_desktop_widgets = setmetatable({}, {__mode = 'kv'}) -- make weak table
             local fg_arcs
             if beautiful.fg_desktop_widgets_arcs and
                 #beautiful.fg_desktop_widgets_arcs then
@@ -161,12 +162,22 @@ module.init = function(config, widgets_args)
             s.desktop_popup.visible = config.visible or true
         end,
         unregister_fn = function(s)
-            for _, w in ipairs(s.registered_desktop_widgets) do
+            s.desktop_popup.visible = false
+            for i, w in ipairs(s.registered_desktop_widgets) do
                 vicious.unregister(w)
+                table.remove(s.registered_desktop_widgets, i)
             end
             s.registered_desktop_widgets = nil
-            s.desktop_popup.widget:reset()
+            for i, c in ipairs(s.desktop_widget_containers) do
+                c:reset()
+                table.remove(s.desktop_widget_containers, i)
+            end
+            s.desktop_widget_containers = nil
+            s.desktop_popup:get_widget():reset()
             s.desktop_popup = nil
+            s.toggle_desktop_widget_visibility = nil
+            s.suspend_desktop_widgets = nil
+            s.activate_desktop_widgets = nil
         end,
         update_fn = function(s)
             vicious.force(s.registered_desktop_widgets)

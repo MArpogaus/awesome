@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-23 16:01:08 (Marcel Arpogaus)
--- @Changed: 2021-07-28 14:40:05 (Marcel Arpogaus)
+-- @Changed: 2021-07-29 16:18:34 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -35,8 +35,8 @@ local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.gen_wibar_widgets = function(s, widgets, widgets_args)
-    s.wibar_widget_containers = {}
-    s.registered_wibar_widgets = {}
+    s.wibar_widget_containers = setmetatable({}, {__mode = 'kv'})
+    s.registered_wibar_widgets = setmetatable({}, {__mode = 'kv'})
 
     local fg_wibar_widgets
 
@@ -98,10 +98,17 @@ module.gen_wibar_widgets = function(s, widgets, widgets_args)
     return s.wibar_widget_containers
 end
 module.unregister_wibar_widgets = function(s)
-    for _, w in ipairs(s.registered_wibar_widgets) do vicious.unregister(w) end
-    s.activate_wibar_widgets = nil
+    for i, w in ipairs(s.registered_wibar_widgets) do
+        vicious.unregister(w)
+        table.remove(s.registered_wibar_widgets, i)
+    end
     s.registered_wibar_widgets = nil
+    for i, c in ipairs(s.wibar_widget_containers) do
+        c:reset()
+        table.remove(s.wibar_widget_containers, i)
+    end
     s.wibar_widget_containers = nil
+    s.activate_wibar_widgets = nil
     s.set_wibar_widget_opacity = nil
     s.suspend_wibar_widgets = nil
     s.toggle_wibar_widgets = nil
