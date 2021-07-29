@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-07-22 10:17:22 (Marcel Arpogaus)
+-- @Changed: 2021-07-29 15:11:02 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -52,43 +52,41 @@ local config = utils.load_config()
 require('awful.autofocus')
 
 -- [ initialization ] ----------------------------------------------------------
--- error handling
+-- Initialize error handling
 error_handling.init()
 
--- tags
+-- Initialize tags
 tags.init(config.tagnames)
 
--- layouts
+-- Initialize layouts
 layouts.init(config.layouts)
 
--- theme
+-- Initialize theme
 theme.init(config.theme)
 
--- assets
+-- Initialize assets
 assets.init(config.assets)
 
--- wibars and widgest
+-- Initialize wibars and widgest
 decorations.init(config.decorations)
 
--- menus
+-- Initialize menus
 menus.init(config.menus, config.applications)
 
--- mouse bindings
+-- Initialize mouse bindings
 mouse_bindings.init(config.bindings, menus.mainmenu)
 
--- key bindings
+-- Initialize key bindings
 key_bindings.init(config.bindings, config.applications, menus.mainmenu)
 
--- behavior
-behavior.init(config.behavior, mouse_bindings.client_buttons,
-              key_bindings.client_keys)
-
--- wibars and widgets
+-- Initialize Screens
 screen.init(config.screen, tags.tagnames, mouse_bindings.taglist_buttons,
             mouse_bindings.tasklist_buttons, menus.mainmenu, menus.exitmenu)
-for _, d in ipairs(decorations.get()) do
-  screen.register(d)
-end
+for _, d in ipairs(decorations.get()) do screen.register(d) end
+
+-- Initialize behavior
+behavior.init(config.behavior, mouse_bindings.client_buttons,
+              key_bindings.client_keys)
 
 -- Initialize revelation
 revelation.init()

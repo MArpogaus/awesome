@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 16:02:46 (Marcel Arpogaus)
--- @Changed: 2021-07-28 16:32:14 (Marcel Arpogaus)
+-- @Changed: 2021-07-29 15:25:05 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -22,6 +22,9 @@ local wibox = require('wibox')
 
 -- Theme handling library
 local beautiful = require('beautiful')
+
+-- screen module
+local screen = require('rc.screen')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -104,6 +107,12 @@ module.init = function(config)
             ['unfocus'] = function(c)
                 c.border_color = beautiful.border_normal
             end
+        },
+        -- signal handlers for screens
+        screen = {
+            -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
+            ['property::geometry'] = screen.update,
+            ['removed'] = screen.remove
         }
     }
 

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 13:55:07 (Marcel Arpogaus)
--- @Changed: 2021-07-28 14:55:00 (Marcel Arpogaus)
+-- @Changed: 2021-07-29 15:13:28 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -11,7 +11,7 @@
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- grab environment
-local capi = {client = client, tag = tag}
+local capi = {client = client, screen = screen, tag = tag}
 
 local awful = require('awful')
 local gears = require('gears')
