@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-19 15:38:22 (Marcel Arpogaus)
--- @Changed: 2021-07-28 16:44:09 (Marcel Arpogaus)
+-- @Changed: 2021-07-29 18:19:26 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -82,10 +82,10 @@ module.init = function()
         cs.colors[2],
         cs.colors[3],
         cs.colors[4],
+        cs.colors[10],
         cs.colors[6],
         cs.colors[5],
-        cs.colors[7],
-        cs.colors[10]
+        cs.colors[7]
     }
     theme.fg_wibar_widgets_clock = cs.colors[4]
     theme.fg_wibar_widgets_calendar = cs.colors[16]
