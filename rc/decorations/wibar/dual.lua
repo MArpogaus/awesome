@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-07-28 14:45:42 (Marcel Arpogaus)
+-- @Changed: 2021-08-01 13:09:51 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -121,6 +121,8 @@ module.init = function(config, widgets_args)
         end,
         unregister_fn = function(s)
             utils.unregister_wibar_widgets(s)
+
+            s.systray = nil
 
             s.mytopwibar.widget:reset()
             s.mytopwibar:remove()
