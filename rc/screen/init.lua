@@ -13,7 +13,7 @@ local layout_popup = require('rc.screen.layout_popup')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
-local update_screen
+local init_screen
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(
@@ -45,8 +45,9 @@ module.init = function(
         end
     end
 
+    -- Enable the automatic calculation of the screen DPI (experimental).
     awful.screen.set_auto_dpi_enabled(config.auto_dpi)
-    update_screen = function(s)
+    init_screen = function(s)
         -- Each screen has its own tag table.
         awful.tag(tagnames, s,
                   awful.layout.default[s.index] or awful.layout.layouts[1])
@@ -118,7 +119,6 @@ module.init = function(
         end
 
         s.reset = function(soft)
-
             if s.layout_popup then
                 layout_popup.reset(s.layout_popup, s.layoutbox)
                 s.layout_popup = nil
@@ -147,7 +147,7 @@ module.init = function(
 
         s.init()
     end
-    awful.screen.connect_for_each_screen(update_screen)
+    awful.screen.connect_for_each_screen(init_screen)
 end
 module.register = function(decoration)
     awful.screen.connect_for_each_screen(decoration.register)
