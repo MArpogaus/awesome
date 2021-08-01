@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 15:12:05 (Marcel Arpogaus)
--- @Changed: 2021-07-28 15:20:25 (Marcel Arpogaus)
+-- @Changed: 2021-08-01 11:42:13 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -90,6 +90,9 @@ module.bindings = {
 
 -- screen
 module.screen = {auto_dpi = true, tasklist = 'default'}
+
+-- autostart
+module.autostart = {}
 
 -- [ return module ] -----------------------------------------------------------
 return module

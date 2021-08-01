@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-07-28 14:54:09 (Marcel Arpogaus)
+-- @Changed: 2021-08-01 13:21:01 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,7 +23,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
-local capi = {screen = screen, client = client}
+local capi = {screen = screen, client = client, awesome = awesome}
 
 -- Standard awesome library
 local awful = require('awful')
@@ -83,9 +83,13 @@ local function set_xconf(property, value, sleep)
     if sleep then xconf = string.format('sleep %.1f && %s', sleep, xconf) end
     awful.spawn.with_shell(xconf)
 end
-local function set_color_scheme(_, _) error('not implemented') end
 
 -- [ module functions ] --------------------------------------------------------
+function module.xrdb_set_value(key, value)
+    awful.spawn
+        .with_shell(string.format('xrdb -merge <<< "%s:%s"', key, value))
+end
+
 -- Load configuration file
 function module.load_config(config_file)
     local config = require('rc.defaults')
@@ -97,6 +101,7 @@ function module.load_config(config_file)
 end
 function module.sleep(n) os.execute('sleep ' .. tonumber(n)) end
 
+-- deep merge two tables
 function module.deep_merge(t1, t2, max_level)
     if max_level == nil then max_level = 5 end
     for k, v in pairs(t2) do
@@ -360,6 +365,14 @@ function module.inc_dpi(inc)
 end
 function module.dec_dpi(dec) module.inc_dpi(-dec) end
 
+-- https://github.com/awesomeWM/awesome/blob/7a8fa9d27a7907ab81e60274c925ba65d10015aa/lib/awful/screen/dpi.lua#L228
+function module.get_xft_dpi()
+    local xft_dpi = tonumber(capi.awesome.xrdb_get_value('', 'Xft.dpi')) or
+                        false
+
+    return xft_dpi
+end
+
 -- manage widgets
 function module.update_widgets()
     for s in capi.screen do s.update_decorations() end
@@ -376,11 +389,6 @@ function module.toggle_desktop_widget_visibility()
         end
     end
 end
-
--- change colorschemes
-function module.set_dark() set_color_scheme('dark', 'flattrcolor') end
-function module.set_mirage() set_color_scheme('mirage', 'flattrcolor') end
-function module.set_light() set_color_scheme('light', 'flattrcolor-dark') end
 
 function module.update_theme()
     -- rc modules

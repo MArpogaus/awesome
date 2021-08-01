@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-07-29 15:11:02 (Marcel Arpogaus)
+-- @Changed: 2021-08-01 14:00:49 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -23,9 +23,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
--- Standard awesome library
-local awful = require('awful')
-
 -- rc modules
 local assets = require('rc.assets')
 local behavior = require('rc.behavior')
@@ -38,6 +35,7 @@ local mouse_bindings = require('rc.mouse_bindings')
 local screen = require('rc.screen')
 local tags = require('rc.tags')
 local theme = require('rc.theme')
+local startup = require('rc.startup')
 
 -- heper functions
 local utils = require('rc.utils')
@@ -55,41 +53,41 @@ require('awful.autofocus')
 -- Initialize error handling
 error_handling.init()
 
--- Initialize tags
-tags.init(config.tagnames)
+-- Initialize the session
+startup.init(config.autostart, function()
+    -- Initialize tags
+    tags.init(config.tagnames)
 
--- Initialize layouts
-layouts.init(config.layouts)
+    -- Initialize layouts
+    layouts.init(config.layouts)
 
--- Initialize theme
-theme.init(config.theme)
+    -- Initialize theme
+    theme.init(config.theme)
 
--- Initialize assets
-assets.init(config.assets)
+    -- Initialize assets
+    assets.init(config.assets)
 
--- Initialize wibars and widgest
-decorations.init(config.decorations)
+    -- Initialize wibars and widgest
+    decorations.init(config.decorations)
 
--- Initialize menus
-menus.init(config.menus, config.applications)
+    -- Initialize menus
+    menus.init(config.menus, config.applications)
 
--- Initialize mouse bindings
-mouse_bindings.init(config.bindings, menus.mainmenu)
+    -- Initialize mouse bindings
+    mouse_bindings.init(config.bindings, menus.mainmenu)
 
--- Initialize key bindings
-key_bindings.init(config.bindings, config.applications, menus.mainmenu)
+    -- Initialize key bindings
+    key_bindings.init(config.bindings, config.applications, menus.mainmenu)
 
--- Initialize Screens
-screen.init(config.screen, tags.tagnames, mouse_bindings.taglist_buttons,
-            mouse_bindings.tasklist_buttons, menus.mainmenu, menus.exitmenu)
-for _, d in ipairs(decorations.get()) do screen.register(d) end
+    -- Initialize Screens
+    screen.init(config.screen, tags.tagnames, mouse_bindings.taglist_buttons,
+                mouse_bindings.tasklist_buttons, menus.mainmenu, menus.exitmenu)
+    for _, d in ipairs(decorations.get()) do screen.register(d) end
 
--- Initialize behavior
-behavior.init(config.behavior, mouse_bindings.client_buttons,
-              key_bindings.client_keys)
+    -- Initialize behavior
+    behavior.init(config.behavior, mouse_bindings.client_buttons,
+                  key_bindings.client_keys)
 
--- Initialize revelation
-revelation.init()
-
--- [ autorun programs ] --------------------------------------------------------
-awful.spawn.with_shell('~/.config/awesome/autorun.sh')
+    -- Initialize revelation
+    revelation.init()
+end)
