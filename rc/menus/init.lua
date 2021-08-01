@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:54 (Marcel Arpogaus)
--- @Changed: 2021-07-22 10:08:50 (Marcel Arpogaus)
+-- @Changed: 2021-08-01 11:45:30 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -76,7 +76,7 @@ module.init = function(config, applications)
         },
         {
             'quit',
-            capi.awesome.quit,
+            function() capi.awesome.quit() end,
             menubar.utils.lookup_icon('system-log-out')
         }
     }
