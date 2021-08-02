@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-08-01 14:00:49 (Marcel Arpogaus)
+-- @Changed: 2021-08-02 08:20:06 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -35,7 +35,7 @@ local mouse_bindings = require('rc.mouse_bindings')
 local screen = require('rc.screen')
 local tags = require('rc.tags')
 local theme = require('rc.theme')
-local startup = require('rc.startup')
+local session = require('rc.session')
 
 -- heper functions
 local utils = require('rc.utils')
@@ -54,7 +54,7 @@ require('awful.autofocus')
 error_handling.init()
 
 -- Initialize the session
-startup.init(config.autostart, function()
+session.init(config.session, function()
     -- Initialize tags
     tags.init(config.tagnames)
 
