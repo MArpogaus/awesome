@@ -86,9 +86,9 @@ module.init = function(
 
             -- Create a tasklist widget
             s.tasklist = utils.require_submodule('screen/tasklist',
-                                                 config.tasklist, true).init(s,
-                                                                             tasklist_buttons[config.tasklist] or
-                                                                                 tasklist_buttons.default)
+                                                 config.tasklist).init(s,
+                                                                       tasklist_buttons[config.tasklist] or
+                                                                           tasklist_buttons.default)
 
             -- menus
             if mainmenu then
