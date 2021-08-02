@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-01 10:55:49 (Marcel Arpogaus)
--- @Changed: 2021-08-02 08:19:47 (Marcel Arpogaus)
+-- @Changed: 2021-08-02 09:08:04 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -35,13 +35,14 @@ module.init = function(config, callback)
     local xrdb_key = 'awesome.started'
     local environment = config.environment
     local autostart = config.autostart or {}
+    local startup_dalay = config.startup_delay or 0.3
     if not capi.awesome.xrdb_get_value('', xrdb_key) then
         desktop_entry_execution(environment)
         for _, p in ipairs(autostart) do awful.spawn.with_shell(p) end
         utils.xrdb_set_value(xrdb_key, 'true')
-        awful.spawn.easy_async_with_shell('sleep 0.2', function()
-            capi.awesome.restart()
-        end)
+        awful.spawn.easy_async_with_shell(
+            string.format('sleep %.1f', startup_dalay),
+            function() capi.awesome.restart() end)
     else
         callback()
     end
