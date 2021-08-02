@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-08-01 13:21:01 (Marcel Arpogaus)
+-- @Changed: 2021-08-02 08:43:21 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -267,16 +267,19 @@ function module.fork_tag()
     t2:clients(clients)
     t2:view_only()
 end
+function module.get_screen(i)
+    local sc = capi.screen.count()
+    if i > sc then i = 1 end
 
+    return capi.screen[i]
+end
 function module.move_to_screen(c)
     if not c then return end
 
-    local sc = capi.screen.count()
     local s = c.screen.index + 1
-    if s > sc then s = 1 end
 
     local s1 = awful.screen.focused()
-    local s2 = capi.screen[s]
+    local s2 = module.get_screen(s)
 
     if s1 == s2 then return end
 
