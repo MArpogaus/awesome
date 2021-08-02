@@ -1,9 +1,9 @@
 -- [ author ] -*- time-stamp-pattern: "@Changed[\s]?:[\s]+%%$"; -*- ------------
--- @File   : tasklist.lua
+-- @File   : default.lua
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-21 18:27:36 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-08-02 15:58:00 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -33,16 +33,7 @@ local beautiful = require('beautiful')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.default = function(s, tasklist_buttons)
-    local tasklist = awful.widget.tasklist {
-        screen = s,
-        filter = awful.widget.tasklist.filter.currenttags,
-        buttons = tasklist_buttons
-    }
-    return tasklist
-end
-
-module.windows = function(s, tasklist_buttons)
+module.init = function(s, tasklist_buttons)
     local tasklist = awful.widget.tasklist {
         screen = s,
         filter = awful.widget.tasklist.filter.currenttags,

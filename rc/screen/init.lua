@@ -7,9 +7,11 @@ local awful = require('awful')
 local beautiful = require('beautiful')
 local menubar = require('menubar')
 
--- rc modules
-local tasklist = require('rc.screen.tasklist')
+-- layout popup
 local layout_popup = require('rc.screen.layout_popup')
+
+-- helper functions
+local utils = require('rc.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -83,8 +85,10 @@ module.init = function(
             }
 
             -- Create a tasklist widget
-            s.tasklist = tasklist[config.tasklist](s,
-                                                   tasklist_buttons[config.tasklist])
+            s.tasklist = utils.require_submodule('screen/tasklist',
+                                                 config.tasklist, true).init(s,
+                                                                             tasklist_buttons[config.tasklist] or
+                                                                                 tasklist_buttons.default)
 
             -- menus
             if mainmenu then
