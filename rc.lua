@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-08-02 08:20:06 (Marcel Arpogaus)
+-- @Changed: 2021-08-09 08:40:34 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -23,6 +23,9 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
+-- helper functions
+local utils = require('rc.utils')
+
 -- rc modules
 local assets = require('rc.assets')
 local behavior = require('rc.behavior')
@@ -37,14 +40,11 @@ local tags = require('rc.tags')
 local theme = require('rc.theme')
 local session = require('rc.session')
 
--- heper functions
-local utils = require('rc.utils')
+-- configuration file
+local config = utils.load_config()
 
 -- Mac OSX like 'Expose' view of all clients.
 local revelation = require('revelation')
-
--- configuration file
-local config = utils.load_config()
 
 -- ensure that there's always a client that has focus
 require('awful.autofocus')
@@ -80,8 +80,7 @@ session.init(config.session, function()
     key_bindings.init(config.bindings, config.applications, menus.mainmenu)
 
     -- Initialize Screens
-    screen.init(config.screen, tags.tagnames, mouse_bindings.taglist_buttons,
-                mouse_bindings.tasklist_buttons, menus.mainmenu, menus.exitmenu)
+    screen.init(config.screen, tags.tagnames)
     for _, d in ipairs(decorations.get()) do screen.register(d) end
 
     -- Initialize behavior

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-21 18:27:36 (Marcel Arpogaus)
--- @Changed: 2021-08-02 15:57:47 (Marcel Arpogaus)
+-- @Changed: 2021-08-08 16:31:48 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,21 +23,31 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
+local abstract_decoration = require('rc.decorations.abstract_decoration')
 local awful = require('awful')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(s, tasklist_buttons)
-    local tasklist = awful.widget.tasklist {
-        screen = s,
-        filter = awful.widget.tasklist.filter.currenttags,
-        buttons = tasklist_buttons
+module.init = function()
+    return abstract_decoration.new {
+        register_fn = function(s, tasklist_buttons)
+            local tasklist = awful.widget.tasklist {
+                screen = s,
+                filter = awful.widget.tasklist.filter.currenttags,
+                buttons = tasklist_buttons
+            }
+            return tasklist
+        end,
+        unregister_fn = function()
+            -- code
+        end,
+        update_fn = function()
+            -- code
+        end
     }
-    return tasklist
 end
 
 -- [ return module ] -----------------------------------------------------------
 return module
-

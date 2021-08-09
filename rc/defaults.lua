@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 15:12:05 (Marcel Arpogaus)
--- @Changed: 2021-08-02 08:21:09 (Marcel Arpogaus)
+-- @Changed: 2021-08-09 08:42:54 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -59,7 +59,14 @@ module.theme = {}
 
 -- decorations
 module.decorations = {
-    wibar = {'default'},
+    wibar = {
+        default = {
+            position = 'top',
+            left = {'default_taglist', 'promptbox'},
+            middle = {'tasklist'},
+            right = {'keyboardlayout', 'systray', 'widgets', 'layout'}
+        }
+    },
     desktop = {},
     -- widgets
     widgets_args = {}

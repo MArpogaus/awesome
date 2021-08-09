@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 11:32:32 (Marcel Arpogaus)
--- @Changed: 2021-02-04 09:40:48 (Marcel Arpogaus)
+-- @Changed: 2021-08-09 08:48:34 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -31,27 +31,24 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 module.new = function(def)
     local decoration = {}
-    decoration.unregister = function(s)
-        if not s.decorations[decoration] then
+    decoration.unregister = function(container, s)
+        if not container[decoration] then
             gears.debug.print_warning(
                 'cant unregister: decoration not registered on this screen.')
         else
-            def.unregister_fn(s)
-            s.decorations[decoration] = nil
+            local ret = def.unregister_fn(s)
+            container[decoration] = nil
+            return ret
         end
     end
-    decoration.register = function(s)
-        if not s.decorations then
-            error('screen initialized: call screen.init() first')
+    decoration.register = function(container, s)
+        if container[decoration] then
+            gears.debug.print_warning('cant register:' ..
+                                          'decoration is already registered on this screen.')
         else
-            if s.decorations[decoration] then
-                gears.debug.print_warning(
-                    'cant register:' ..
-                        'decoration is already registered on this screen.')
-            else
-                s.decorations[decoration] = true
-                def.register_fn(s)
-            end
+            local ret = def.register_fn(s)
+            container[decoration] = true
+            return ret
         end
     end
     decoration.update = function(s)

@@ -5,10 +5,6 @@ local capi = {client = client, screen = screen}
 local gears = require('gears')
 local awful = require('awful')
 local beautiful = require('beautiful')
-local menubar = require('menubar')
-
--- layout popup
-local layout_popup = require('rc.screen.layout_popup')
 
 -- helper functions
 local utils = require('rc.utils')
@@ -18,9 +14,7 @@ local module = {}
 local init_screen
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(
-    config, tagnames, taglist_buttons, tasklist_buttons, mainmenu, exitmenu
-)
+module.init = function(config, tagnames)
 
     module.set_wallpaper = function(s)
         local wallpaper = config.wallpaper or beautiful.wallpaper
@@ -66,77 +60,28 @@ module.init = function(
             -- Create a promptbox for each screen
             s.promptbox = awful.widget.prompt()
 
-            -- Create an imagebox widget which will contain an icon indicating which layout we're using.
-            -- We need one layoutbox per screen.
-            s.layoutbox = awful.widget.layoutbox(s)
-            s.layout_popup = layout_popup.init(s.layoutbox)
-            s.layoutbox:buttons(gears.table.join(
-                awful.button({}, 4, function()
-                    awful.layout.inc(1)
-                end), awful.button({}, 5, function()
-                    awful.layout.inc(-1)
-                end)))
-
-            -- Create a taglist widget
-            s.taglist = awful.widget.taglist {
-                screen = s,
-                filter = awful.widget.taglist.filter.all,
-                buttons = taglist_buttons
-            }
-
-            -- Create a tasklist widget
-            s.tasklist = utils.require_submodule('screen/tasklist',
-                                                 config.tasklist).init(s,
-                                                                       tasklist_buttons[config.tasklist] or
-                                                                           tasklist_buttons.default)
-
-            -- menus
-            if mainmenu then
-                s.mainmenu = awful.widget.launcher(
-                    {image = beautiful.awesome_icon, menu = mainmenu})
-            end
-            if exitmenu then
-                s.exitmenu = awful.widget.launcher(
-                    {
-                        image = beautiful.exitmenu_icon or
-                            menubar.utils.lookup_icon('system-shutdown'),
-                        menu = exitmenu
-                    })
-            end
         end
 
         -- Dynamic widget management
         s.decorations = {}
-
         s.update_decorations = function()
             for e, _ in pairs(s.decorations) do e.update(s) end
         end
         s.unregister_decorations = function()
-            for e, _ in pairs(s.decorations) do e.unregister(s) end
-        end
-        s.reregister_decorations = function()
             for e, _ in pairs(s.decorations) do
-                e.unregister(s)
-                e.register(s)
+                e.unregister(s.decorations, s)
+            end
+        end
+        local reregister_decorations = function()
+            for e, _ in pairs(s.decorations) do
+                e.unregister(s.decorations, s)
+                e.register(s.decorations, s)
                 e.update(s)
             end
         end
 
         s.reset = function(soft)
-            if s.layout_popup then
-                layout_popup.reset(s.layout_popup, s.layoutbox)
-                s.layout_popup = nil
-            end
-            if s.layoutbox then
-                s.layoutbox:remove()
-                s.layoutbox = nil
-            end
             if s.promptbox then s.promptbox = nil end
-            if s.taglist then
-                s.taglist:reset()
-                s.taglist:remove()
-                s.taglist = nil
-            end
 
             if not soft then s.unregister_decorations() end
             collectgarbage()
@@ -153,12 +98,16 @@ module.init = function(
     end
     awful.screen.connect_for_each_screen(init_screen)
 end
+
+local register_decortion = function(decoration)
+    return function(s) decoration.register(s.decorations, s) end
+end
 module.register = function(decoration)
-    awful.screen.connect_for_each_screen(decoration.register)
+    awful.screen.connect_for_each_screen(register_decortion(decoration))
 end
 module.unregister = function(decoration)
-    awful.screen.disconnect_for_each_screen(decoration.register)
-    for s in capi.screen do decoration.unregister(s) end
+    awful.screen.disconnect_for_each_screen(register_decortion(decoration))
+    for s in capi.screen do decoration.unregister(s.decorations, s) end
 end
 module.update = function(s)
     s.reset(true)
