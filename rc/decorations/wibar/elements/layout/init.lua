@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-08 16:17:12 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-08-09 15:28:17 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -13,23 +13,24 @@
 local awful = require('awful')
 local gears = require('gears')
 
-local abstract_decoration = require('rc.decorations.abstract_decoration')
-local layout_popup = require('rc.decorations.wibar.elements.layout_popup')
+local abstract_element = require('rc.decorations.abstract_element')
+local layout_popup = require('rc.decorations.wibar.elements.layout.popup')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
-    local add_layout_popup = config.add_layout_popup or false
-    return abstract_decoration.new {
+    local use_popup = config.use_popup or false
+    local layoutbox, popup
+    return abstract_element.new {
         register_fn = function(s)
             -- Create an imagebox widget which will contain an icon indicating which layout we're using.
             -- We need one layoutbox per screen.
-            s.layoutbox = awful.widget.layoutbox(s)
-            if add_layout_popup then
-                s.layout_popup = layout_popup.init(s.layoutbox)
-                s.layoutbox:buttons(gears.table.join(
+            layoutbox = awful.widget.layoutbox(s)
+            if use_popup then
+                popup = layout_popup.init(layoutbox)
+                layoutbox:buttons(gears.table.join(
                     awful.button({}, 4, function()
                         awful.layout.inc(1)
                     end),
@@ -37,13 +38,14 @@ module.init = function(config)
                         awful.layout.inc(-1)
                     end)))
             end
+            return layoutbox
         end,
-        unregister_fn = function(s)
-            s.layoutbox:remove()
-            s.layoutbox = nil
-            if add_layout_popup then
-                layout_popup.reset(s.layout_popup, s.layoutbox)
-                s.layout_popup = nil
+        unregister_fn = function(_)
+            layoutbox:remove()
+            layoutbox = nil
+            if use_popup then
+                popup.reset(layout_popup, layoutbox)
+                popup = nil
             end
         end
     }

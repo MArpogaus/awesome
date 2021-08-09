@@ -1,9 +1,9 @@
 -- [ author ] -*- time-stamp-pattern: "@Changed[\s]?:[\s]+%%$"; -*- ------------
--- @File   : abstract_decoration.lua
+-- @File   : abstract_element.lua
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 11:32:32 (Marcel Arpogaus)
--- @Changed: 2021-08-09 13:31:15 (Marcel Arpogaus)
+-- @Changed: 2021-08-09 15:27:51 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,26 +23,42 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
-local abstract_element = require('rc.decorations.abstract_element')
+local gears = require('gears')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.new = function(def)
-    local element = abstract_element.new(def)
-    local decoration = setmetatable({}, element)
-    decoration.unregister = function(s)
-        return element.unregister(s.decorations, s)
-    end
-    decoration.register = function(s)
-        if not s.decorations then
-            error('screen not initialized: call screen.init() first')
+    local element = {}
+    element.unregister = function(elements, s)
+        if not elements[element] then
+            gears.debug.print_warning(
+                'cant unregister: element not registered on this screen.')
         else
-            return element.register(s.decorations, s)
+            local ret = def.unregister_fn(s)
+            elements[element] = nil
+            return ret
         end
     end
-    return decoration
+    element.register = function(elements, s)
+        if elements[element] then
+            gears.debug.print_warning('cant register:' ..
+                                          'element is already registered on this screen.')
+        else
+            local ret = def.register_fn(s)
+            elements[element] = true
+            return ret
+        end
+    end
+    element.update = function(s)
+        if def.update_fn then
+            def.update_fn(s)
+        else
+            gears.debug.print_warning('no update_fn provided')
+        end
+    end
+    return element
 end
 
 -- [ return module ] -----------------------------------------------------------

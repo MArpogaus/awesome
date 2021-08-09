@@ -3,30 +3,29 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-08 15:42:38 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-08-09 14:47:17 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
 -- ...
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
-local abstract_decoration = require('rc.decorations.abstract_decoration')
+local awful = require('awful')
+
+local abstract_element = require('rc.decorations.abstract_element')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function()
-    return abstract_decoration.new {
-        register_fn = function()
-            -- code
+    return abstract_element.new {
+        register_fn = function(s)
+            -- Create a promptbox for each screen
+            s.promptbox = awful.widget.prompt()
+            return s.promptbox
         end,
-        unregister_fn = function()
-            -- code
-        end,
-        update_fn = function()
-            -- code
-        end
+        unregister_fn = function(s) s.promptbox = nil end
     }
 end
 

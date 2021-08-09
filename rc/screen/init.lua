@@ -6,9 +6,6 @@ local gears = require('gears')
 local awful = require('awful')
 local beautiful = require('beautiful')
 
--- helper functions
-local utils = require('rc.utils')
-
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 local init_screen
@@ -50,7 +47,7 @@ module.init = function(config, tagnames)
 
         s.init = function()
             -- prevent multiple runs
-            if s.taglist then return end
+            if s.promptbox then return end
 
             if config.dpi then s.dpi = config.dpi end
 
@@ -68,14 +65,12 @@ module.init = function(config, tagnames)
             for e, _ in pairs(s.decorations) do e.update(s) end
         end
         s.unregister_decorations = function()
-            for e, _ in pairs(s.decorations) do
-                e.unregister(s.decorations, s)
-            end
+            for e, _ in pairs(s.decorations) do e.unregister(s) end
         end
-        local reregister_decorations = function()
+        s.reregister_decorations = function()
             for e, _ in pairs(s.decorations) do
-                e.unregister(s.decorations, s)
-                e.register(s.decorations, s)
+                e.unregister(s)
+                e.register(s)
                 e.update(s)
             end
         end
@@ -98,16 +93,12 @@ module.init = function(config, tagnames)
     end
     awful.screen.connect_for_each_screen(init_screen)
 end
-
-local register_decortion = function(decoration)
-    return function(s) decoration.register(s.decorations, s) end
-end
 module.register = function(decoration)
-    awful.screen.connect_for_each_screen(register_decortion(decoration))
+    awful.screen.connect_for_each_screen(decoration.register)
 end
 module.unregister = function(decoration)
-    awful.screen.disconnect_for_each_screen(register_decortion(decoration))
-    for s in capi.screen do decoration.unregister(s.decorations, s) end
+    awful.screen.disconnect_for_each_screen(decoration.register)
+    for s in capi.screen do decoration.unregister(s) end
 end
 module.update = function(s)
     s.reset(true)

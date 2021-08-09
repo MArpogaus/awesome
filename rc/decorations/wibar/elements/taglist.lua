@@ -14,7 +14,7 @@ local awful = require('awful')
 
 local mouse_bindings = require('rc.mouse_bindings')
 
-local abstract_decoration = require('rc.decorations.abstract_decoration')
+local abstract_element = require('rc.decorations.abstract_element')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -23,7 +23,7 @@ local module = {}
 module.init = function()
     local taglist
 
-    return abstract_decoration.new {
+    return abstract_element.new {
         register_fn = function(s)
             -- Create a taglist widget
             taglist = awful.widget.taglist {

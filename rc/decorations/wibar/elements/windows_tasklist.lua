@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-21 18:27:36 (Marcel Arpogaus)
--- @Changed: 2021-08-08 16:34:50 (Marcel Arpogaus)
+-- @Changed: 2021-08-09 14:42:53 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -31,19 +31,19 @@ local beautiful = require('beautiful')
 
 local mouse_bindings = require('rc.mouse_bindings')
 
-local abstract_decoration = require('rc.decorations.abstract_decoration')
+local abstract_element = require('rc.decorations.abstract_element')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function()
-    return abstract_decoration.new {
+    return abstract_element.new {
         register_fn = function(s)
             local tasklist = awful.widget.tasklist {
                 screen = s,
                 filter = awful.widget.tasklist.filter.currenttags,
-                buttons = mouse_bindings.tasklist_buttons,
+                buttons = mouse_bindings.tasklist_buttons.windows,
                 layout = {
                     spacing = beautiful.systray_icon_spacing,
                     layout = wibox.layout.fixed.horizontal

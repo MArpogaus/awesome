@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-08-09 08:47:24 (Marcel Arpogaus)
+-- @Changed: 2021-08-09 15:05:57 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -35,28 +35,20 @@ local utils = require('rc.utils')
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
-local gen_element = {
-    mainmenu = function(_) end,
-    taglist = function(_) end,
-    promptbox = function(_) end,
-    tasklist = function(_) end,
-    keyboardlayout = function(_) end,
-    systray = function(_) end,
-    widgets = function(_) end
-}
-
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config, widgets_args)
+module.init = function(config)
+    local wibar
     local wibar_elements = {}
 
     local position = config.position or 'top'
+    local layout = 'horizontal'
 
-    local left_widgets = config.left
-    local middle_widgets = config.middle
-    local right_widgets = config.right
+    local elements = config.elements or {
+        {'menu', 'taglist', 'promptbox'}, -- left
+        {'default_tasklist'}, -- middle
+        {'keyboardlayout', 'systray', 'widgets', 'layout'} -- right
+    }
 
-    local layouts = wibox.layout.fixed.horizontal
-    local mykeyboardlayout = awful.widget.keyboardlayout()
     local decoration = abstract_decoration.new {
         register_fn = function(s)
             if config.screens and
@@ -64,69 +56,34 @@ module.init = function(config, widgets_args)
                 return
             end
             -- Create the wibox
-            s.mywibar = awful.wibar({position = position, screen = s})
-
-            -- menus
-            -- if mainmenu then
-            --     s.mainmenu = awful.widget.launcher(
-            --         {image = beautiful.awesome_icon, menu = mainmenu})
-            -- end
-            -- if exitmenu then
-            --     s.exitmenu = awful.widget.launcher(
-            --         {
-            --             image = beautiful.exitmenu_icon or
-            --                 menubar.utils.lookup_icon('system-shutdown'),
-            --             menu = exitmenu
-            --         })
-            -- end
+            wibar = awful.wibar({position = position, screen = s})
 
             -- Add widgets to the wibox
-            local left_widget_container = {}
-            left_widget_container.layout = layouts
-            for d, cfg in utils.value_with_cfg(left) do
-                -- local w = utils.require_submodule(
-                --               'rc/decorations/wibar/elements', d).init(cfg)
-                --               .register(wibar_elements, s)
-                -- table.insert(left_widget_container, w)
-            end
-            table.insert(left_widget_container, s.promptbox)
-
-            local middle_widget_container = {}
-            middle_widget_container.layout = layouts
-            for d, cfg in utils.value_with_cfg(middle) do
-                -- local w = utils.require_submodule(
-                --               'rc/decorations/wibar/elements', d).init(cfg)
-                --               .register(wibar_elements, s)
-                -- table.insert(middle_widget_container, w)
-            end
-
-            local right_widget_container = {}
-            right_widget_container.layout = layouts
-            for d, cfg in utils.value_with_cfg(right) do
-                -- local w = utils.require_submodule(
-                --               'rc/decorations/wibar/elements', d).init(cfg)
-                --               .register(wibar_elements, s)
-                -- table.insert(right_widget_container, w)
+            local wibar_args = {layout = wibox.layout.align[layout]}
+            for _, p in ipairs(elements) do
+                local widget_container = {layout = wibox.layout.fixed[layout]}
+                for d, cfg in utils.value_with_cfg(p) do
+                    local w = utils.require_submodule(
+                                  'decorations/wibar/elements', d).init(cfg)
+                                  .register(wibar_elements, s)
+                    table.insert(widget_container, w)
+                end
+                table.insert(wibar_args, widget_container)
             end
 
             -- Add widgets to the wibox
-            s.mywibar:setup{
-                layout = layouts,
-                left_widget_container, -- Left widgets
-                middle_widget_container, -- Middle widget
-                right_widget_container -- Right widgets
-            }
+            wibar:setup(wibar_args)
+            s[position .. 'wibar'] = wibar
         end,
         unregister_fn = function(s)
             for _, d in pairs(wibar_elements) do
                 d.unregister(wibar_elements, s)
             end
 
-            s.mywibar.widget:reset()
-            s.mywibar:remove()
-            s.mywibar = nil
-        end,
-        update_fn = function(s) utils.update_wibar_widgets(s) end
+            wibar.widget:reset()
+            wibar:remove()
+            wibar = nil
+        end
     }
     return decoration
 end
