@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-08 15:41:47 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 08:36:53 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -20,11 +20,11 @@ local abstract_element = require('rc.decorations.abstract_element')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function()
+module.init = function(s, _)
     local taglist
 
     return abstract_element.new {
-        register_fn = function(s)
+        register_fn = function(_)
             -- Create a taglist widget
             taglist = awful.widget.taglist {
                 screen = s,

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 11:32:32 (Marcel Arpogaus)
--- @Changed: 2021-08-09 15:27:51 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 08:20:09 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -31,29 +31,29 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 module.new = function(def)
     local element = {}
-    element.unregister = function(elements, s)
-        if not elements[element] then
+    element.unregister = function(elements_container, args)
+        if not elements_container[element] then
             gears.debug.print_warning(
                 'cant unregister: element not registered on this screen.')
         else
-            local ret = def.unregister_fn(s)
-            elements[element] = nil
+            local ret = def.unregister_fn(args)
+            elements_container[element] = nil
             return ret
         end
     end
-    element.register = function(elements, s)
-        if elements[element] then
+    element.register = function(elements_container, args)
+        if elements_container[element] then
             gears.debug.print_warning('cant register:' ..
                                           'element is already registered on this screen.')
         else
-            local ret = def.register_fn(s)
-            elements[element] = true
+            local ret = def.register_fn(args)
+            elements_container[element] = true
             return ret
         end
     end
-    element.update = function(s)
+    element.update = function(args)
         if def.update_fn then
-            def.update_fn(s)
+            def.update_fn(args)
         else
             gears.debug.print_warning('no update_fn provided')
         end

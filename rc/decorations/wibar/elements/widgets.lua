@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-08 15:36:38 (Marcel Arpogaus)
--- @Changed: 2021-08-09 15:22:00 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 08:40:43 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -24,7 +24,7 @@ local abstract_element = require('rc.decorations.abstract_element')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config)
+module.init = function(_, config)
     local widgets = config.widgets or {wibox.widget.textclock()}
     local widgets_args = config.widgets_args or {}
     local layout = config.layout or wibox.layout.fixed.horizontal
@@ -32,7 +32,7 @@ module.init = function(config)
     local wibar_widget_containers = {layout = layout}
     local registered_wibar_widgets = setmetatable({}, {__mode = 'kv'})
     return abstract_element.new {
-        register_fn = function(s)
+        register_fn = function(wibar)
 
             local fg_wibar_widgets
 
@@ -63,7 +63,7 @@ module.init = function(config)
                     error('unknown widget type')
                 end
             end
-            s.set_wibar_widget_opacity =
+            wibar.wibar_widget_set_opacity =
                 function(opacity)
                     for _, w in ipairs(wibar_widget_containers) do
                         if w.has_registered_widgets then
@@ -72,31 +72,34 @@ module.init = function(config)
                         end
                     end
                 end
-            s.suspend_wibar_widgets = function()
-                for _, w in ipairs(registered_wibar_widgets) do
-                    vicious.unregister(w, true)
-                    s.set_wibar_widget_opacity(0.5)
+            wibar.wibar_widgets_suspend =
+                function()
+                    for _, w in ipairs(registered_wibar_widgets) do
+                        vicious.unregister(w, true)
+                        wibar.wibar_widget_set_opacity(0.5)
+                    end
                 end
-            end
-            s.activate_wibar_widgets = function()
-                for _, w in ipairs(registered_wibar_widgets) do
-                    vicious.activate(w)
-                    s.set_wibar_widget_opacity(1)
+            wibar.wibar_widgets_activate =
+                function()
+                    for _, w in ipairs(registered_wibar_widgets) do
+                        vicious.activate(w)
+                        wibar.wibar_widget_set_opacity(1)
+                    end
                 end
-            end
-            s.wibar_widgets_active = true
-            s.toggle_wibar_widgets = function()
-                if s.wibar_widgets_active then
-                    s.suspend_wibar_widgets()
-                else
-                    s.activate_wibar_widgets()
+            wibar.wibar_widgets_active = true
+            wibar.wibar_widgets_toggle =
+                function()
+                    if wibar.wibar_widgets_active then
+                        wibar.wibar_widgets_suspend()
+                    else
+                        wibar.wibar_widgets_activate()
+                    end
+                    wibar.wibar_widgets_active = not wibar.wibar_widgets_active
                 end
-                s.wibar_widgets_active = not s.wibar_widgets_active
-            end
             return wibar_widget_containers
 
         end,
-        unregister_fn = function(s)
+        unregister_fn = function(wibar)
             for i, w in ipairs(registered_wibar_widgets) do
                 vicious.unregister(w)
                 table.remove(registered_wibar_widgets, i)
@@ -107,11 +110,11 @@ module.init = function(config)
                 table.remove(wibar_widget_containers, i)
             end
             wibar_widget_containers = nil
-            s.activate_wibar_widgets = nil
-            s.set_wibar_widget_opacity = nil
-            s.suspend_wibar_widgets = nil
-            s.toggle_wibar_widgets = nil
-            s.wibar_widgets_active = nil
+            wibar.wibar_widgets_activate = nil
+            wibar.wibar_widget_set_opacity = nil
+            wibar.wibar_widgets_suspend = nil
+            wibar.wibar_widgets_toggle = nil
+            wibar.wibar_widgets_active = nil
         end,
         update_fn = function(_) vicious.force(registered_wibar_widgets) end
     }

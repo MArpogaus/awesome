@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-09 13:38:17 (Marcel Arpogaus)
--- @Changed: 2021-08-09 15:28:07 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 08:35:53 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -18,7 +18,7 @@ local abstract_element = require('rc.decorations.abstract_element')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function()
+module.init = function(_)
     return abstract_element.new {
         register_fn = function(_) return awful.widget.keyboardlayout() end,
         unregister_fn = function(_) end

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-08 16:17:12 (Marcel Arpogaus)
--- @Changed: 2021-08-09 15:28:17 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 08:42:04 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -20,11 +20,11 @@ local layout_popup = require('rc.decorations.wibar.elements.layout.popup')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config)
+module.init = function(s, config)
     local use_popup = config.use_popup or false
     local layoutbox, popup
     return abstract_element.new {
-        register_fn = function(s)
+        register_fn = function(_)
             -- Create an imagebox widget which will contain an icon indicating which layout we're using.
             -- We need one layoutbox per screen.
             layoutbox = awful.widget.layoutbox(s)

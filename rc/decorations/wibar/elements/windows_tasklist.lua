@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-21 18:27:36 (Marcel Arpogaus)
--- @Changed: 2021-08-09 14:42:53 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 08:41:40 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -37,9 +37,9 @@ local abstract_element = require('rc.decorations.abstract_element')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function()
+module.init = function(s, _)
     return abstract_element.new {
-        register_fn = function(s)
+        register_fn = function(_)
             local tasklist = awful.widget.tasklist {
                 screen = s,
                 filter = awful.widget.tasklist.filter.currenttags,
@@ -117,7 +117,7 @@ module.init = function()
             }
             return tasklist
         end,
-        unregister_fn = function() end
+        unregister_fn = function(_) end
     }
 end
 

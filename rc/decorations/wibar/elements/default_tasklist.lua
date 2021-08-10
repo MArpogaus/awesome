@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-21 18:27:36 (Marcel Arpogaus)
--- @Changed: 2021-08-09 14:42:35 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 08:35:25 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -32,9 +32,9 @@ local mouse_bindings = require('rc.mouse_bindings')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function()
+module.init = function(s, config)
     return abstract_element.new {
-        register_fn = function(s)
+        register_fn = function()
             local tasklist = awful.widget.tasklist {
                 screen = s,
                 filter = awful.widget.tasklist.filter.currenttags,
@@ -42,12 +42,7 @@ module.init = function()
             }
             return tasklist
         end,
-        unregister_fn = function()
-            -- code
-        end,
-        update_fn = function()
-            -- code
-        end
+        unregister_fn = function() end
     }
 end
 

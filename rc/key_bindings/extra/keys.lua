@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 10:39:56 (Marcel Arpogaus)
--- @Changed: 2021-01-27 16:05:04 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 08:49:42 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -33,7 +33,7 @@ module.init = function(config)
             ['lua execute prompt'] = {{config.modkey, config.altkey}, 'r'},
             ['lock screen'] = {{config.modkey}, 'q'},
             ['Mac OSX like \'Exposé\' view'] = {{config.modkey}, 'e'},
-            ['toggle wibox'] = {{config.modkey, 'Shift'}, 'b'}
+            ['toggle wibar'] = {{config.modkey, 'Shift'}, 'b'}
         },
         client = {
             ['decrement useless gaps'] = {{config.altkey, 'Control'}, '-'},

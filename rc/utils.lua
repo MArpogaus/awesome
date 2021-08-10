@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-08-02 08:43:21 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 08:48:30 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -382,7 +382,13 @@ function module.update_widgets()
 end
 function module.toggle_wibar_widgets()
     for s in capi.screen do
-        if s.toggle_wibar_widgets then s.toggle_wibar_widgets() end
+        if s.wibars then
+            for _, w in ipairs(s.wibars) do
+                if w.wibar_widgets_toggle then
+                    w.wibar_widgets_toggle()
+                end
+            end
+        end
     end
 end
 function module.toggle_desktop_widget_visibility()
