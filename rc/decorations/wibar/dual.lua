@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-08-09 15:23:16 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 14:51:50 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -54,13 +54,14 @@ module.init = function(config)
     }
 
     local decoration = abstract_decoration.new {
+        meta = true,
         register_fn = function(s)
-            top_wibar.register(s)
-            bottom_wibar.register(s)
+            top_wibar:register(s)
+            bottom_wibar:register(s)
         end,
         unregister_fn = function(s)
-            top_wibar.unregister(s)
-            bottom_wibar.unregister(s)
+            top_wibar:unregister(s)
+            bottom_wibar:unregister(s)
         end
     }
     return decoration

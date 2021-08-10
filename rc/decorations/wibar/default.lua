@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-08-10 08:46:31 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 15:05:01 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -64,8 +64,8 @@ module.init = function(config)
                 local widget_container = {layout = wibox.layout.fixed[layout]}
                 for d, cfg in utils.value_with_cfg(p) do
                     local w = utils.require_submodule(
-                                  'decorations/wibar/elements', d).init(s, cfg)
-                                  .register(wibar_elements, wibar)
+                                  'decorations/wibar/elements', d).init(s, cfg):register(
+                        wibar_elements, wibar)
                     table.insert(widget_container, w)
                 end
                 table.insert(wibar_args, widget_container)
@@ -79,7 +79,7 @@ module.init = function(config)
         end,
         unregister_fn = function(s)
             for _, d in pairs(wibar_elements) do
-                d.unregister(wibar_elements, s)
+                d:unregister(wibar_elements, s)
             end
 
             wibar.widget:reset()

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-07-28 14:34:25 (Marcel Arpogaus)
--- @Changed: 2021-07-28 15:11:00 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 09:09:03 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -16,11 +16,11 @@ local utils = require('rc.utils')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(warg)
+module.init = function(s, warg)
     warg.value = 'down'
 
-    return utils.require_submodule('decorations/widgets/arcs', 'net')
-               .init(warg)
+    return utils.require_submodule('decorations/widgets/arcs', 'net').init(s,
+                                                                           warg)
 end
 
 -- [ return module ] -----------------------------------------------------------

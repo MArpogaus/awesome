@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-08 15:36:38 (Marcel Arpogaus)
--- @Changed: 2021-08-10 08:40:43 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 09:04:27 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -24,7 +24,7 @@ local abstract_element = require('rc.decorations.abstract_element')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(_, config)
+module.init = function(s, config)
     local widgets = config.widgets or {wibox.widget.textclock()}
     local widgets_args = config.widgets_args or {}
     local layout = config.layout or wibox.layout.fixed.horizontal
@@ -52,7 +52,7 @@ module.init = function(_, config)
                     warg.color = warg.color or fg_wibar_widgets[cidx]
                     local widget_container, registered_widgets =
                         utils.require_submodule('decorations/widgets/wibar', w)
-                            .init(warg)
+                            .init(s, warg)
                     table.insert(wibar_widget_containers, widget_container)
                     registered_wibar_widgets =
                         gears.table.join(registered_wibar_widgets,

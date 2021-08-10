@@ -47,38 +47,35 @@ module.init = function(config, tagnames)
 
         s.init = function()
             -- prevent multiple runs
-            if s.promptbox then return end
+            if s.initialized then return end
 
             if config.dpi then s.dpi = config.dpi end
 
             -- set wallpaer
             module.set_wallpaper(s)
 
-            -- Create a promptbox for each screen
-            s.promptbox = awful.widget.prompt()
-
+            s.initialized = true
         end
 
         -- Dynamic widget management
         s.decorations = {}
+
         s.update_decorations = function()
-            for e, _ in pairs(s.decorations) do e.update(s) end
+            for e, _ in pairs(s.decorations) do e:update(s) end
         end
         s.unregister_decorations = function()
-            for e, _ in pairs(s.decorations) do e.unregister(s) end
+            for e, _ in pairs(s.decorations) do e:unregister(s) end
         end
         s.reregister_decorations = function()
             for e, _ in pairs(s.decorations) do
-                e.unregister(s)
-                e.register(s)
-                e.update(s)
+                e:unregister(s)
+                e:register(s)
+                e:update(s)
             end
         end
 
-        s.reset = function(soft)
-            if s.promptbox then s.promptbox = nil end
-
-            if not soft then s.unregister_decorations() end
+        s.reset = function()
+            s.unregister_decorations()
             collectgarbage()
         end
 
@@ -94,14 +91,15 @@ module.init = function(config, tagnames)
     awful.screen.connect_for_each_screen(init_screen)
 end
 module.register = function(decoration)
-    awful.screen.connect_for_each_screen(decoration.register)
+    awful.screen
+        .connect_for_each_screen(function(s) decoration:register(s) end)
 end
 module.unregister = function(decoration)
-    awful.screen.disconnect_for_each_screen(decoration.register)
-    for s in capi.screen do decoration.unregister(s) end
+    awful.screen.disconnect_for_each_screen(
+        function(s) decoration:register(s) end)
+    for s in capi.screen do decoration:unregister(s) end
 end
 module.update = function(s)
-    s.reset(true)
     s.init()
     s.reregister_decorations()
 end

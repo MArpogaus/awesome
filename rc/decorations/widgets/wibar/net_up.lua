@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-07-28 14:31:16 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 09:08:29 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -16,11 +16,11 @@ local utils = require('rc.utils')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(warg)
+module.init = function(s, warg)
     warg.value = 'up'
 
-    return utils.require_submodule('decorations/widgets/wibar', 'net').init(
-        warg)
+    return utils.require_submodule('decorations/widgets/wibar', 'net').init(s,
+                                                                            warg)
 end
 
 -- [ return module ] -----------------------------------------------------------

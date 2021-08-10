@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:14 (Marcel Arpogaus)
--- @Changed: 2021-08-10 09:00:42 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 15:02:56 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -29,7 +29,6 @@ local capi = {client = client, root = root}
 -- Standard awesome library
 local gears = require('gears')
 local awful = require('awful')
-local beautiful = require('beautiful')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

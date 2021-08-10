@@ -47,7 +47,7 @@ local step_spacing = 4
 vicious.cache(vicious.widgets.cpu)
 
 -- [ define widget ] -----------------------------------------------------------
-module.init = widgets.new('arc', function(warg)
+module.init = widgets.new('arc', function(_, warg)
     local fg_color = warg.fg_color or default_fg_color
     local bg_color = warg.bg_color or default_bg_color
 

@@ -46,7 +46,7 @@ local default_app_id = ''
 vicious.cache(vicious_contrib.openweather)
 
 -- [ define widget ] -----------------------------------------------------------
-module.init = widgets.new('wibar', function(warg)
+module.init = widgets.new('wibar', function(_, warg)
     local color = warg.color or default_color
     local city_id = warg.city_id or default_city_id
     local app_id = warg.app_id or default_app_id

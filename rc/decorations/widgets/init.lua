@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:55:55 (Marcel Arpogaus)
--- @Changed: 2021-07-28 14:20:21 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 09:05:43 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -63,9 +63,9 @@ end
 
 -- [ module functions ] --------------------------------------------------------
 module.new = function(wtype, widget_def_fn)
-    local function widget_generator(wargs)
+    local function widget_generator(s, wargs)
         wargs = wargs or {}
-        local widget_def = widget_def_fn(wargs)
+        local widget_def = widget_def_fn(s, wargs)
         local timeout = wargs.timeout or widget_def.default_timeout
         if wtype == 'wibar' then
             return

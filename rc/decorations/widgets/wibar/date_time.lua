@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:55:28 (Marcel Arpogaus)
--- @Changed: 2021-07-28 14:25:49 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 09:07:23 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -37,7 +37,7 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 os.setlocale(os.getenv('LANG')) -- to localize the clock
 
-module.init = function()
+module.init = function(s, _)
     local clock_icon = utils.fa_ico(beautiful.fg_wibar_widgets_calendar, '')
 
     local clock_widget = wibox.widget.textclock(
@@ -62,6 +62,7 @@ module.init = function()
         long_weekdays = true,
         opacity = 0.9,
         margin = 5,
+        screen = s,
         style_header = {border_width = 0},
         style_weekday = {border_width = 0},
         style_weeknumber = {border_width = 0, opacity = 0.5},

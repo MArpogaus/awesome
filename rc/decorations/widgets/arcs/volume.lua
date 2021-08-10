@@ -50,7 +50,7 @@ local default_device = 'Master'
 vicious.cache(vicious.widgets.volume)
 
 -- [ define widget ] -----------------------------------------------------------
-module.init = widgets.new('arc', function(warg)
+module.init = widgets.new('arc', function(_, warg)
     local fg_color = warg.fg_color or default_fg_color
     local bg_color = warg.bg_color or default_bg_color
     local device = warg.device or default_device

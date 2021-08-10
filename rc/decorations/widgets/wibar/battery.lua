@@ -63,7 +63,7 @@ end
 vicious.cache(vicious.widgets.bat)
 
 -- [ define widget ] -----------------------------------------------------------
-module.init = widgets.new('wibar', function(warg)
+module.init = widgets.new('wibar', function(_, warg)
     local color = warg.color or default_fg_color
     local battery = warg.battery or default_bat
 

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-07-29 16:24:40 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 09:24:32 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -40,6 +40,8 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config, widgets_args)
     local arc_widgets = config.widgets or {'cpu', 'memory', 'fs', 'volume'}
+    local registered_desktop_widgets = setmetatable({}, {__mode = 'kv'}) -- make weak table
+    local desktop_widget_containers
     local decoration = abstract_decoration.new {
         register_fn = function(s)
             if config.screens and
@@ -54,7 +56,6 @@ module.init = function(config, widgets_args)
                     layout = wibox.layout.fixed.horizontal
                 }
             setmetatable(arc_widget_containers, {__mode = 'kv'})
-            s.registered_desktop_widgets = setmetatable({}, {__mode = 'kv'}) -- make weak table
             local fg_arcs
             if beautiful.fg_desktop_widgets_arcs and
                 #beautiful.fg_desktop_widgets_arcs then
@@ -76,10 +77,10 @@ module.init = function(config, widgets_args)
                 warg.bg_color = warg.bg_color or bg_color
                 local widget_container, registered_widgets =
                     utils.require_submodule('decorations/widgets/arcs', w)
-                        .init(warg)
+                        .init(s, warg)
                 table.insert(arc_widget_containers, widget_container)
-                s.registered_desktop_widgets =
-                    gears.table.join(s.registered_desktop_widgets,
+                registered_desktop_widgets =
+                    gears.table.join(registered_desktop_widgets,
                                      registered_widgets)
             end
             local desktop_widgets_clock_container,
@@ -89,13 +90,14 @@ module.init = function(config, widgets_args)
             local desktop_widgets_weather_container,
                 desktop_widgets_weather_widgets =
                 utils.require_submodule('decorations/widgets/desktop',
-                                        'weather').init(widgets_args.weather)
+                                        'weather')
+                    .init(s, widgets_args.weather)
 
-            s.registered_desktop_widgets =
-                gears.table.join(s.registered_desktop_widgets,
+            registered_desktop_widgets =
+                gears.table.join(registered_desktop_widgets,
                                  desktop_widgets_weather_widgets,
                                  desktop_widgets_clock_widgets)
-            s.desktop_widget_containers =
+            desktop_widget_containers =
                 gears.table.join(arc_widget_containers,
                                  desktop_widgets_weather_container,
                                  desktop_widgets_clock_container)
@@ -135,26 +137,26 @@ module.init = function(config, widgets_args)
             s.desktop_popup = awful.popup(desktop_popup_arg)
             s.desktop_popup:connect_signal('property::visible', function()
                 if s.desktop_popup.visible then
-                    s.activate_desktop_widgets()
+                    s.desktop_widgets_activate()
                 else
-                    s.suspend_desktop_widgets()
+                    s.desktop_widgets_suspend()
                 end
             end)
 
-            s.toggle_desktop_widget_visibility =
+            s.desktop_widgets_toggle_visibility =
                 function()
                     local is_visible = s.desktop_popup.visible
                     s.desktop_popup.visible = not is_visible
                 end
-            s.suspend_desktop_widgets =
+            s.desktop_widgets_suspend =
                 function()
-                    for _, w in ipairs(s.registered_desktop_widgets) do
+                    for _, w in ipairs(registered_desktop_widgets) do
                         vicious.unregister(w, true)
                     end
                 end
-            s.activate_desktop_widgets =
+            s.desktop_widgets_activate =
                 function()
-                    for _, w in ipairs(s.registered_desktop_widgets) do
+                    for _, w in ipairs(registered_desktop_widgets) do
                         vicious.activate(w)
                     end
                 end
@@ -163,24 +165,24 @@ module.init = function(config, widgets_args)
         end,
         unregister_fn = function(s)
             s.desktop_popup.visible = false
-            for i, w in ipairs(s.registered_desktop_widgets) do
+            for i, w in ipairs(registered_desktop_widgets) do
                 vicious.unregister(w)
-                table.remove(s.registered_desktop_widgets, i)
+                table.remove(registered_desktop_widgets, i)
             end
-            s.registered_desktop_widgets = nil
-            for i, c in ipairs(s.desktop_widget_containers) do
+            registered_desktop_widgets = nil
+            for i, c in ipairs(desktop_widget_containers) do
                 c:reset()
-                table.remove(s.desktop_widget_containers, i)
+                table.remove(desktop_widget_containers, i)
             end
-            s.desktop_widget_containers = nil
+            desktop_widget_containers = nil
             s.desktop_popup:get_widget():reset()
             s.desktop_popup = nil
-            s.toggle_desktop_widget_visibility = nil
-            s.suspend_desktop_widgets = nil
-            s.activate_desktop_widgets = nil
+            s.desktop_widgets_toggle_visibility = nil
+            s.desktop_widgets_suspend = nil
+            s.desktop_widgets_activate = nil
         end,
-        update_fn = function(s)
-            vicious.force(s.registered_desktop_widgets)
+        update_fn = function(_)
+            vicious.force(registered_desktop_widgets)
         end
     }
     return decoration

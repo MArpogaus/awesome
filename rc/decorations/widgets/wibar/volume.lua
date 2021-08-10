@@ -49,7 +49,7 @@ local default_device = 'Master'
 vicious.cache(vicious.widgets.volume)
 
 -- [ define widget ] -----------------------------------------------------------
-module.init = widgets.new('wibar', function(warg)
+module.init = widgets.new('wibar', function(_, warg)
     local color = warg.color or default_fg_color
     local device = warg.device or default_device
 

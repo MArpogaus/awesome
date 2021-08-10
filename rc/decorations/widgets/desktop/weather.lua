@@ -127,7 +127,7 @@ end
 vicious.cache(vicious_contrib.openweather)
 
 -- [ define widget ] -----------------------------------------------------------
-module.init = widgets.new('desktop', function(warg)
+module.init = widgets.new('desktop', function(_, warg)
     local city_id = warg.city_id or default_city_id
     local app_id = warg.app_id or default_app_id
 

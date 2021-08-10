@@ -46,7 +46,7 @@ local default_thermal_zone = 'thermal_zone0'
 vicious.cache(vicious.widgets.thermal)
 
 -- [ define widget ] -----------------------------------------------------------
-module.init = widgets.new('wibar', function(warg)
+module.init = widgets.new('wibar', function(_, warg)
     local color = warg.color or default_fg_color
     local thermal_zone = warg.thermal_zone or default_thermal_zone
 

@@ -45,7 +45,7 @@ local default_value = 'down'
 vicious.cache(vicious.widgets.net)
 
 -- [ define widget ] -----------------------------------------------------------
-module.init = widgets.new('wibar', function(warg)
+module.init = widgets.new('wibar', function(_, warg)
     local color = warg.color or default_fg_color
     local interface = warg.interface or default_interface
     local value = warg.value or default_value

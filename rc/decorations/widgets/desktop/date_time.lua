@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:55:28 (Marcel Arpogaus)
--- @Changed: 2021-07-28 15:13:12 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 09:07:38 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,7 +36,7 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 os.setlocale(os.getenv('LANG')) -- to localize the clock
 
-module.init = function()
+module.init = function(_)
     local time_font_size = beautiful.desktop_widgets_time_font_size or 50
     local date_font_size = beautiful.desktop_widgets_date_font_size or
                                time_font_size / 3

@@ -44,7 +44,7 @@ local default_mount_point = '{/ used_p}'
 vicious.cache(vicious.widgets.fs)
 
 -- [ define widget ] -----------------------------------------------------------
-module.init = widgets.new('wibar', function(warg)
+module.init = widgets.new('wibar', function(_, warg)
     local color = warg.color or default_fg_color
     local mount_point = warg.mount_point or default_mount_point
 

@@ -1,9 +1,9 @@
 -- [ author ] -*- time-stamp-pattern: "@Changed[\s]?:[\s]+%%$"; -*- ------------
--- @File   : abstract_element.lua
+-- @File   : abstract_module.lua
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 11:32:32 (Marcel Arpogaus)
--- @Changed: 2021-08-10 08:20:09 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 15:04:19 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -27,38 +27,43 @@ local gears = require('gears')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
+local element = {}
+element.__index = element
+element.unregister = function(self, elements_container, args)
+    gears.debug.print_warning('unregistering element' ..
+                                  gears.debug.dump_return(elements_container))
+    if not elements_container[self] then
+        gears.debug.print_warning(
+            'cant unregister: element not registered on this screen.')
+    else
+        local ret = self.unregister_fn(args)
+        if not self.meta then elements_container[self] = nil end
+        return ret
+    end
+end
+element.register = function(self, elements_container, args)
+    if elements_container[self] then
+        gears.debug.print_warning('cant register:' ..
+                                      'element is already registered on this screen.')
+    else
+        local ret = self.register_fn(args)
+        if not self.meta then elements_container[self] = true end
+        return ret
+    end
+end
+element.update = function(self, args)
+    if self.update_fn then
+        self.update_fn(args)
+    else
+        gears.debug.print_warning('no update_fn provided')
+    end
+end
 
 -- [ module functions ] --------------------------------------------------------
 module.new = function(def)
-    local element = {}
-    element.unregister = function(elements_container, args)
-        if not elements_container[element] then
-            gears.debug.print_warning(
-                'cant unregister: element not registered on this screen.')
-        else
-            local ret = def.unregister_fn(args)
-            elements_container[element] = nil
-            return ret
-        end
-    end
-    element.register = function(elements_container, args)
-        if elements_container[element] then
-            gears.debug.print_warning('cant register:' ..
-                                          'element is already registered on this screen.')
-        else
-            local ret = def.register_fn(args)
-            elements_container[element] = true
-            return ret
-        end
-    end
-    element.update = function(args)
-        if def.update_fn then
-            def.update_fn(args)
-        else
-            gears.debug.print_warning('no update_fn provided')
-        end
-    end
-    return element
+    if def == nil then error('no definition provided') end
+    setmetatable(def, element)
+    return def
 end
 
 -- [ return module ] -----------------------------------------------------------
