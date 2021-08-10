@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-21 18:27:36 (Marcel Arpogaus)
--- @Changed: 2021-08-10 08:41:40 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 08:59:51 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -26,15 +26,108 @@
 local capi = {client = client}
 
 local awful = require('awful')
+local gears = require('gears')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
 
-local mouse_bindings = require('rc.mouse_bindings')
-
 local abstract_element = require('rc.decorations.abstract_element')
+
+-- [ local functions ] ---------------------------------------------------------
+local function client_menu_toggle_fn()
+    local instance = nil
+    return function()
+        if instance and instance.wibox.visible then
+            instance:hide()
+            instance = nil
+        else
+            instance = awful.menu.clients({theme = {width = 1000}})
+        end
+    end
+end
+-- ref.: https://stackoverflow.com/questions/62286322/grouping-windows-in-the-tasklist
+local function client_label(c)
+    local theme = beautiful.get()
+    local sticky = theme.tasklist_sticky or '▪'
+    local ontop = theme.tasklist_ontop or '⌃'
+    local above = theme.tasklist_above or '▴'
+    local below = theme.tasklist_below or '▾'
+    local floating = theme.tasklist_floating or '✈'
+    local minimized = theme.tasklist_maximized or '-'
+    local maximized = theme.tasklist_maximized or '+'
+    local maximized_horizontal = theme.tasklist_maximized_horizontal or '⬌'
+    local maximized_vertical = theme.tasklist_maximized_vertical or '⬍'
+
+    local name = c.name
+    if c.sticky then name = sticky .. name end
+
+    if c.ontop then
+        name = ontop .. name
+    elseif c.above then
+        name = above .. name
+    elseif c.below then
+        name = below .. name
+    end
+
+    if c.minimized then name = minimized .. name end
+    if c.maximized then
+        name = maximized .. name
+    else
+        if c.maximized_horizontal then
+            name = maximized_horizontal .. name
+        end
+        if c.maximized_vertical then name = maximized_vertical .. name end
+        if c.floating then name = floating .. name end
+    end
+
+    return name
+end
+
+local function client_stack_toggle_fn()
+    local cl_menu
+
+    return function(c)
+        if cl_menu then
+            cl_menu:hide()
+            cl_menu = nil
+        else
+            local client_num = 0
+            local client_list = {}
+            local t = awful.screen.focused().selected_tag
+            for i, cl in ipairs(capi.client.get()) do
+                if cl.class == c.class and gears.table.hasitem(cl:tags(), t) then
+                    client_num = client_num + 1
+                    client_list[i] = {
+                        client_label(cl),
+                        function()
+                            capi.client.focus = cl
+                            cl:tags()[1]:view_only()
+                            cl:raise()
+                        end,
+                        cl.icon
+                    }
+                end
+            end
+
+            if client_num > 1 then
+                cl_menu = awful.menu({
+                    items = client_list,
+                    theme = {width = 1000}
+                })
+                cl_menu:show()
+            else
+                c:emit_signal('request::activate', 'taskbar', {raise = true})
+            end
+        end
+    end
+end
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
+local tasklist_buttons = gears.table.join(
+    awful.button({}, 1, client_stack_toggle_fn()),
+    awful.button({}, 3, client_menu_toggle_fn()),
+    awful.button({}, 4, function() awful.client.focus.byidx(1) end),
+    awful.button({}, 5, function() awful.client.focus.byidx(-1) end))
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(s, _)
@@ -43,7 +136,7 @@ module.init = function(s, _)
             local tasklist = awful.widget.tasklist {
                 screen = s,
                 filter = awful.widget.tasklist.filter.currenttags,
-                buttons = mouse_bindings.tasklist_buttons.windows,
+                buttons = tasklist_buttons,
                 layout = {
                     spacing = beautiful.systray_icon_spacing,
                     layout = wibox.layout.fixed.horizontal

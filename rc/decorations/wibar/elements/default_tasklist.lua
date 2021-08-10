@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-21 18:27:36 (Marcel Arpogaus)
--- @Changed: 2021-08-10 08:35:25 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 08:56:38 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,22 +23,35 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
+local capi = {client = client}
+
 local awful = require('awful')
+local gears = require('gears')
 
 local abstract_element = require('rc.decorations.abstract_element')
-local mouse_bindings = require('rc.mouse_bindings')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
+local tasklist_buttons = gears.table.join(
+    awful.button({}, 1, function(c)
+        if c == capi.client.focus then
+            c.minimized = true
+        else
+            c:emit_signal('request::activate', 'tasklist', {raise = true})
+        end
+    end), awful.button({}, 3, function()
+        awful.menu.client_list({theme = {width = 250}})
+    end), awful.button({}, 4, function() awful.client.focus.byidx(1) end),
+    awful.button({}, 5, function() awful.client.focus.byidx(-1) end))
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(s, config)
+module.init = function(s, _)
     return abstract_element.new {
         register_fn = function()
             local tasklist = awful.widget.tasklist {
                 screen = s,
                 filter = awful.widget.tasklist.filter.currenttags,
-                buttons = mouse_bindings.tasklist_buttons.default
+                buttons = tasklist_buttons
             }
             return tasklist
         end,
