@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-08 16:17:12 (Marcel Arpogaus)
--- @Changed: 2021-08-10 14:57:17 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 15:32:39 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -42,11 +42,11 @@ module.init = function(s, config)
         end,
         unregister_fn = function(_)
             layoutbox:remove()
-            layoutbox = nil
             if use_popup then
-                popup.reset(layout_popup, layoutbox)
+                layout_popup.reset(popup, layoutbox)
                 popup = nil
             end
+            layoutbox = nil
         end
     }
 end

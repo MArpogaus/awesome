@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 11:32:32 (Marcel Arpogaus)
--- @Changed: 2021-08-10 15:03:32 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 15:26:49 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -31,19 +31,19 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 module.new = function(def)
     local element = abstract_element.new(def)
-    local decoration = setmetatable({}, element)
-    decoration.unregister = function(_, s)
+    local decoration = setmetatable({}, {__index = element})
+    decoration.unregister = function(self, s)
         if not s.decorations then
             error('screen not initialized: call screen.init() first')
         else
-            return element:unregister(s.decorations, s)
+            return element.unregister(self, s.decorations, s)
         end
     end
-    decoration.register = function(_, s)
+    decoration.register = function(self, s)
         if not s.decorations then
             error('screen not initialized: call screen.init() first')
         else
-            return element:register(s.decorations, s)
+            return element.register(self, s.decorations, s)
         end
     end
     return decoration

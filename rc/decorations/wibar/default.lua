@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-08-10 15:05:01 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 15:27:39 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -78,7 +78,7 @@ module.init = function(config)
             table.insert(s.wibars, wibar)
         end,
         unregister_fn = function(s)
-            for _, d in pairs(wibar_elements) do
+            for d, _ in pairs(wibar_elements) do
                 d:unregister(wibar_elements, s)
             end
 
@@ -87,7 +87,7 @@ module.init = function(config)
             wibar = nil
         end,
         update_fn = function(args)
-            for _, d in ipairs(wibar_elements) do d.update(args) end
+            for d, _ in ipairs(wibar_elements) do d:update(args) end
         end
     }
     return decoration

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 11:32:32 (Marcel Arpogaus)
--- @Changed: 2021-08-10 15:04:19 (Marcel Arpogaus)
+-- @Changed: 2021-08-10 15:28:27 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -30,8 +30,6 @@ local module = {}
 local element = {}
 element.__index = element
 element.unregister = function(self, elements_container, args)
-    gears.debug.print_warning('unregistering element' ..
-                                  gears.debug.dump_return(elements_container))
     if not elements_container[self] then
         gears.debug.print_warning(
             'cant unregister: element not registered on this screen.')
