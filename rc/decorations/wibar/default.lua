@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-08-10 15:27:39 (Marcel Arpogaus)
+-- @Changed: 2021-08-12 09:57:19 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -37,8 +37,7 @@ local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
-    local wibar
-    local wibar_elements = {}
+    local wibars = {}
 
     local position = config.position or 'top'
     local layout = 'horizontal'
@@ -56,7 +55,8 @@ module.init = function(config)
                 return
             end
             -- Create the wibox
-            wibar = awful.wibar({position = position, screen = s})
+            local wibar = awful.wibar({position = position, screen = s})
+            wibar.elements = {}
 
             -- Add widgets to the wibox
             local wibar_args = {layout = wibox.layout.align[layout]}
@@ -65,7 +65,7 @@ module.init = function(config)
                 for d, cfg in utils.value_with_cfg(p) do
                     local w = utils.require_submodule(
                                   'decorations/wibar/elements', d).init(s, cfg):register(
-                        wibar_elements, wibar)
+                        wibar.elements, wibar)
                     table.insert(widget_container, w)
                 end
                 table.insert(wibar_args, widget_container)
@@ -76,18 +76,23 @@ module.init = function(config)
 
             if s.wibars == nil then s.wibars = {} end
             table.insert(s.wibars, wibar)
+
+            wibars[s] = wibar
         end,
         unregister_fn = function(s)
-            for d, _ in pairs(wibar_elements) do
-                d:unregister(wibar_elements, s)
+            local wibar = wibars[s]
+            for d, _ in pairs(wibar.elements) do
+                d:unregister(wibar.elements, wibar)
             end
 
             wibar.widget:reset()
             wibar:remove()
-            wibar = nil
+            wibars[s] = nil
         end,
-        update_fn = function(args)
-            for d, _ in ipairs(wibar_elements) do d:update(args) end
+        update_fn = function(s)
+            local wibar = wibars[s]
+
+            for d, _ in pairs(wibar.elements) do d:update(wibar) end
         end
     }
     return decoration
