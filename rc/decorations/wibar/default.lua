@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-08-12 09:57:19 (Marcel Arpogaus)
+-- @Changed: 2021-08-12 11:03:19 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -62,7 +62,7 @@ module.init = function(config)
             local wibar_args = {layout = wibox.layout.align[layout]}
             for _, p in ipairs(elements) do
                 local widget_container = {layout = wibox.layout.fixed[layout]}
-                for d, cfg in utils.value_with_cfg(p) do
+                for d, cfg in utils.value_with_cfg(p, true) do
                     local w = utils.require_submodule(
                                   'decorations/wibar/elements', d).init(s, cfg):register(
                         wibar.elements, wibar)

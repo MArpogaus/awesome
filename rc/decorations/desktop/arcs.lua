@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-08-10 09:24:32 (Marcel Arpogaus)
+-- @Changed: 2021-08-18 17:46:29 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -42,6 +42,10 @@ module.init = function(config, widgets_args)
     local arc_widgets = config.widgets or {'cpu', 'memory', 'fs', 'volume'}
     local registered_desktop_widgets = setmetatable({}, {__mode = 'kv'}) -- make weak table
     local desktop_widget_containers
+
+    -- show hide desktop_popup
+    local desktop_widgets_active = config.visible or true
+
     local decoration = abstract_decoration.new {
         register_fn = function(s)
             if config.screens and
@@ -125,7 +129,6 @@ module.init = function(config, widgets_args)
                 type = 'desktop',
                 screen = s,
                 placement = awful.placement.centered,
-                visible = false,
                 input_passthrough = true
             }
             if config.wallpaper then
@@ -143,11 +146,6 @@ module.init = function(config, widgets_args)
                 end
             end)
 
-            s.desktop_widgets_toggle_visibility =
-                function()
-                    local is_visible = s.desktop_popup.visible
-                    s.desktop_popup.visible = not is_visible
-                end
             s.desktop_widgets_suspend =
                 function()
                     for _, w in ipairs(registered_desktop_widgets) do
@@ -160,8 +158,16 @@ module.init = function(config, widgets_args)
                         vicious.activate(w)
                     end
                 end
-            -- show hide desktop_popup
-            s.desktop_popup.visible = config.visible or true
+            s.desktop_widgets_set_state =
+                function(state)
+                    s.desktop_popup.visible = state
+                    -- keep new screens synchronized
+                    desktop_widgets_active = state
+                end
+            s.desktop_widgets_toggle = function()
+                s.desktop_widgets_set_state(not s.desktop_popup.visible)
+            end
+            s.desktop_widgets_set_state(desktop_widgets_active)
         end,
         unregister_fn = function(s)
             s.desktop_popup.visible = false
@@ -177,7 +183,8 @@ module.init = function(config, widgets_args)
             desktop_widget_containers = nil
             s.desktop_popup:get_widget():reset()
             s.desktop_popup = nil
-            s.desktop_widgets_toggle_visibility = nil
+            s.desktop_widgets_set_state = nil
+            s.desktop_widgets_toggle = nil
             s.desktop_widgets_suspend = nil
             s.desktop_widgets_activate = nil
         end,

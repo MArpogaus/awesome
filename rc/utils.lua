@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-08-10 09:26:21 (Marcel Arpogaus)
+-- @Changed: 2021-08-18 17:26:20 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -133,16 +133,20 @@ function module.require_submodule(path, file, ignore_error)
     end
 end
 
-function module.value_with_cfg(t)
+function module.value_with_cfg(t, sorted)
     local i = nil
+    local keys = gears.table.join(gears.table.from_sparse(t),
+                                  gears.table.keys_filter(t, 'table'))
+    if sorted then table.sort(keys) end
     local function iter()
-        local v
-        i, v = next(t, i)
-        if v and type(i) == 'number' then
-            return v, {}
-        elseif v then
-            return i, v
+        local k
+        i, k = next(keys, i)
+        if k then
+            return gears.string.split(k, '-')[2] or k, t[k] or {}
+        else
+            return nil
         end
+
     end
     return iter
 end
@@ -384,18 +388,14 @@ function module.toggle_wibar_widgets()
     for s in capi.screen do
         if s.wibars then
             for _, w in ipairs(s.wibars) do
-                if w.wibar_widgets_toggle then
-                    w.wibar_widgets_toggle()
-                end
+                if w.widgets_toggle then w.widgets_toggle() end
             end
         end
     end
 end
 function module.toggle_desktop_widget_visibility()
     for s in capi.screen do
-        if s.desktop_widgets_toggle_visibility then
-            s.desktop_widgets_toggle_visibility()
-        end
+        if s.desktop_widgets_toggle then s.desktop_widgets_toggle() end
     end
 end
 
