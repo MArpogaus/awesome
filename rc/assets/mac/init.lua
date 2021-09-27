@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 17:58:40 (Marcel Arpogaus)
--- @Changed: 2021-01-26 16:32:16 (Marcel Arpogaus)
+-- @Changed: 2021-09-27 16:25:15 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -229,14 +229,10 @@ module.init = function()
     theme.exitmenu_icon = exit_icon(beautiful.wibar_height or
                                         gmath.round(
             beautiful.get_font_height(beautiful.font) * 1.5),
-                                    theme.exitmenu_icon_fg or
                                         beautiful.fg_normal,
-                                    theme.exitmenu_icon_bg or
                                         beautiful.bg_normal)
     return theme
 end
-
--- [ sequential code ] ---------------------------------------------------------
 
 -- [ return module ] -----------------------------------------------------------
 return module
