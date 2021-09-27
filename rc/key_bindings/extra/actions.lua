@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-08-10 08:50:46 (Marcel Arpogaus)
+-- @Changed: 2021-08-19 13:59:48 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -47,15 +47,7 @@ module.init = function(config, _)
                 awful.spawn(config.lock_command)
             end,
             ['Mac OSX like \'Exposé\' view'] = revelation.expose,
-            ['toggle wibar'] = function()
-                for s in capi.screen do
-                    if s.wibars then
-                        for _, w in ipairs(s.wibars) do
-                            w.visible = not w.visible
-                        end
-                    end
-                end
-            end
+            ['toggle wibar'] = utils.toggle_wibars
         },
         client = {
             ['decrement useless gaps'] = function()
