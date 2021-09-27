@@ -58,7 +58,7 @@ module.init = function(config, tagnames)
         end
 
         -- Dynamic widget management
-        s.decorations = {}
+        s.decorations = setmetatable({}, {__mode = 'v'}) -- make velues weak
 
         s.update_decorations = function()
             for e, _ in pairs(s.decorations) do e:update(s) end

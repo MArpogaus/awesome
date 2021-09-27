@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-08-18 17:46:29 (Marcel Arpogaus)
+-- @Changed: 2021-09-27 09:51:37 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -40,14 +40,15 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config, widgets_args)
     local arc_widgets = config.widgets or {'cpu', 'memory', 'fs', 'volume'}
-    local registered_desktop_widgets = setmetatable({}, {__mode = 'kv'}) -- make weak table
-    local desktop_widget_containers
 
     -- show hide desktop_popup
     local desktop_widgets_active = config.visible or true
 
     local decoration = abstract_decoration.new {
         register_fn = function(s)
+            s.registered_desktop_widgets = setmetatable({}, {__mode = 'v'}) -- make values weak
+            s.desktop_widget_containers = {}
+
             if config.screens and
                 not gears.table.hasitem(config.screens, s.index) then
                 return
@@ -59,7 +60,7 @@ module.init = function(config, widgets_args)
                     spacing = beautiful.desktop_widgets_arc_spacing or 110,
                     layout = wibox.layout.fixed.horizontal
                 }
-            setmetatable(arc_widget_containers, {__mode = 'kv'})
+            setmetatable(arc_widget_containers, {__mode = 'v'})
             local fg_arcs
             if beautiful.fg_desktop_widgets_arcs and
                 #beautiful.fg_desktop_widgets_arcs then
@@ -83,8 +84,8 @@ module.init = function(config, widgets_args)
                     utils.require_submodule('decorations/widgets/arcs', w)
                         .init(s, warg)
                 table.insert(arc_widget_containers, widget_container)
-                registered_desktop_widgets =
-                    gears.table.join(registered_desktop_widgets,
+                s.registered_desktop_widgets =
+                    gears.table.join(s.registered_desktop_widgets,
                                      registered_widgets)
             end
             local desktop_widgets_clock_container,
@@ -97,11 +98,11 @@ module.init = function(config, widgets_args)
                                         'weather')
                     .init(s, widgets_args.weather)
 
-            registered_desktop_widgets =
-                gears.table.join(registered_desktop_widgets,
+            s.registered_desktop_widgets =
+                gears.table.join(s.registered_desktop_widgets,
                                  desktop_widgets_weather_widgets,
                                  desktop_widgets_clock_widgets)
-            desktop_widget_containers =
+            s.desktop_widget_containers =
                 gears.table.join(arc_widget_containers,
                                  desktop_widgets_weather_container,
                                  desktop_widgets_clock_container)
@@ -148,13 +149,13 @@ module.init = function(config, widgets_args)
 
             s.desktop_widgets_suspend =
                 function()
-                    for _, w in ipairs(registered_desktop_widgets) do
+                    for _, w in ipairs(s.registered_desktop_widgets) do
                         vicious.unregister(w, true)
                     end
                 end
             s.desktop_widgets_activate =
                 function()
-                    for _, w in ipairs(registered_desktop_widgets) do
+                    for _, w in ipairs(s.registered_desktop_widgets) do
                         vicious.activate(w)
                     end
                 end
@@ -171,16 +172,16 @@ module.init = function(config, widgets_args)
         end,
         unregister_fn = function(s)
             s.desktop_popup.visible = false
-            for i, w in ipairs(registered_desktop_widgets) do
+            for i, w in ipairs(s.registered_desktop_widgets) do
                 vicious.unregister(w)
-                table.remove(registered_desktop_widgets, i)
+                table.remove(s.registered_desktop_widgets, i)
             end
-            registered_desktop_widgets = nil
-            for i, c in ipairs(desktop_widget_containers) do
+            s.registered_desktop_widgets = nil
+            for i, c in ipairs(s.desktop_widget_containers) do
                 c:reset()
-                table.remove(desktop_widget_containers, i)
+                table.remove(s.desktop_widget_containers, i)
             end
-            desktop_widget_containers = nil
+            s.desktop_widget_containers = nil
             s.desktop_popup:get_widget():reset()
             s.desktop_popup = nil
             s.desktop_widgets_set_state = nil
@@ -188,8 +189,8 @@ module.init = function(config, widgets_args)
             s.desktop_widgets_suspend = nil
             s.desktop_widgets_activate = nil
         end,
-        update_fn = function(_)
-            vicious.force(registered_desktop_widgets)
+        update_fn = function(s)
+            vicious.force(s.registered_desktop_widgets)
         end
     }
     return decoration
