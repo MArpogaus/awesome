@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-09-27 10:39:33 (Marcel Arpogaus)
+-- @Changed: 2021-09-27 11:14:03 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -73,14 +73,14 @@ module.init = function(config)
             -- Add widgets to the wibox
             local wibar_args = {layout = wibox.layout.align[layout]}
             for _, p in ipairs(elements) do
-                local widget_container = {layout = wibox.layout.fixed[layout]}
+                local element_container = {layout = wibox.layout.fixed[layout]}
                 for d, cfg in utils.value_with_cfg(p, true) do
                     local w = utils.require_submodule(
                                   'decorations/wibar/elements', d).init(s, cfg):register(
                         wibar.elements, wibar)
-                    table.insert(widget_container, w)
+                    table.insert(element_container, w)
                 end
-                table.insert(wibar_args, widget_container)
+                table.insert(wibar_args, element_container)
             end
 
             -- Add widgets to the wibox
