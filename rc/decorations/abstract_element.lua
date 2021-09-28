@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 11:32:32 (Marcel Arpogaus)
--- @Changed: 2021-08-10 15:28:27 (Marcel Arpogaus)
+-- @Changed: 2021-09-28 12:05:55 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,6 +36,7 @@ element.unregister = function(self, elements_container, args)
     else
         local ret = self.unregister_fn(args)
         if not self.meta then elements_container[self] = nil end
+        collectgarbage()
         return ret
     end
 end

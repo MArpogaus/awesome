@@ -58,7 +58,7 @@ module.init = function(config, tagnames)
         end
 
         -- Dynamic widget management
-        s.decorations = setmetatable({}, {__mode = 'v'}) -- make velues weak
+        s.decorations = setmetatable({}, {__mode = 'v'}) -- make values weak
 
         s.update_decorations = function()
             for e, _ in pairs(s.decorations) do e:update(s) end
@@ -94,7 +94,7 @@ module.init = function(config, tagnames)
             s.unregister_decorations = nil
             s.update_decorations = nil
             s.reset = nil
-            collectgarbage()
+
         end
 
         s.move_all_clients = function()
@@ -124,7 +124,10 @@ end
 module.remove = function(s)
     s.move_all_clients()
     s.reset()
+    collectgarbage()
 end
-module.update_all = function() for s in capi.screen do module.update(s) end end
+module.update_all = function()
+    for s in capi.screen do module.update(s) end
+end
 -- [ return module ] -----------------------------------------------------------
 return module

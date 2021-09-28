@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-09-28 10:00:41 (Marcel Arpogaus)
+-- @Changed: 2021-09-28 12:12:48 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -402,6 +402,8 @@ function module.update_theme()
     theme.update()
     assets.apply()
     screen.update_all()
+
+    collectgarbage()
 end
 
 -- [ return module ]------------------------------------------------------------
