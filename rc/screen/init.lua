@@ -66,6 +66,16 @@ module.init = function(config, tagnames)
         s.unregister_decorations = function()
             for e, _ in pairs(s.decorations) do e:unregister(s) end
         end
+        s.toggle_decorations = function()
+            for e, _ in pairs(s.decorations) do
+                if e.toggle then e.toggle(s) end
+            end
+        end
+        s.toggle_decorations_widgets = function()
+            for e, _ in pairs(s.decorations) do
+                if e.toggle_widgets then e.toggle_widgets(s) end
+            end
+        end
         s.reregister_decorations = function()
             for e, _ in pairs(s.decorations) do
                 e:unregister(s)
@@ -76,6 +86,14 @@ module.init = function(config, tagnames)
 
         s.reset = function()
             s.unregister_decorations()
+            s.decorations = nil
+            s.init = nil
+            s.initialized = nil
+            s.move_all_clients = nil
+            s.reregister_decorations = nil
+            s.unregister_decorations = nil
+            s.update_decorations = nil
+            s.reset = nil
             collectgarbage()
         end
 

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-09-13 11:45:45 (Marcel Arpogaus)
+-- @Changed: 2021-09-28 10:00:41 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -384,19 +384,13 @@ end
 function module.update_widgets()
     for s in capi.screen do s.update_decorations() end
 end
-function module.toggle_wibars()
-    for s in capi.screen do if s.wibars_toggle then s.wibars_toggle() end end
+function module.toggle_decorations()
+    local s = awful.screen.focused()
+    s.toggle_decorations()
 end
-
-function module.toggle_wibar_widgets()
-    for s in capi.screen do
-        if s.wibars_widgets_toggle then s.wibars_widgets_toggle() end
-    end
-end
-function module.toggle_desktop_widget_visibility()
-    for s in capi.screen do
-        if s.desktop_widgets_toggle then s.desktop_widgets_toggle() end
-    end
+function module.toggle_widgets()
+    local s = awful.screen.focused()
+    s.toggle_decorations_widgets()
 end
 
 function module.update_theme()

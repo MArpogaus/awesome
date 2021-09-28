@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-08-19 13:59:48 (Marcel Arpogaus)
+-- @Changed: 2021-09-28 10:01:57 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,9 +23,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
--- grab environment
-local capi = {screen = screen}
-
 -- Standard awesome library
 local awful = require('awful')
 
@@ -47,7 +44,7 @@ module.init = function(config, _)
                 awful.spawn(config.lock_command)
             end,
             ['Mac OSX like \'Exposé\' view'] = revelation.expose,
-            ['toggle wibar'] = utils.toggle_wibars
+            ['toggle decorations'] = utils.toggle_decorations
         },
         client = {
             ['decrement useless gaps'] = function()
@@ -93,8 +90,7 @@ module.init = function(config, _)
             ['set mirage colorscheme'] = utils.set_mirage
         },
         widgets = {
-            ['toggle desktop widget visibility'] = utils.toggle_desktop_widget_visibility,
-            ['toggle wibar widgets'] = utils.toggle_wibar_widgets,
+            ['toggle widgets'] = utils.toggle_widgets,
             ['update widgets'] = utils.update_widgets
         }
     }

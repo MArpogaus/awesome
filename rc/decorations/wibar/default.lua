@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-09-27 11:14:03 (Marcel Arpogaus)
+-- @Changed: 2021-09-28 10:46:30 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,12 +36,6 @@ local utils = require('rc.utils')
 local module = {}
 local wibars = setmetatable({}, {__mode = 'k'}) -- make keys weak
 local wibars_visible = true
-
--- [ local fucntions ] ---------------------------------------------------------
-local wibars_set_visible = function(s, visible)
-    for _, w in pairs(wibars[s]) do w.visible = visible end
-    wibars_visible = visible
-end
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
@@ -87,18 +81,7 @@ module.init = function(config)
             wibar:setup(wibar_args)
             wibars[s][config] = wibar
 
-            -- add convenience function to toggle wibars and widgets to every screen
-            s.wibars_toggle = function()
-                wibars_set_visible(s, not wibar.visible)
-            end
-            s.wibars_widgets_toggle = function()
-                for _, w in pairs(wibars[s]) do
-                    if w.widgets_toggle then
-                        w.widgets_toggle()
-                    end
-                end
-            end
-            wibars_set_visible(s, wibars_visible)
+            wibar.visible = wibars_visible
         end,
         unregister_fn = function(s)
             local wibar = wibars[s][config]
@@ -115,6 +98,16 @@ module.init = function(config)
             local wibar = wibars[s][config]
 
             for d, _ in pairs(wibar.elements) do d:update(wibar) end
+        end,
+        toggle = function(s)
+            local wibar = wibars[s][config]
+            wibar.visible = not wibar.visible
+        end,
+        toggle_widgets = function(s)
+            local wibar = wibars[s][config]
+            if wibar.visible and wibar.widgets_toggle then
+                wibar.widgets_toggle()
+            end
         end
     }
     return decoration

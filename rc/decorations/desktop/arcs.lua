@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-09-27 09:51:37 (Marcel Arpogaus)
+-- @Changed: 2021-09-28 10:01:22 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,23 +36,33 @@ local abstract_decoration = require('rc.decorations.abstract_decoration')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
+local desktop_popups = setmetatable({}, {__mode = 'k'}) -- make keys weak
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config, widgets_args)
     local arc_widgets = config.widgets or {'cpu', 'memory', 'fs', 'volume'}
 
-    -- show hide desktop_popup
     local desktop_widgets_active = config.visible or true
+
+    local desktop_widgets_suspend = function(desktop_popup)
+        for _, w in ipairs(desktop_popup.registered_widgets) do
+            vicious.unregister(w, true)
+        end
+    end
+    local desktop_widgets_activate = function(desktop_popup)
+        for _, w in ipairs(desktop_popup.registered_widgets) do
+            vicious.activate(w)
+        end
+    end
 
     local decoration = abstract_decoration.new {
         register_fn = function(s)
-            s.registered_desktop_widgets = setmetatable({}, {__mode = 'v'}) -- make values weak
-            s.desktop_widget_containers = {}
-
             if config.screens and
                 not gears.table.hasitem(config.screens, s.index) then
                 return
             end
+
+            local registered_desktop_widgets = setmetatable({}, {__mode = 'v'}) -- make values weak
 
             -- Create the desktop widget popup
             local arc_widget_containers =
@@ -84,8 +94,8 @@ module.init = function(config, widgets_args)
                     utils.require_submodule('decorations/widgets/arcs', w)
                         .init(s, warg)
                 table.insert(arc_widget_containers, widget_container)
-                s.registered_desktop_widgets =
-                    gears.table.join(s.registered_desktop_widgets,
+                registered_desktop_widgets =
+                    gears.table.join(registered_desktop_widgets,
                                      registered_widgets)
             end
             local desktop_widgets_clock_container,
@@ -98,14 +108,10 @@ module.init = function(config, widgets_args)
                                         'weather')
                     .init(s, widgets_args.weather)
 
-            s.registered_desktop_widgets =
-                gears.table.join(s.registered_desktop_widgets,
+            registered_desktop_widgets =
+                gears.table.join(registered_desktop_widgets,
                                  desktop_widgets_weather_widgets,
                                  desktop_widgets_clock_widgets)
-            s.desktop_widget_containers =
-                gears.table.join(arc_widget_containers,
-                                 desktop_widgets_weather_container,
-                                 desktop_widgets_clock_container)
             local desktop_widgets_vertical_spacing =
                 beautiful.desktop_widgets_vertical_spacing or 170
             local desktop_popup_widget =
@@ -138,61 +144,36 @@ module.init = function(config, widgets_args)
                 desktop_popup_arg.bg = utils.set_alpha(beautiful.bg_normal, 75)
             end
 
-            s.desktop_popup = awful.popup(desktop_popup_arg)
-            s.desktop_popup:connect_signal('property::visible', function()
-                if s.desktop_popup.visible then
-                    s.desktop_widgets_activate()
+            desktop_popups[s] = awful.popup(desktop_popup_arg)
+            desktop_popups[s].registered_widgets = registered_desktop_widgets
+            desktop_popups[s]:connect_signal('property::visible', function()
+                if desktop_popups[s].visible then
+                    desktop_widgets_activate(desktop_popups[s])
                 else
-                    s.desktop_widgets_suspend()
+                    desktop_widgets_suspend(desktop_popups[s])
                 end
             end)
 
-            s.desktop_widgets_suspend =
-                function()
-                    for _, w in ipairs(s.registered_desktop_widgets) do
-                        vicious.unregister(w, true)
-                    end
-                end
-            s.desktop_widgets_activate =
-                function()
-                    for _, w in ipairs(s.registered_desktop_widgets) do
-                        vicious.activate(w)
-                    end
-                end
-            s.desktop_widgets_set_state =
-                function(state)
-                    s.desktop_popup.visible = state
-                    -- keep new screens synchronized
-                    desktop_widgets_active = state
-                end
-            s.desktop_widgets_toggle = function()
-                s.desktop_widgets_set_state(not s.desktop_popup.visible)
-            end
-            s.desktop_widgets_set_state(desktop_widgets_active)
+            desktop_popups[s].visible = desktop_widgets_active
         end,
         unregister_fn = function(s)
-            s.desktop_popup.visible = false
-            for i, w in ipairs(s.registered_desktop_widgets) do
+            desktop_popups[s].visible = false
+            for i, w in ipairs(desktop_popups[s].registered_widgets) do
                 vicious.unregister(w)
-                table.remove(s.registered_desktop_widgets, i)
+                table.remove(desktop_popups[s].registered_widgets, i)
             end
-            s.registered_desktop_widgets = nil
-            for i, c in ipairs(s.desktop_widget_containers) do
-                c:reset()
-                table.remove(s.desktop_widget_containers, i)
-            end
-            s.desktop_widget_containers = nil
-            s.desktop_popup:get_widget():reset()
-            s.desktop_popup = nil
-            s.desktop_widgets_set_state = nil
-            s.desktop_widgets_toggle = nil
-            s.desktop_widgets_suspend = nil
-            s.desktop_widgets_activate = nil
+            desktop_popups[s].registered_widgets = nil
+            desktop_popups[s]:get_widget():reset()
+            desktop_popups[s] = nil
         end,
         update_fn = function(s)
-            vicious.force(s.registered_desktop_widgets)
+            vicious.force(desktop_popups[s].registered_widgets)
+        end,
+        toggle = function(s)
+            desktop_popups[s].visible = not desktop_popups[s].visible
         end
     }
+    decoration.toggle_widgets = decoration.toggle
     return decoration
 end
 
