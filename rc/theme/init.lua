@@ -39,7 +39,7 @@ module.init = function(config)
         for _, path in ipairs {
             config_path .. 'config/themes',
             config_path .. 'rc/themes',
-            themes_path,
+            themes_path
         } do
             local theme_file = string.format('%s/%s/theme.lua', path,
                                              config.name)

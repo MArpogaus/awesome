@@ -229,8 +229,7 @@ module.init = function()
     theme.exitmenu_icon = exit_icon(beautiful.wibar_height or
                                         gmath.round(
             beautiful.get_font_height(beautiful.font) * 1.5),
-                                        beautiful.fg_normal,
-                                        beautiful.bg_normal)
+                                    beautiful.fg_normal, beautiful.bg_normal)
     return theme
 end
 
