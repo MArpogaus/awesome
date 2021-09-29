@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-09-29 09:36:19 (Marcel Arpogaus)
+-- @Changed: 2021-09-29 11:59:19 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -51,7 +51,9 @@ module.init = function(applications)
             ['reload theme'] = utils.update_theme,
             ['show help'] = hotkeys_popup.show_help,
             ['show main menu'] = function()
-                awful.screen.focused().main_menu:toggle()
+                if awful.screen.focused().main_menu then
+                    awful.screen.focused().main_menu:toggle()
+                end
             end,
             ['lua execute prompt'] = function()
                 awful.prompt.run {

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-09-29 08:56:51 (Marcel Arpogaus)
+-- @Changed: 2021-09-29 12:00:55 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -84,10 +84,7 @@ module.init = function(config)
         },
         theme = {
             ['decrease dpi'] = function() utils.dec_dpi(10) end,
-            ['increase dpi'] = function() utils.inc_dpi(10) end,
-            ['set dark colorscheme'] = utils.set_dark,
-            ['set light colorscheme'] = utils.set_light,
-            ['set mirage colorscheme'] = utils.set_mirage
+            ['increase dpi'] = function() utils.inc_dpi(10) end
         },
         widgets = {
             ['toggle widgets'] = utils.toggle_widgets,

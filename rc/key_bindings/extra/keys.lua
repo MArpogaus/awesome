@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 10:39:56 (Marcel Arpogaus)
--- @Changed: 2021-09-28 10:00:09 (Marcel Arpogaus)
+-- @Changed: 2021-09-29 12:01:18 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -33,7 +33,7 @@ module.init = function(config)
             ['lua execute prompt'] = {{config.modkey, config.altkey}, 'r'},
             ['lock screen'] = {{config.modkey}, 'q'},
             ['Mac OSX like \'Exposé\' view'] = {{config.modkey}, 'e'},
-            ['toggle decorations'] = {{config.modkey, 'Shift'}, 'd'}
+            ['toggle decorations'] = {{config.modkey}, 'd'}
         },
         client = {
             ['decrement useless gaps'] = {{config.altkey, 'Control'}, '-'},
@@ -65,19 +65,7 @@ module.init = function(config)
         },
         theme = {
             ['decrease dpi'] = {{config.modkey, config.altkey, 'Control'}, '-'},
-            ['increase dpi'] = {{config.modkey, config.altkey, 'Control'}, '+'},
-            ['set dark colorscheme'] = {
-                {config.modkey, config.altkey, 'Control'},
-                'd'
-            },
-            ['set light colorscheme'] = {
-                {config.modkey, config.altkey, 'Control'},
-                'l'
-            },
-            ['set mirage colorscheme'] = {
-                {config.modkey, config.altkey, 'Control'},
-                'm'
-            }
+            ['increase dpi'] = {{config.modkey, config.altkey, 'Control'}, '+'}
         },
         widgets = {
             ['toggle widgets'] = {{config.modkey, 'Shift'}, 'w'},
