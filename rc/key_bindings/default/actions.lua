@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-07-17 13:59:52 (Marcel Arpogaus)
+-- @Changed: 2021-09-29 09:36:19 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -42,7 +42,7 @@ local utils = require('rc.utils')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(applications, mainmenu)
+module.init = function(applications)
     local actions = {}
     actions.global = {
         awesome = {
@@ -50,7 +50,9 @@ module.init = function(applications, mainmenu)
             ['reload awesome'] = capi.awesome.restart,
             ['reload theme'] = utils.update_theme,
             ['show help'] = hotkeys_popup.show_help,
-            ['show main menu'] = function() mainmenu:show() end,
+            ['show main menu'] = function()
+                awful.screen.focused().main_menu:toggle()
+            end,
             ['lua execute prompt'] = function()
                 awful.prompt.run {
                     prompt = 'Run Lua code: ',

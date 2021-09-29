@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-09 14:36:47 (Marcel Arpogaus)
--- @Changed: 2021-08-10 08:35:45 (Marcel Arpogaus)
+-- @Changed: 2021-09-29 20:34:11 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -14,28 +14,34 @@ local awful = require('awful')
 local beautiful = require('beautiful')
 local menubar = require('menubar')
 local wibox = require('wibox')
+local gears = require('gears')
 
-local menus = require('rc.menus')
+local utils = require('rc.utils')
+
 local abstract_element = require('rc.decorations.abstract_element')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(_, config)
-    local menu_name = config.name or 'mainmenu'
+module.init = function(s, config)
+    local menu_name = config.name or 'default'
     local icon
     if type(config.icon) == 'string' then
         icon = menubar.utils.lookup_icon(config.icon)
     else
-        icon = beautiful[menu_name .. '_icon'] or beautiful.awesome_icon
+        icon = beautiful[menu_name .. 'menu_icon'] or beautiful.awesome_icon
     end
+
+    local menu = utils.require_submodule('decorations/wibar/elements/menu',
+                                         menu_name).init(config)
+
     return abstract_element.new {
         register_fn = function(_)
-            local laucher = awful.widget.launcher(
-                {image = icon, menu = menus[menu_name]})
+            if config.main_menu then s.main_menu = menu end
+            local laucher = awful.widget.launcher({image = icon, menu = menu})
             if config.margin then
-                local container = config.margin
+                local container = gears.table.clone(config.margin)
                 table.insert(container, laucher)
                 container.widget = wibox.container.margin
                 return container
@@ -43,7 +49,9 @@ module.init = function(_, config)
                 return laucher
             end
         end,
-        unregister_fn = function(_) end
+        unregister_fn = function(_)
+            if config.main_menu then s.main_menu = nil end
+        end
     }
 end
 

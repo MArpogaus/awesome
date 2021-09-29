@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 15:12:05 (Marcel Arpogaus)
--- @Changed: 2021-08-09 14:55:35 (Marcel Arpogaus)
+-- @Changed: 2021-09-29 09:38:53 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -73,9 +73,6 @@ module.applications = {
     lock_command = 'light-locker-command -l',
     terminal = 'xterm'
 }
-
--- menus
-module.menus = {mainmenu = true}
 
 -- behavior
 module.behavior = {'default'}

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-08-09 08:40:34 (Marcel Arpogaus)
+-- @Changed: 2021-09-29 09:38:36 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -33,7 +33,6 @@ local decorations = require('rc.decorations')
 local error_handling = require('rc.error_handling')
 local key_bindings = require('rc.key_bindings')
 local layouts = require('rc.layouts')
-local menus = require('rc.menus')
 local mouse_bindings = require('rc.mouse_bindings')
 local screen = require('rc.screen')
 local tags = require('rc.tags')
@@ -70,14 +69,11 @@ session.init(config.session, function()
     -- Initialize wibars and widgest
     decorations.init(config.decorations)
 
-    -- Initialize menus
-    menus.init(config.menus, config.applications)
-
     -- Initialize mouse bindings
-    mouse_bindings.init(config.bindings, menus.mainmenu)
+    mouse_bindings.init(config.bindings)
 
     -- Initialize key bindings
-    key_bindings.init(config.bindings, config.applications, menus.mainmenu)
+    key_bindings.init(config.bindings, config.applications)
 
     -- Initialize Screens
     screen.init(config.screen, tags.tagnames)

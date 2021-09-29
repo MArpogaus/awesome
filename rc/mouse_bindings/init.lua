@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:14 (Marcel Arpogaus)
--- @Changed: 2021-08-10 15:02:56 (Marcel Arpogaus)
+-- @Changed: 2021-09-29 20:35:28 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -34,7 +34,7 @@ local awful = require('awful')
 local module = {}
 
 -- [ module function ] ---------------------------------------------------------
-module.init = function(config, mainmenu)
+module.init = function(config)
     -- Default modkey.
     local modkey = config.modkey
 
@@ -57,14 +57,20 @@ module.init = function(config, mainmenu)
         awful.button({}, 1, function(c)
             capi.client.focus = c;
             c:raise()
-            mainmenu:hide()
+            if awful.screen.focused().main_menu then
+                awful.screen.focused().main_menu:hide()
+            end
         end), awful.button({modkey}, 1, awful.mouse.client.move),
         awful.button({modkey}, 3, awful.mouse.client.resize))
 
-    local root = gears.table.join(awful.button({}, 1,
-                                               function() mainmenu:hide() end),
-                                  awful.button({}, 3, function()
-        mainmenu:toggle()
+    local root = gears.table.join(awful.button({}, 1, function()
+        if awful.screen.focused().main_menu then
+            awful.screen.focused().main_menu:hide()
+        end
+    end), awful.button({}, 3, function()
+        if awful.screen.focused().main_menu then
+            awful.screen.focused().main_menu:toggle()
+        end
     end), awful.button({}, 4, awful.tag.viewnext),
                                   awful.button({}, 5, awful.tag.viewprev))
     capi.root.buttons(root)

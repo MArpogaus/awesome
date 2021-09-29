@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:44 (Marcel Arpogaus)
--- @Changed: 2021-07-19 07:57:05 (Marcel Arpogaus)
+-- @Changed: 2021-09-29 08:55:02 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,7 +36,7 @@ local utils = require('rc.utils')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config, applications, mainmenu)
+module.init = function(config, applications)
     local keys = {}
     local actions = {}
     for _, binding in ipairs(config.keymaps) do
@@ -48,7 +48,7 @@ module.init = function(config, applications, mainmenu)
                                    utils.require_submodule('key_bindings',
                                                            binding ..
                                                                '/actions')
-                                       .init(applications, mainmenu))
+                                       .init(applications))
     end
 
     for level, level_keys in pairs(keys) do

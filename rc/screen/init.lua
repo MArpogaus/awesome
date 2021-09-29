@@ -126,8 +126,6 @@ module.remove = function(s)
     s.reset()
     collectgarbage()
 end
-module.update_all = function()
-    for s in capi.screen do module.update(s) end
-end
+module.update_all = function() for s in capi.screen do module.update(s) end end
 -- [ return module ] -----------------------------------------------------------
 return module
