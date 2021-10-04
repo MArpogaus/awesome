@@ -58,7 +58,7 @@ module.init = function(config, tagnames)
         end
 
         -- Dynamic widget management
-        s.decorations = setmetatable({}, {__mode = 'v'}) -- make values weak
+        s.decorations = {}
 
         s.update_decorations = function()
             for e, _ in pairs(s.decorations) do e:update(s) end
@@ -80,7 +80,6 @@ module.init = function(config, tagnames)
             for e, _ in pairs(s.decorations) do
                 e:unregister(s)
                 e:register(s)
-                e:update(s)
             end
         end
 

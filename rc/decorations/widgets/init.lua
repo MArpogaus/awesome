@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:55:55 (Marcel Arpogaus)
--- @Changed: 2021-08-10 09:05:43 (Marcel Arpogaus)
+-- @Changed: 2021-10-04 08:44:21 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -57,8 +57,19 @@ local function create_widget(widget_def, widget_container, timeout)
 
     -- return widget container
     local container = widget_container(widget_container_args)
-    container.has_registered_widgets = registered_widgets ~= nil
-    return container, registered_widgets
+    container.unregister = function()
+        for _, w in ipairs(registered_widgets) do vicious.unregister(w) end
+    end
+    container.suspend = function()
+        for _, w in ipairs(registered_widgets) do
+            vicious.unregister(w, true)
+        end
+    end
+    container.activate = function()
+        for _, w in ipairs(registered_widgets) do vicious.activate(w) end
+    end
+    container.update = function() vicious.force(registered_widgets) end
+    return container
 end
 
 -- [ module functions ] --------------------------------------------------------

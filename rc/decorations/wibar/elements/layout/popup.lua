@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 09:58:27 (Marcel Arpogaus)
--- @Changed: 2021-07-16 16:37:05 (Marcel Arpogaus)
+-- @Changed: 2021-10-03 17:58:09 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -32,48 +32,44 @@ local beautiful = require('beautiful')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(lb)
-    if module.popup == nil then
-        module.popup = awful.popup {
-            widget = wibox.widget {
-                awful.widget.layoutlist {
-                    base_layout = wibox.widget {
-                        spacing = 5,
-                        forced_num_cols = 3,
-                        layout = wibox.layout.grid.vertical
-                    },
-                    widget_template = {
-                        {
-                            {
-                                id = 'icon_role',
-                                forced_height = 32,
-                                forced_width = 32,
-                                widget = wibox.widget.imagebox
-                            },
-                            margins = 4,
-                            widget = wibox.container.margin
-                        },
-                        id = 'background_role',
-                        -- forced_width    = 24,
-                        -- forced_height   = 24,
-                        shape = gears.shape.rounded_rect,
-                        widget = wibox.container.background
-                    }
+module.init = function()
+    local popup = awful.popup {
+        widget = wibox.widget {
+            awful.widget.layoutlist {
+                base_layout = wibox.widget {
+                    spacing = 5,
+                    forced_num_cols = 3,
+                    layout = wibox.layout.grid.vertical
                 },
-                margins = 4,
-                widget = wibox.container.margin
+                widget_template = {
+                    {
+                        {
+                            id = 'icon_role',
+                            forced_height = 32,
+                            forced_width = 32,
+                            widget = wibox.widget.imagebox
+                        },
+                        margins = 4,
+                        widget = wibox.container.margin
+                    },
+                    id = 'background_role',
+                    -- forced_width    = 24,
+                    -- forced_height   = 24,
+                    shape = gears.shape.rounded_rect,
+                    widget = wibox.container.background
+                }
             },
-            border_color = beautiful.border_color,
-            border_width = beautiful.border_width,
-            ontop = true,
-            hide_on_right_click = true,
-            visible = false
-        }
-    end
-    module.popup:bind_to_widget(lb)
-    return module.popup
+            margins = 4,
+            widget = wibox.container.margin
+        },
+        border_color = beautiful.border_color,
+        border_width = beautiful.border_width,
+        ontop = true,
+        hide_on_right_click = true,
+        visible = false
+    }
+    return popup
 end
-module.reset = function(lp, lb) lp:unbind_to_widget(lb) end
 
 -- [ return module ] -----------------------------------------------------------
 return module

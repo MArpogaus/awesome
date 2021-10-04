@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-08 15:36:38 (Marcel Arpogaus)
--- @Changed: 2021-09-28 09:10:24 (Marcel Arpogaus)
+-- @Changed: 2021-10-04 09:01:45 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -13,8 +13,6 @@
 local gears = require('gears')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
-
-local vicious = require('vicious')
 
 local utils = require('rc.utils')
 
@@ -32,33 +30,21 @@ module.init = function(s, config)
 
     local wibar_widgets_active = true
     local wibar_widget_container = {layout = layout}
-    local registered_wibar_widgets = setmetatable({}, {__mode = 'v'})
 
-    local widget_set_opacity = function(opacity)
+    local widget_set_opacity = function(fn, opacity)
         for _, w in ipairs(wibar_widget_container.children) do
-            if w.has_registered_widgets then
+            if w[fn] then
+                w[fn]()
                 w.opacity = opacity
                 w:emit_signal('widget::redraw_needed')
             end
         end
     end
-    local widgets_suspend = function()
-        for _, w in ipairs(registered_wibar_widgets) do
-            vicious.unregister(w, true)
-            widget_set_opacity(0.5)
-        end
-    end
-    local widgets_activate = function()
-        for _, w in ipairs(registered_wibar_widgets) do
-            vicious.activate(w)
-            widget_set_opacity(1)
-        end
-    end
     local widgets_set_state = function(state)
         if state then
-            widgets_activate()
+            widget_set_opacity('activate', 1.0)
         else
-            widgets_suspend()
+            widget_set_opacity('suspend', 0.5)
         end
         wibar_widgets_active_inital = state
         wibar_widgets_active = state
@@ -82,13 +68,10 @@ module.init = function(s, config)
                                      {}
                     warg = gears.table.clone(warg)
                     warg.color = warg.color or fg_wibar_widgets[cidx]
-                    local widget_container, registered_widgets =
+                    local widget_container =
                         utils.require_submodule('decorations/widgets/wibar', w)
                             .init(s, warg)
                     table.insert(wibar_widget_container, widget_container)
-                    registered_wibar_widgets =
-                        gears.table.join(registered_wibar_widgets,
-                                         registered_widgets)
                 elseif type(w) == 'table' and w.is_widget then
                     table.insert(wibar_widget_container, w)
                 else
@@ -103,17 +86,19 @@ module.init = function(s, config)
             return wibar_widget_container
         end,
         unregister_fn = function(wibar)
-            for i, w in ipairs(registered_wibar_widgets) do
-                vicious.unregister(w)
-                table.remove(registered_wibar_widgets, i)
+            for _, w in ipairs(wibar_widget_container.children) do
+                if w.unregister then w.unregister() end
             end
-            registered_wibar_widgets = nil
             wibar_widget_container:reset()
             wibar_widget_container:remove()
             wibar_widget_container = nil
             wibar.widgets_toggle = nil
         end,
-        update_fn = function(_) vicious.force(registered_wibar_widgets) end
+        update_fn = function(_)
+            for _, w in ipairs(wibar_widget_container.children) do
+                if w.update then w.update() end
+            end
+        end
     }
 end
 

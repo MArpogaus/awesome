@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-09-28 10:46:30 (Marcel Arpogaus)
+-- @Changed: 2021-10-04 12:12:31 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -34,7 +34,7 @@ local utils = require('rc.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
-local wibars = setmetatable({}, {__mode = 'k'}) -- make keys weak
+local wibars = {}
 local wibars_visible = true
 
 -- [ module functions ] --------------------------------------------------------
@@ -62,7 +62,7 @@ module.init = function(config)
 
             -- Create the wibox
             local wibar = awful.wibar({position = position, screen = s})
-            wibar.elements = setmetatable({}, {__mode = 'v'}) -- make values weak
+            wibar.elements = {}
 
             -- Add widgets to the wibox
             local wibar_args = {layout = wibox.layout.align[layout]}

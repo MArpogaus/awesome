@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 17:58:40 (Marcel Arpogaus)
--- @Changed: 2021-09-27 16:25:15 (Marcel Arpogaus)
+-- @Changed: 2021-10-04 14:30:41 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -208,6 +208,9 @@ local titlebar_button = function(theme, state, postfix)
         if postfix then full_name = full_name .. '_' .. postfix end
         local img = titlebar_button_shapes[tb.shape](size, fg_color, bg_color,
                                                      postfix, tb.active)
+        if type(theme[full_name]) == 'userdata' then
+            theme[full_name]:finish()
+        end
         theme[full_name] = img
     end
     return theme
