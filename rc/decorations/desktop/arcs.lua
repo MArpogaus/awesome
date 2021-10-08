@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-10-04 13:56:59 (Marcel Arpogaus)
+-- @Changed: 2021-10-07 09:28:35 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -34,7 +34,7 @@ local abstract_decoration = require('rc.decorations.abstract_decoration')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
-local desktop_popups = {}
+local desktop_popups = setmetatable({}, {__mode = 'k'}) -- make keys weak
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config, widgets_args)
@@ -147,15 +147,15 @@ module.init = function(config, widgets_args)
         end,
         unregister_fn = function(s)
             local popup = desktop_popups[s]
+            popup.visible = false
             popup.arc_widgets.unregister()
             popup.arc_widgets = nil
             popup.weather_widget.unregister()
             popup.weather_widget = nil
-            popup:get_widget():get_widget():reset()
-            popup:get_widget():set_widget(nil)
             popup:get_widget():reset()
-            -- popup:set_widget(nil)
-            -- desktop_popups[s] = nil
+            popup:set_widget(nil)
+            desktop_popups[s] = nil
+            collectgarbage()
         end,
         update_fn = function(s)
             local popup = desktop_popups[s]

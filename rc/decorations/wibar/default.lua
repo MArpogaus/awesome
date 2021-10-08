@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-10-04 12:12:31 (Marcel Arpogaus)
+-- @Changed: 2021-10-06 12:59:12 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -34,7 +34,7 @@ local utils = require('rc.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
-local wibars = {}
+local wibars = setmetatable({}, {__mode = 'k'}) -- make keys weak
 local wibars_visible = true
 
 -- [ module functions ] --------------------------------------------------------
