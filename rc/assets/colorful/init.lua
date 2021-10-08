@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-19 15:38:22 (Marcel Arpogaus)
--- @Changed: 2021-07-29 18:19:26 (Marcel Arpogaus)
+-- @Changed: 2021-10-08 17:02:38 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -31,9 +31,8 @@ local utils = require('rc.utils')
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
--- [ module functions ] --------------------------------------------------------
-module.init = function()
-    local theme = beautiful.get()
+-- [ local functions ] ---------------------------------------------------------
+local function get_colors()
     local xrdb = xresources.get_current_theme()
     local cs = {
         bg = xrdb.background,
@@ -57,16 +56,35 @@ module.init = function()
             xrdb.color15
         }
     }
+    local f = io.popen('xrdb -query', 'r')
+    local color_pattern = '#[a-f0-9]+'
+    for l in f:lines() do
+        if l:match('^*(color%d+)') then
+            local idx = l:match('^*color(%d+)')
+            idx = tonumber(idx + 1)
+            cs.colors[idx] = l:match(color_pattern)
+        elseif l:match('^*(foreground)') then
+            cs.fg = l:match(color_pattern)
+        elseif l:match('^*(background)') then
+            cs.bg = l:match(color_pattern)
+        end
+    end
+    f:close()
+    return cs
+end
+
+-- [ module functions ] --------------------------------------------------------
+module.init = function()
+    local theme = beautiful.get()
+    local cs = get_colors()
+
     -- set colors for buttons and widgets
-    theme.titlebar_exit_icon_bg_focus = cs.bg
     theme.titlebar_close_button_bg_focus = cs.colors[2]
     theme.titlebar_maximized_button_bg_focus = cs.colors[3]
     theme.titlebar_minimize_button_bg_focus = cs.colors[4]
     theme.titlebar_ontop_button_bg_focus = cs.colors[7]
     theme.titlebar_sticky_button_bg_focus = cs.colors[5]
 
-    theme.titlebar_exit_icon_fg_focus =
-        utils.reduce_contrast(theme.titlebar_exit_icon_bg_focus, 50)
     theme.titlebar_close_button_fg_focus =
         utils.reduce_contrast(theme.titlebar_close_button_bg_focus, 50)
     theme.titlebar_maximized_button_fg_focus =
@@ -98,7 +116,6 @@ module.init = function()
     theme.fg_desktop_widgets_clock_date = cs.colors[2]
     theme.fg_desktop_widgets_clock_month = cs.colors[3]
     theme.fg_desktop_widgets_weather = theme.fg_normal
-
     return theme
 end
 
