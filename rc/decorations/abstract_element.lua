@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 11:32:32 (Marcel Arpogaus)
--- @Changed: 2021-09-28 12:05:55 (Marcel Arpogaus)
+-- @Changed: 2021-10-07 09:17:05 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -31,8 +31,7 @@ local element = {}
 element.__index = element
 element.unregister = function(self, elements_container, args)
     if not elements_container[self] then
-        gears.debug.print_warning(
-            'cant unregister: element not registered on this screen.')
+        gears.debug.print_warning('cant unregister: element not registered.')
     else
         local ret = self.unregister_fn(args)
         if not self.meta then elements_container[self] = nil end
@@ -43,7 +42,7 @@ end
 element.register = function(self, elements_container, args)
     if elements_container[self] then
         gears.debug.print_warning('cant register:' ..
-                                      'element is already registered on this screen.')
+                                      'element is already registered.')
     else
         local ret = self.register_fn(args)
         if not self.meta then elements_container[self] = true end
