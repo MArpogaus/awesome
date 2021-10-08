@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 16:34:33 (Marcel Arpogaus)
--- @Changed: 2021-02-08 21:24:50 (Marcel Arpogaus)
+-- @Changed: 2021-10-07 15:06:12 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -24,14 +24,9 @@ local module = {}
 -- exist.
 -- ref: stackoverflow.com/questions/42376294
 local function setTitlebar(client, s)
-
     if s and not client.requests_no_titlebars then
-        if not client._request_titlebars_called then
-            client:emit_signal('request::titlebars', 'rules', {})
-        end
         awful.titlebar.show(client)
     else
-        if not client._request_titlebars_called then return end
         awful.titlebar.hide(client)
     end
 end
@@ -42,19 +37,8 @@ module.init = function(_)
         -- Signal function to execute when a new client appears.
         client = {
             ['manage'] = function(c)
-                -- Set the windows at the slave,
-                -- i.e. put it at the end of others instead of setting it master.
-                -- if not awesome.startup then awful.client.setslave(c) end
-
-                if capi.awesome.startup then
-                    if not c.size_hints.user_position and
-                        not c.size_hints.program_position then
-                        -- Prevent clients from being unreachable after screen count changes.
-                        awful.placement.no_offscreen(c)
-                    end
-                    setTitlebar(c, c.floating or c.first_tag.layout.name ==
-                                    'floating')
-                end
+                setTitlebar(c, c.floating or c.first_tag.layout.name ==
+                                'floating')
             end,
             ['property::floating'] = function(c)
                 if c.fullscreen then return end
