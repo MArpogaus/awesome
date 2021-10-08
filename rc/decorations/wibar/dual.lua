@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-09-27 17:08:24 (Marcel Arpogaus)
+-- @Changed: 2021-10-06 11:46:54 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -58,10 +58,6 @@ module.init = function(config)
         register_fn = function(s)
             top_wibar:register(s)
             bottom_wibar:register(s)
-        end,
-        unregister_fn = function(s)
-            top_wibar:unregister(s)
-            bottom_wibar:unregister(s)
         end
     }
     return decoration
