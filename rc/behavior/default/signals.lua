@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 16:02:46 (Marcel Arpogaus)
--- @Changed: 2021-07-29 15:25:05 (Marcel Arpogaus)
+-- @Changed: 2021-10-08 08:40:19 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -98,6 +98,10 @@ module.init = function(config)
                 if awful.layout.get(c.screen).name ~= 'magnifier' then
                     c:emit_signal('request::activate', 'mouse_enter',
                                   {raise = false})
+
+                end
+                if c.screen.systray_set_screen then
+                    c.screen.systray_set_screen()
                 end
             end,
 
