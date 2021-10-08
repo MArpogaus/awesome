@@ -6,6 +6,8 @@ local gears = require('gears')
 local awful = require('awful')
 local beautiful = require('beautiful')
 
+local decorations = require('rc.decorations')
+
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 local init_screen
@@ -77,10 +79,8 @@ module.init = function(config, tagnames)
             end
         end
         s.reregister_decorations = function()
-            for e, _ in pairs(s.decorations) do
-                e:unregister(s)
-                e:register(s)
-            end
+            s.unregister_decorations()
+            for _, d in ipairs(decorations.get()) do d:register(s) end
         end
 
         s.reset = function()
@@ -93,7 +93,6 @@ module.init = function(config, tagnames)
             s.unregister_decorations = nil
             s.update_decorations = nil
             s.reset = nil
-
         end
 
         s.move_all_clients = function()
@@ -106,15 +105,10 @@ module.init = function(config, tagnames)
         s.init()
     end
     awful.screen.connect_for_each_screen(init_screen)
-end
-module.register = function(decoration)
-    awful.screen
-        .connect_for_each_screen(function(s) decoration:register(s) end)
-end
-module.unregister = function(decoration)
-    awful.screen.disconnect_for_each_screen(
-        function(s) decoration:register(s) end)
-    for s in capi.screen do decoration:unregister(s) end
+
+    for _, d in ipairs(decorations.get()) do
+        awful.screen.connect_for_each_screen(function(s) d:register(s) end)
+    end
 end
 module.update = function(s)
     s.init()

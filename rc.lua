@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-09-29 09:38:36 (Marcel Arpogaus)
+-- @Changed: 2021-10-06 12:48:59 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -77,7 +77,6 @@ session.init(config.session, function()
 
     -- Initialize Screens
     screen.init(config.screen, tags.tagnames)
-    for _, d in ipairs(decorations.get()) do screen.register(d) end
 
     -- Initialize behavior
     behavior.init(config.behavior, mouse_bindings.client_buttons,
