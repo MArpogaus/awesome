@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 13:55:07 (Marcel Arpogaus)
--- @Changed: 2021-10-09 11:49:02 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 12:35:45 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -18,14 +18,19 @@ local gears = require('gears')
 
 -- helper functions
 local utils = require('rc.utils')
+local key_bindings = require('rc.key_bindings')
+local mouse_bindings = require('rc.mouse_bindings')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
+
 -- [ defaults ] ----------------------------------------------------------------
 module.defaults = {'default'}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(self, cfg, client_buttons, client_keys)
+module.init = function(self, cfg)
+    local client_buttons = mouse_bindings.client_buttons
+    local client_keys = key_bindings.client_keys
     self.config = cfg or module.defaults
     local rules = {}
     for behavior, behavior_cfg in utils.value_with_cfg(self.config) do
