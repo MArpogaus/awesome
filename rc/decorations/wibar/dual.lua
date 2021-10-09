@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-10-06 11:46:54 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 12:26:02 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -26,31 +26,39 @@
 local abstract_decoration = require('rc.decorations.abstract_decoration')
 local default_wibar = require('rc.decorations.wibar.default')
 
+-- helper functions
+local utils = require('rc.utils')
+
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
--- [ module functions ] --------------------------------------------------------
-module.init = function(config)
-    local elements = config.elements or {
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {
+    elements = {
         top = {
-            {'menu', 'taglist', 'promptbox'}, -- left
+            {'1-menu', '2-taglist', '3-promptbox'}, -- left
             {}, -- middle
             {'widgets'} -- right
         },
         bottom = {
             {'default_tasklist'}, -- left
             {}, -- middle
-            {'keyboardlayout', 'systray', 'layout'} -- right
+            {'1-keyboardlayout', '2-systray', '3-layout'} -- right
         }
     }
+}
+
+-- [ module functions ] --------------------------------------------------------
+module.init = function(config)
+    config = utils.deep_merge(module.defaults, config, 1)
 
     local top_wibar = default_wibar.init {
         position = 'top',
-        elements = elements.top
+        elements = config.elements.top
     }
     local bottom_wibar = default_wibar.init {
         position = 'bottom',
-        elements = elements.bottom
+        elements = config.elements.bottom
     }
 
     local decoration = abstract_decoration.new {

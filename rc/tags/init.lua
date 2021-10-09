@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:48 (Marcel Arpogaus)
--- @Changed: 2021-07-17 11:50:00 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 11:18:57 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -25,8 +25,12 @@
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
+
 -- [ module functions ] --------------------------------------------------------
-module.init = function(tagnames) module.tagnames = tagnames end
+module.init = function(self, tagnames) self.tagnames =
+    tagnames or self.defaults end
 
 -- [ return module ] -----------------------------------------------------------
 return module

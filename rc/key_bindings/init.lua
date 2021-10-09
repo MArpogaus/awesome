@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:44 (Marcel Arpogaus)
--- @Changed: 2021-09-29 08:55:02 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 12:14:14 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -35,20 +35,29 @@ local utils = require('rc.utils')
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {
+    keymaps = {'default'},
+    bind_numbers_to_tags = true,
+    modkey = 'Mod4',
+    altkey = 'Mod1'
+}
+
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config, applications)
+module.init = function(self, cfg)
+    self.config = utils.deep_merge(self.defaults, cfg or {}, 1)
     local keys = {}
     local actions = {}
-    for _, binding in ipairs(config.keymaps) do
-        keys = utils.deep_merge(keys, utils.require_submodule('key_bindings',
-                                                              binding ..
-                                                                  '/keys')
-                                    .init(config))
+    for binding, bind_cfg in utils.value_with_cfg(self.config.keymaps, true) do
+        keys = utils.deep_merge(keys,
+                                utils.require_submodule('key_bindings',
+                                                        binding .. '/keys')
+                                    .init(self.config, bind_cfg))
         actions = utils.deep_merge(actions,
                                    utils.require_submodule('key_bindings',
                                                            binding ..
                                                                '/actions')
-                                       .init(applications))
+                                       .init(self.config, bind_cfg))
     end
 
     for level, level_keys in pairs(keys) do
@@ -64,7 +73,7 @@ module.init = function(config, applications)
         module[level .. '_keys'] = gears.table.join(table.unpack(key_tables))
     end
 
-    if config.bind_numbers_to_tags then
+    if self.config.bind_numbers_to_tags then
         -- Bind all key numbers to tags.
         -- Be careful: we use keycodes to make it works on any keyboard layout.
         -- This should map on the top row of your keyboard, usually 1 to 9.
@@ -83,31 +92,31 @@ module.init = function(config, applications)
                     group = 'tag'
                 }
             end
-            module.global_keys = gears.table
-                                     .join(module.global_keys, -- View tag only.
-                                           awful.key({config.modkey},
-                                                     '#' .. i + 9, function()
+            self.global_keys = gears.table
+                                   .join(self.global_keys, -- View tag only.
+            awful.key({self.config.modkey}, '#' .. i + 9, function()
                 local s = awful.screen.focused()
                 local tag = s.tags[i]
                 if tag then tag:view_only() end
             end, descr_view),
-                                           awful.key(
-                {config.modkey, 'Control'}, '#' .. i + 9, function()
+                                         awful.key(
+                {self.config.modkey, 'Control'}, '#' .. i + 9, function()
                     local s = awful.screen.focused()
                     local tag = s.tags[i]
                     if tag then awful.tag.viewtoggle(tag) end
                 end, descr_toggle),
-                                           awful.key({config.modkey, 'Shift'},
-                                                     '#' .. i + 9, function()
-                if capi.client.focus then
-                    local tag = capi.client.focus.screen.tags[i]
-                    if tag then
-                        capi.client.focus:move_to_tag(tag)
+                                         awful.key(
+                {self.config.modkey, 'Shift'}, '#' .. i + 9, function()
+                    if capi.client.focus then
+                        local tag = capi.client.focus.screen.tags[i]
+                        if tag then
+                            capi.client.focus:move_to_tag(tag)
+                        end
                     end
-                end
-            end, descr_move),
-                                           awful.key(
-                {config.modkey, 'Control', 'Shift'}, '#' .. i + 9, function()
+                end, descr_move),
+                                         awful.key(
+                {self.config.modkey, 'Control', 'Shift'}, '#' .. i + 9,
+                function()
                     if capi.client.focus then
                         local tag = capi.client.focus.screen.tags[i]
                         if tag then
@@ -119,7 +128,7 @@ module.init = function(config, applications)
     end
 
     -- register global key bindings
-    capi.root.keys(module.global_keys)
+    capi.root.keys(self.global_keys)
 end
 
 -- [ return module ] -----------------------------------------------------------

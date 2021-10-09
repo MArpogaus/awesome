@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 16:02:46 (Marcel Arpogaus)
--- @Changed: 2021-10-08 08:40:19 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 12:02:38 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -14,14 +14,13 @@
 local capi = {awesome = awesome}
 
 -- Standard awesome library
-local gears = require('gears')
 local awful = require('awful')
-
--- Widget and layout library
-local wibox = require('wibox')
 
 -- Theme handling library
 local beautiful = require('beautiful')
+
+-- helper function
+local utils = require('rc.utils')
 
 -- screen module
 local screen = require('rc.screen')
@@ -29,16 +28,12 @@ local screen = require('rc.screen')
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {titlebar = {style = 'default'}}
+
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
-    local titlebar_buttons = config.titlebar_buttons or
-                                 {
-            'floating',
-            'maximized',
-            'sticky',
-            'ontop',
-            'close'
-        }
+    config = utils.deep_merge(module.defaults, config)
     return {
         -- Signal function to execute when a new client appears.
         client = {
@@ -55,43 +50,9 @@ module.init = function(config)
             end,
             -- Add a titlebar if titlebars_enabled is set to true in the rules.
             ['request::titlebars'] = function(c)
-                -- buttons for the titlebar
-                local buttons = gears.table.join(
-                    awful.button({}, 1, function()
-                        c:emit_signal('request::activate', 'titlebar',
-                                      {raise = true})
-                        awful.mouse.client.move(c)
-                    end), awful.button({}, 3, function()
-                        c:emit_signal('request::activate', 'titlebar',
-                                      {raise = true})
-                        awful.mouse.client.resize(c)
-                    end))
-
-                local titlebar_buttons_container =
-                    {layout = wibox.layout.fixed.horizontal}
-                for _, tb in ipairs(titlebar_buttons) do
-                    table.insert(titlebar_buttons_container,
-                                 awful.titlebar.widget[tb .. 'button'](c))
-                end
-
-                awful.titlebar(c):setup{
-                    { -- Left
-                        awful.titlebar.widget.iconwidget(c),
-                        buttons = buttons,
-                        layout = wibox.layout.fixed.horizontal
-                    },
-                    { -- Middle
-                        { -- Title
-                            align = 'center',
-                            widget = awful.titlebar.widget.titlewidget(c)
-                        },
-                        buttons = buttons,
-                        layout = wibox.layout.flex.horizontal
-                    },
-                    -- Right
-                    titlebar_buttons_container,
-                    layout = wibox.layout.align.horizontal
-                }
+                utils.require_submodule('behavior/default/titlebars',
+                                        config.titlebar.style).init(c,
+                                                                    config.titlebar)
             end,
             -- Enable sloppy focus, so that focus follows mouse.
             ['mouse::enter'] = function(c)

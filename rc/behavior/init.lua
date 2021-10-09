@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 13:55:07 (Marcel Arpogaus)
--- @Changed: 2021-07-29 15:13:28 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 11:49:02 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -21,11 +21,14 @@ local utils = require('rc.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {'default'}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config, client_buttons, client_keys)
+module.init = function(self, cfg, client_buttons, client_keys)
+    self.config = cfg or module.defaults
     local rules = {}
-    for behavior, behavior_cfg in utils.value_with_cfg(config) do
+    for behavior, behavior_cfg in utils.value_with_cfg(self.config) do
         rules = gears.table.crush(rules,
                                   utils.require_submodule('behavior',
                                                           behavior .. '/rules',

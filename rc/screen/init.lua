@@ -8,15 +8,23 @@ local beautiful = require('beautiful')
 
 local decorations = require('rc.decorations')
 
+local tags = require('rc.tags')
+
+-- helper functions
+local utils = require('rc.utils')
+
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
-local init_screen
+
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {auto_dpi = true, tasklist = 'default'}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config, tagnames)
+module.init = function(self, cfg)
+    self.config = utils.deep_merge(self.defaults, cfg or {}, 1)
 
-    module.set_wallpaper = function(s)
-        local wallpaper = config.wallpaper or beautiful.wallpaper
+    self.set_wallpaper = function(s)
+        local wallpaper = self.config.wallpaper or beautiful.wallpaper
         -- If wallpaper is a function, call it with the screen
         if type(wallpaper) == 'function' then
             gears.wallpaper.maximized(wallpaper(s), s, true)
@@ -41,20 +49,19 @@ module.init = function(config, tagnames)
     end
 
     -- Enable the automatic calculation of the screen DPI (experimental).
-    awful.screen.set_auto_dpi_enabled(config.auto_dpi)
-    init_screen = function(s)
+    awful.screen.set_auto_dpi_enabled(self.config.auto_dpi)
+    local init_screen = function(s)
         -- Each screen has its own tag table.
-        awful.tag(tagnames, s,
-                  awful.layout.default[s.index] or awful.layout.layouts[1])
+        awful.tag(tags.tagnames, s, awful.layout.default)
 
         s.init = function()
             -- prevent multiple runs
             if s.initialized then return end
 
-            if config.dpi then s.dpi = config.dpi end
+            if self.config.dpi then s.dpi = self.config.dpi end
 
             -- set wallpaer
-            module.set_wallpaper(s)
+            self.set_wallpaper(s)
 
             s.initialized = true
         end

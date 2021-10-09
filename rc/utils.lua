@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-09-28 12:12:48 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 11:39:57 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -92,10 +92,10 @@ end
 
 -- Load configuration file
 function module.load_config(config_file)
-    local config = require('rc.defaults')
+    local config
     if gfs.file_readable(gfs.get_configuration_dir() ..
                              (config_file or 'config') .. '.lua') then
-        config = module.deep_merge(config, require(config_file or 'config'), 1)
+        config = require(config_file or 'config')
     end
     return config
 end
@@ -103,16 +103,16 @@ function module.sleep(n) os.execute('sleep ' .. tonumber(n)) end
 
 -- deep merge two tables
 function module.deep_merge(t1, t2, max_level)
+    local res = gears.table.clone(t1, true)
     if max_level == nil then max_level = 5 end
     for k, v in pairs(t2) do
-        if max_level > 0 and type(k) == 'string' and type(v) == 'table' and
-            not v[1] then
-            t1[k] = module.deep_merge(t1[k] or {}, v, max_level - 1)
+        if max_level > 0 and type(k) == 'string' and type(v) == 'table' then
+            res[k] = module.deep_merge(res[k] or {}, v, max_level - 1)
         else
-            t1[k] = v
+            res[k] = v
         end
     end
-    return t1
+    return res
 end
 
 function module.require_submodule(path, file, ignore_error)

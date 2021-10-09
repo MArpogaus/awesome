@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 17:51:53 (Marcel Arpogaus)
--- @Changed: 2021-07-18 22:51:35 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 11:06:22 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -30,14 +30,14 @@ local utils = require('rc.utils')
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(assets)
+module.init = function(self, assets)
     if assets then
-        module.apply = function()
+        self.apply = function()
             for asset, asset_cfg in utils.value_with_cfg(assets) do
                 utils.require_submodule('assets', asset).init(asset_cfg)
             end
         end
-        module.apply()
+        self.apply()
     end
 end
 

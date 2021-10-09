@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 10:39:56 (Marcel Arpogaus)
--- @Changed: 2021-09-29 12:01:18 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 12:16:48 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -26,11 +26,10 @@
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config)
+module.init = function(config, _)
     local keys = {}
     keys.global = {
         awesome = {
-            ['lua execute prompt'] = {{config.modkey, config.altkey}, 'r'},
             ['lock screen'] = {{config.modkey}, 'q'},
             ['Mac OSX like \'Exposé\' view'] = {{config.modkey}, 'e'},
             ['toggle decorations'] = {{config.modkey}, 'd'}
@@ -72,7 +71,6 @@ module.init = function(config)
             ['update widgets'] = {{config.modkey, 'Shift'}, 'u'}
         }
     }
-    keys.client = {client = {['close'] = {{config.modkey}, 'x'}}}
     return keys
 end
 

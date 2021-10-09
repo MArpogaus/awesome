@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:07:01 (Marcel Arpogaus)
--- @Changed: 2021-07-22 10:30:29 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 12:21:35 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -30,17 +30,26 @@ local utils = require('rc.utils')
 local module = {}
 local decorations = {}
 
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {
+    wibar = {'default'},
+    desktop = {},
+    -- widgets
+    widgets_args = {}
+}
+
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config)
-    for name, cfg in utils.value_with_cfg(config.wibar) do
+module.init = function(self, cfg)
+    self.config = utils.deep_merge(self.defaults, cfg or {}, 0)
+    for name, module_cfg in utils.value_with_cfg(self.config.wibar) do
         table.insert(decorations,
                      utils.require_submodule('decorations/wibar', name).init(
-            cfg, config.widgets_args))
+            module_cfg, self.config.widgets_args))
     end
-    for name, cfg in utils.value_with_cfg(config.desktop) do
+    for name, module_cfg in utils.value_with_cfg(self.config.desktop) do
         table.insert(decorations,
                      utils.require_submodule('decorations/desktop', name).init(
-            cfg, config.widgets_args))
+            module_cfg, self.config.widgets_args))
     end
 end
 module.get = function() return decorations end

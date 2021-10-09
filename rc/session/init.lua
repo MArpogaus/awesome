@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-01 10:55:49 (Marcel Arpogaus)
--- @Changed: 2021-09-30 08:04:51 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 11:53:20 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -21,9 +21,15 @@ local utils = require('rc.utils')
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {
+    environment = 'awesome',
+    autostart = {},
+    startup_delay = 0.2
+}
+
 -- [ local functions ] ---------------------------------------------------------
 local desktop_entry_execution = function(environment)
-    environment = environment or 'awesome'
     local args
     if environment then args = string.format('-e %s', environment) end
     local command = string.format('command -v dex && dex -a %s', args)
@@ -31,17 +37,17 @@ local desktop_entry_execution = function(environment)
 end
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config, callback)
+module.init = function(self, cfg, callback)
+    self.config = utils.deep_merge(self.defaults, cfg or {}, 1)
     local xrdb_key = 'awesome.started'
-    local environment = config.environment
-    local autostart = config.autostart or {}
-    local startup_dalay = config.startup_delay or 0.2
     if not capi.awesome.xrdb_get_value('', xrdb_key) then
-        desktop_entry_execution(environment)
-        for _, p in ipairs(autostart) do awful.spawn.with_shell(p) end
+        desktop_entry_execution(self.config.environment)
+        for _, p in ipairs(self.config.autostart) do
+            awful.spawn.with_shell(p)
+        end
         utils.xrdb_set_value(xrdb_key, 'true')
         awful.spawn.easy_async_with_shell(
-            string.format('sleep %.1f', startup_dalay),
+            string.format('sleep %.1f', self.config.startup_delay),
             function() capi.awesome.restart() end)
     else
         callback()

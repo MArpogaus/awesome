@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:14 (Marcel Arpogaus)
--- @Changed: 2021-09-29 20:35:28 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 11:22:29 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -30,15 +30,17 @@ local capi = {client = client, root = root}
 local gears = require('gears')
 local awful = require('awful')
 
+local key_bindings = require('rc.key_bindings')
+
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
 -- [ module function ] ---------------------------------------------------------
-module.init = function(config)
+module.init = function(self)
     -- Default modkey.
-    local modkey = config.modkey
+    local modkey = key_bindings.config.modkey
 
-    module.taglist_buttons = gears.table.join(
+    self.taglist_buttons = gears.table.join(
         awful.button({}, 1, function(t) t:view_only() end),
         awful.button({modkey}, 1, function(t)
             if capi.client.focus then
@@ -53,7 +55,7 @@ module.init = function(config)
         awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
         awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end))
 
-    module.client_buttons = gears.table.join(
+    self.client_buttons = gears.table.join(
         awful.button({}, 1, function(c)
             capi.client.focus = c;
             c:raise()

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-09-29 12:00:55 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 11:38:39 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -35,8 +35,15 @@ local utils = require('rc.utils')
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {
+    browser = 'firefox',
+    lock_command = 'light-locker-command -l'
+}
+
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config)
+module.init = function(_, config)
+    config = utils.deep_merge(module.defaults, config)
     local actions = {}
     actions.global = {
         awesome = {
@@ -57,9 +64,6 @@ module.init = function(config)
         launcher = {
             ['launch Browser'] = function()
                 awful.spawn(config.browser)
-            end,
-            ['launch org capture'] = function()
-                awful.spawn.with_shell('$HOME/.emacs.d/bin/org-capture')
             end,
             ['launch rofi'] = function()
                 awful.spawn('/usr/bin/rofi -show drun -modi drun')

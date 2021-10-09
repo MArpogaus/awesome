@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-10-06 12:59:12 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 12:26:21 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -37,18 +37,21 @@ local module = {}
 local wibars = setmetatable({}, {__mode = 'k'}) -- make keys weak
 local wibars_visible = true
 
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {
+    position = 'top',
+    elements = {
+        {'1-menu', '2-taglist', '3-promptbox'}, -- left
+        {'default_tasklist'}, -- middle
+        {'1-keyboardlayout', '2-systray', '3-widgets', '4-layout'} -- right
+    }
+}
+
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
-
-    local position = config.position or 'top'
+    config = utils.deep_merge(module.defaults, config, 1)
     local layout = 'horizontal'
     wibars_visible = wibars_visible or config.visible
-
-    local elements = config.elements or {
-        {'menu', 'taglist', 'promptbox'}, -- left
-        {'default_tasklist'}, -- middle
-        {'keyboardlayout', 'systray', 'widgets', 'layout'} -- right
-    }
 
     local decoration = abstract_decoration.new {
         register_fn = function(s)
@@ -61,12 +64,12 @@ module.init = function(config)
             if wibars[s] == nil then wibars[s] = {} end
 
             -- Create the wibox
-            local wibar = awful.wibar({position = position, screen = s})
+            local wibar = awful.wibar({position = config.position, screen = s})
             wibar.elements = {}
 
             -- Add widgets to the wibox
             local wibar_args = {layout = wibox.layout.align[layout]}
-            for _, p in ipairs(elements) do
+            for _, p in ipairs(config.elements) do
                 local element_container = {layout = wibox.layout.fixed[layout]}
                 for d, cfg in utils.value_with_cfg(p, true) do
                     local w = utils.require_submodule(

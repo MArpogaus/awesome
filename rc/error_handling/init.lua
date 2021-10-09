@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:28 (Marcel Arpogaus)
--- @Changed: 2021-01-20 08:37:53 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 11:08:45 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -44,7 +44,7 @@ if capi.awesome.startup_errors then
 end
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function()
+module.init = function(_)
     -- Handle runtime errors after startup
     local in_error = false
     capi.awesome.connect_signal('debug::error', function(err)

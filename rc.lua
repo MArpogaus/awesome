@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-10-06 12:48:59 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 11:57:44 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -50,36 +50,36 @@ require('awful.autofocus')
 
 -- [ initialization ] ----------------------------------------------------------
 -- Initialize error handling
-error_handling.init()
+error_handling:init()
 
 -- Initialize the session
-session.init(config.session, function()
+session:init(config.session, function()
     -- Initialize tags
-    tags.init(config.tagnames)
+    tags:init(config.tagnames)
 
     -- Initialize layouts
-    layouts.init(config.layouts)
+    layouts:init(config.layouts)
 
     -- Initialize theme
-    theme.init(config.theme)
+    theme:init(config.theme)
 
     -- Initialize assets
-    assets.init(config.assets)
+    assets:init(config.assets)
 
     -- Initialize wibars and widgest
-    decorations.init(config.decorations)
-
-    -- Initialize mouse bindings
-    mouse_bindings.init(config.bindings)
+    decorations:init(config.decorations)
 
     -- Initialize key bindings
-    key_bindings.init(config.bindings, config.applications)
+    key_bindings:init(config.key_bindings)
+
+    -- Initialize mouse bindings
+    mouse_bindings:init()
 
     -- Initialize Screens
-    screen.init(config.screen, tags.tagnames)
+    screen:init(config.screen)
 
     -- Initialize behavior
-    behavior.init(config.behavior, mouse_bindings.client_buttons,
+    behavior:init(config.behavior, mouse_bindings.client_buttons,
                   key_bindings.client_keys)
 
     -- Initialize revelation

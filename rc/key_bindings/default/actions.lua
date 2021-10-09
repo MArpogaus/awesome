@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-09-29 11:59:19 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 12:06:25 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -41,8 +41,12 @@ local utils = require('rc.utils')
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {terminal = 'xterm'}
+
 -- [ module functions ] --------------------------------------------------------
-module.init = function(applications)
+module.init = function(_, config)
+    config = utils.deep_merge(module.defaults, config, 1)
     local actions = {}
     actions.global = {
         awesome = {
@@ -94,7 +98,7 @@ module.init = function(applications)
         },
         launcher = {
             ['open a terminal'] = function()
-                awful.spawn(applications.terminal)
+                awful.spawn(config.terminal)
             end,
             ['run prompt'] = function()
                 awful.screen.focused().promptbox:run()

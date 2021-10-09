@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:02 (Marcel Arpogaus)
--- @Changed: 2021-09-27 16:27:23 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 12:03:34 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,43 +28,50 @@ local gears = require('gears')
 local gfs = require('gears.filesystem')
 local protected_call = require('gears.protected_call')
 
+-- helper functions
+local utils = require('rc.utils')
+
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 local themes_path = gfs.get_themes_dir()
 local config_path = gfs.get_configuration_dir()
 
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {name = 'default'}
+
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config)
-    if config.name then
+module.init = function(self, cfg)
+    self.config = utils.deep_merge(self.defaults, cfg or {})
+    if self.config.name then
         for _, path in ipairs {
             config_path .. 'config/themes',
             config_path .. 'rc/themes',
             themes_path
         } do
             local theme_file = string.format('%s/%s/theme.lua', path,
-                                             config.name)
+                                             self.config.name)
             if gfs.file_readable(theme_file) then
-                module.load_theme = function()
+                self.load_theme = function()
                     return protected_call(dofile, theme_file)
                 end
                 break
             end
         end
     end
-    if not module.load_theme then
+    if not self.load_theme then
         beautiful.init(themes_path .. '/default/theme.lua')
     else
-        beautiful.init(module.load_theme())
+        beautiful.init(self.load_theme())
     end
-    if config.overload then
-        gears.table.crush(beautiful.get(), config.overload)
+    if self.config.overload then
+        gears.table.crush(beautiful.get(), self.config.overload)
     end
-    module.update = function()
-        if module.load_theme then
+    self.update = function()
+        if self.load_theme then
             -- reset cached colors
             beautiful.gtk.cached_theme_variables = nil
-            gears.table.crush(beautiful.get(), module.load_theme())
-            gears.table.crush(beautiful.get(), config.overload)
+            gears.table.crush(beautiful.get(), self.load_theme())
+            gears.table.crush(beautiful.get(), self.config.overload)
         end
     end
 end

@@ -3,16 +3,13 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 16:34:33 (Marcel Arpogaus)
--- @Changed: 2021-10-07 15:06:12 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 12:02:53 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
 -- ...
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
--- grab environment
-local capi = {awesome = awesome}
-
 -- Standard awesome library
 local awful = require('awful')
 

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 10:39:56 (Marcel Arpogaus)
--- @Changed: 2021-07-16 15:41:09 (Marcel Arpogaus)
+-- @Changed: 2021-10-09 11:33:13 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -26,7 +26,7 @@
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(config)
+module.init = function(config, _)
     local keys = {}
     keys.global = {
         awesome = {
