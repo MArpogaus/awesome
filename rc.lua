@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-10-09 12:35:21 (Marcel Arpogaus)
+-- @Changed: 2021-10-11 12:48:08 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -23,30 +23,55 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
+-- ensure that there's always a client that has focus
+require('awful.autofocus')
+
 -- helper functions
 local utils = require('rc.utils')
 
 -- rc modules
-local assets = require('rc.assets')
-local behavior = require('rc.behavior')
-local decorations = require('rc.decorations')
 local error_handling = require('rc.error_handling')
-local key_bindings = require('rc.key_bindings')
-local layouts = require('rc.layouts')
-local mouse_bindings = require('rc.mouse_bindings')
-local screen = require('rc.screen')
-local tags = require('rc.tags')
-local theme = require('rc.theme')
 local session = require('rc.session')
 
+-- [ local objects ] -----------------------------------------------------------
 -- configuration file
-local config = utils.load_config()
+local default_modules = {
+    'assets',
+    'behavior',
+    'decorations',
+    'key_bindings',
+    'layouts',
+    'mouse_bindings',
+    'screen',
+    'tags',
+    'theme'
+}
+local config = utils.load_config(default_modules)
 
--- Mac OSX like 'Expose' view of all clients.
-local revelation = require('revelation')
-
--- ensure that there's always a client that has focus
-require('awful.autofocus')
+-- [ local functions ] ---------------------------------------------------------
+local function filter_keys(t, keys)
+    local res = {}
+    for _, k in ipairs(keys) do
+        if t[k] then
+            res[k] = t[k]
+        else
+            res[k] = {}
+        end
+    end
+    return res
+end
+local function init_modules(cfg)
+    for mod_name, mod_cfg in utils.value_with_cfg(cfg) do
+        local mod = utils.require_submodule(nil, mod_name)
+        if mod.depends_on then
+            init_modules(filter_keys(cfg, mod.depends_on))
+        end
+        if not mod.initialized then
+            mod:init(mod_cfg)
+            mod.initialized = true
+        end
+    end
+end
 
 -- [ initialization ] ----------------------------------------------------------
 -- Initialize error handling
@@ -54,33 +79,6 @@ error_handling:init()
 
 -- Initialize the session
 session:init(config.session, function()
-    -- Initialize tags
-    tags:init(config.tagnames)
-
-    -- Initialize layouts
-    layouts:init(config.layouts)
-
-    -- Initialize theme
-    theme:init(config.theme)
-
-    -- Initialize assets
-    assets:init(config.assets)
-
-    -- Initialize wibars and widgest
-    decorations:init(config.decorations)
-
-    -- Initialize key bindings
-    key_bindings:init(config.key_bindings)
-
-    -- Initialize mouse bindings
-    mouse_bindings:init()
-
-    -- Initialize Screens
-    screen:init(config.screen)
-
-    -- Initialize behavior
-    behavior:init(config.behavior)
-
-    -- Initialize revelation
-    revelation.init()
+    config.session = nil
+    init_modules(config)
 end)

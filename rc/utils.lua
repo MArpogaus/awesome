@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-10-10 18:53:13 (Marcel Arpogaus)
+-- @Changed: 2021-10-11 12:47:09 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -47,12 +47,13 @@ function module.xconf_property_set(property, value, sleep)
 end
 
 -- Load configuration file
-function module.load_config(config_file)
+function module.load_config(default_modules, config_file)
     local config
     if gfs.file_readable(gfs.get_configuration_dir() ..
                              (config_file or 'config') .. '.lua') then
         config = require(config_file or 'config')
     end
+    for _, k in ipairs(default_modules) do config[k] = config[k] or {} end
     return config
 end
 
@@ -74,7 +75,11 @@ function module.require_submodule(path, file, ignore_error)
     local config_path = gfs.get_configuration_dir()
     local file_name
     for _, pre in ipairs {'config', 'rc'} do
-        file_name = string.format('%s/%s/%s', pre, path, file)
+        if path then
+            file_name = string.format('%s/%s/%s', pre, path, file)
+        else
+            file_name = string.format('%s/%s', pre, file)
+        end
         if gfs.file_readable(config_path .. file_name .. '.lua') or
             gfs.file_readable(config_path .. file_name .. '/init.lua') then
             return require(file_name:gsub('/', '.'))

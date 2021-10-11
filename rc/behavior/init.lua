@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 13:55:07 (Marcel Arpogaus)
--- @Changed: 2021-10-09 12:35:45 (Marcel Arpogaus)
+-- @Changed: 2021-10-10 19:45:53 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -26,6 +26,9 @@ local module = {}
 
 -- [ defaults ] ----------------------------------------------------------------
 module.defaults = {'default'}
+
+-- [ dependencies ] ------------------------------------------------------------
+module.depends_on = {'key_bindings', 'mouse_bindings'}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(self, cfg)

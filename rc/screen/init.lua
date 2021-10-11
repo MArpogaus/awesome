@@ -7,7 +7,7 @@ local awful = require('awful')
 local beautiful = require('beautiful')
 
 local decorations = require('rc.decorations')
-
+local layouts = require('rc.layouts')
 local tags = require('rc.tags')
 
 -- helper functions
@@ -18,6 +18,9 @@ local module = {}
 
 -- [ defaults ] ----------------------------------------------------------------
 module.defaults = {auto_dpi = true, tasklist = 'default'}
+
+-- [ dependencies ] ------------------------------------------------------------
+module.depends_on = {'tags', 'decorations', 'layouts'}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(self, cfg)
@@ -52,19 +55,15 @@ module.init = function(self, cfg)
     awful.screen.set_auto_dpi_enabled(self.config.auto_dpi)
     local init_screen = function(s)
         -- Each screen has its own tag table.
-        awful.tag(tags.tagnames, s, awful.layout.default)
+        awful.tag(tags.tagnames, s, layouts.default)
 
-        s.init = function()
-            -- prevent multiple runs
-            if s.initialized then return end
+        -- prevent multiple runs
+        if s.initialized then return end
 
-            if self.config.dpi then s.dpi = self.config.dpi end
+        if self.config.dpi then s.dpi = self.config.dpi end
 
-            -- set wallpaer
-            self.set_wallpaper(s)
-
-            s.initialized = true
-        end
+        -- set wallpaer
+        self.set_wallpaper(s)
 
         -- Dynamic widget management
         s.decorations = {}
@@ -87,7 +86,7 @@ module.init = function(self, cfg)
         end
         s.reregister_decorations = function()
             s.unregister_decorations()
-            for _, d in ipairs(decorations.get()) do d:register(s) end
+            for _, d in ipairs(decorations.get(s)) do d:register(s) end
         end
 
         s.reset = function()
@@ -109,18 +108,14 @@ module.init = function(self, cfg)
             end
         end
 
-        s.init()
+        for _, d in ipairs(decorations.get(s)) do d:register(s) end
+
+        s.initialized = true
     end
     awful.screen.connect_for_each_screen(init_screen)
 
-    for _, d in ipairs(decorations.get()) do
-        awful.screen.connect_for_each_screen(function(s) d:register(s) end)
-    end
 end
-module.update = function(s)
-    s.init()
-    s.reregister_decorations()
-end
+module.update = function(s) s.reregister_decorations() end
 module.remove = function(s)
     s.move_all_clients()
     s.reset()

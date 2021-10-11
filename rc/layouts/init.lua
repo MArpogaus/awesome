@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 20:34:11 (Marcel Arpogaus)
--- @Changed: 2021-10-09 12:06:14 (Marcel Arpogaus)
+-- @Changed: 2021-10-10 19:22:57 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -62,7 +62,7 @@ module.init = function(self, cfg)
     -- Table of layouts to cover with awful.layout.inc, order matters.
     awful.layout.layouts = self.config.layouts
 
-    awful.layout.default = awful.layout.layouts[self.config.default_layout]
+    self.default = awful.layout.layouts[self.config.default_layout]
 end
 
 -- [ return module ] -----------------------------------------------------------

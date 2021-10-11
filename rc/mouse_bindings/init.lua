@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:14 (Marcel Arpogaus)
--- @Changed: 2021-10-09 11:22:29 (Marcel Arpogaus)
+-- @Changed: 2021-10-10 20:00:36 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -34,6 +34,9 @@ local key_bindings = require('rc.key_bindings')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
+
+-- [ dependencies ] ------------------------------------------------------------
+module.depends_on = {'key_bindings'}
 
 -- [ module function ] ---------------------------------------------------------
 module.init = function(self)

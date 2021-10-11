@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-08 15:36:38 (Marcel Arpogaus)
--- @Changed: 2021-10-04 09:01:45 (Marcel Arpogaus)
+-- @Changed: 2021-10-11 11:34:39 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -22,11 +22,19 @@ local abstract_element = require('rc.decorations.abstract_element')
 local module = {}
 local wibar_widgets_active_inital = true
 
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {
+    widgets = {wibox.widget.textclock()},
+    widgets_args = {},
+    layout = wibox.layout.fixed.horizontal
+}
+
 -- [ module functions ] --------------------------------------------------------
 module.init = function(s, config)
-    local widgets = config.widgets or {wibox.widget.textclock()}
-    local widgets_args = config.widgets_args or {}
-    local layout = config.layout or wibox.layout.fixed.horizontal
+    config = utils.deep_merge(module.defaults, config or {}, 0)
+    local widgets = config.widgets
+    local widgets_args = config.widgets_args
+    local layout = config.layout
 
     local wibar_widgets_active = true
     local wibar_widget_container = {layout = layout}

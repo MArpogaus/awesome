@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:07:01 (Marcel Arpogaus)
--- @Changed: 2021-10-09 12:21:35 (Marcel Arpogaus)
+-- @Changed: 2021-10-11 12:05:25 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,6 +23,8 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
+local gears = require('gears')
+
 -- helper functions
 local utils = require('rc.utils')
 
@@ -31,28 +33,28 @@ local module = {}
 local decorations = {}
 
 -- [ defaults ] ----------------------------------------------------------------
-module.defaults = {
-    wibar = {'default'},
-    desktop = {},
-    -- widgets
-    widgets_args = {}
-}
+module.defaults = {wibar = {'default'}, desktop = {}}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(self, cfg)
     self.config = utils.deep_merge(self.defaults, cfg or {}, 0)
-    for name, module_cfg in utils.value_with_cfg(self.config.wibar) do
-        table.insert(decorations,
-                     utils.require_submodule('decorations/wibar', name).init(
-            module_cfg, self.config.widgets_args))
-    end
-    for name, module_cfg in utils.value_with_cfg(self.config.desktop) do
-        table.insert(decorations,
-                     utils.require_submodule('decorations/desktop', name).init(
-            module_cfg, self.config.widgets_args))
+    for _, m in ipairs({'wibar', 'desktop'}) do
+        for name, module_cfg in utils.value_with_cfg(self.config[m]) do
+            local dec = utils.require_submodule('decorations/' .. m, name)
+                            .init(module_cfg)
+            decorations[dec] = module_cfg.screens or {}
+        end
     end
 end
-module.get = function() return decorations end
+module.get = function(s)
+    local ret = {}
+    for k, v in pairs(decorations) do
+        if #v == 0 or gears.table.hasitem(v, s.index) then
+            table.insert(ret, k)
+        end
+    end
+    return ret
+end
 
 -- [ return module ] -----------------------------------------------------------
 return module

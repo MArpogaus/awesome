@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-10-10 18:51:20 (Marcel Arpogaus)
+-- @Changed: 2021-10-11 12:43:45 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,9 +28,6 @@ local capi = {screen = screen}
 
 -- Standard awesome library
 local awful = require('awful')
-
--- Mac OSX like 'Exposé' view
-local revelation = require('revelation')
 
 -- helper functions
 local utils = require('rc.utils')
@@ -147,7 +144,6 @@ module.init = function(_, config)
             ['lock screen'] = function()
                 awful.spawn(config.lock_command)
             end,
-            ['Mac OSX like \'Exposé\' view'] = revelation.expose,
             ['toggle decorations'] = toggle_decorations
         },
         client = {

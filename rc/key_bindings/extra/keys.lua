@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 10:39:56 (Marcel Arpogaus)
--- @Changed: 2021-10-09 12:16:48 (Marcel Arpogaus)
+-- @Changed: 2021-10-11 12:43:54 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -31,7 +31,6 @@ module.init = function(config, _)
     keys.global = {
         awesome = {
             ['lock screen'] = {{config.modkey}, 'q'},
-            ['Mac OSX like \'Exposé\' view'] = {{config.modkey}, 'e'},
             ['toggle decorations'] = {{config.modkey}, 'd'}
         },
         client = {

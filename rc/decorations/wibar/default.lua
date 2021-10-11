@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-10-09 12:26:21 (Marcel Arpogaus)
+-- @Changed: 2021-10-11 12:05:48 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -55,11 +55,6 @@ module.init = function(config)
 
     local decoration = abstract_decoration.new {
         register_fn = function(s)
-            if config.screens and
-                not gears.table.hasitem(config.screens, s.index) then
-                return
-            end
-
             -- check if wibars container
             if wibars[s] == nil then wibars[s] = {} end
 

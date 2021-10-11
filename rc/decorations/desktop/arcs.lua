@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-10-07 09:28:35 (Marcel Arpogaus)
+-- @Changed: 2021-10-11 11:59:54 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,19 +36,23 @@ local abstract_decoration = require('rc.decorations.abstract_decoration')
 local module = {}
 local desktop_popups = setmetatable({}, {__mode = 'k'}) -- make keys weak
 
--- [ module functions ] --------------------------------------------------------
-module.init = function(config, widgets_args)
-    local arc_widgets = config.widgets or {'cpu', 'memory', 'fs', 'volume'}
+-- [ defaults ] ----------------------------------------------------------------
+module.defaults = {
+    widgets = {'cpu', 'memory', 'fs', 'volume'},
+    widgets_args = {},
+    visible = true
+}
 
-    local desktop_widgets_active = config.visible or true
+-- [ module functions ] --------------------------------------------------------
+module.init = function(config)
+    config = utils.deep_merge(module.defaults, config or {}, 0)
+    local arc_widgets = config.widgets
+    local widgets_args = config.widgets_args
+
+    local desktop_widgets_active = config.visible
 
     local decoration = abstract_decoration.new {
         register_fn = function(s)
-            if config.screens and
-                not gears.table.hasitem(config.screens, s.index) then
-                return
-            end
-
             -- Create the desktop widget popup
             local arc_widget_containers =
                 {
@@ -163,7 +167,8 @@ module.init = function(config, widgets_args)
             popup.weather_widget.update()
         end,
         toggle = function(s)
-            desktop_popups[s].visible = not desktop_popups[s].visible
+            local popup = desktop_popups[s]
+            popup.visible = not popup.visible
         end
     }
     decoration.toggle_widgets = decoration.toggle

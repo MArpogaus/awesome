@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 17:51:53 (Marcel Arpogaus)
--- @Changed: 2021-10-09 11:06:22 (Marcel Arpogaus)
+-- @Changed: 2021-10-10 19:18:23 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,6 +28,8 @@ local utils = require('rc.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
+
+module.depends_on = {'theme'}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(self, assets)
