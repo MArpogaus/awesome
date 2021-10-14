@@ -12,9 +12,9 @@
 -- [ required modules ] --------------------------------------------------------
 local awful = require('awful')
 
-local mouse_bindings = require('rc.mouse_bindings')
+local mouse_bindings = require('mouse_bindings')
 
-local abstract_element = require('rc.decorations.abstract_element')
+local abstract_element = require('decorations.abstract_element')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

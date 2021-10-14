@@ -23,11 +23,11 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
-local abstract_decoration = require('rc.decorations.abstract_decoration')
-local default_wibar = require('rc.decorations.wibar.default')
+local abstract_decoration = require('decorations.abstract_decoration')
+local default_wibar = require('decorations.wibar.default')
 
 -- helper functions
-local utils = require('rc.utils')
+local utils = require('utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

@@ -27,7 +27,7 @@
 local awful = require('awful')
 
 -- helper functions
-local utils = require('rc.utils')
+local utils = require('utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

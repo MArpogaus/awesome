@@ -28,7 +28,7 @@ local os = os
 local wibox = require('wibox')
 local beautiful = require('beautiful')
 
-local utils = require('rc.decorations.widgets.utils')
+local utils = require('decorations.widgets.utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-10-11 11:59:54 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 20:24:55 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -28,9 +28,9 @@ local wibox = require('wibox')
 local awful = require('awful')
 local beautiful = require('beautiful')
 
-local utils = require('rc.utils')
+local utils = require('utils')
 
-local abstract_decoration = require('rc.decorations.abstract_decoration')
+local abstract_decoration = require('decorations.abstract_decoration')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -79,17 +79,14 @@ module.init = function(config)
                 warg.fg_color = warg.fg_color or fg_color
                 warg.bg_color = warg.bg_color or bg_color
                 local widget_container =
-                    utils.require_submodule('decorations/widgets/arcs', w)
-                        .init(s, warg)
+                    require('decorations.widgets.arcs.' .. w).init(s, warg)
                 table.insert(arc_widget_containers, widget_container)
             end
             local desktop_widgets_clock_container =
-                utils.require_submodule('decorations/widgets/desktop',
-                                        'date_time').init()
+                require('decorations.widgets.desktop.date_time').init()
             local desktop_widgets_weather_container =
-                utils.require_submodule('decorations/widgets/desktop',
-                                        'weather')
-                    .init(s, widgets_args.weather)
+                require('decorations.widgets.desktop.weather').init(s,
+                                                                    widgets_args.weather)
 
             local desktop_widgets_vertical_spacing =
                 beautiful.desktop_widgets_vertical_spacing or 170

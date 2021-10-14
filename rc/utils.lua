@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-10-11 12:47:09 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 20:30:03 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -69,28 +69,6 @@ function module.deep_merge(t1, t2, max_level)
         end
     end
     return res
-end
-
-function module.require_submodule(path, file, ignore_error)
-    local config_path = gfs.get_configuration_dir()
-    local file_name
-    for _, pre in ipairs {'config', 'rc'} do
-        if path then
-            file_name = string.format('%s/%s/%s', pre, path, file)
-        else
-            file_name = string.format('%s/%s', pre, file)
-        end
-        if gfs.file_readable(config_path .. file_name .. '.lua') or
-            gfs.file_readable(config_path .. file_name .. '/init.lua') then
-            return require(file_name:gsub('/', '.'))
-        end
-    end
-    if ignore_error then
-        return {init = function(_) return {} end}
-    else
-        error(
-            string.format('submodule \'%s\' not found in \'%s\'.', file, path))
-    end
 end
 
 function module.value_with_cfg(t, sorted)
@@ -165,9 +143,9 @@ end
 -- hot reload theme
 function module.update_theme()
     -- rc modules
-    local assets = require('rc.assets')
-    local screen = require('rc.screen')
-    local theme = require('rc.theme')
+    local assets = require('assets')
+    local screen = require('screen')
+    local theme = require('theme')
 
     theme.update()
     assets.apply()

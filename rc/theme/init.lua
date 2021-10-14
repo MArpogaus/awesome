@@ -29,7 +29,7 @@ local gfs = require('gears.filesystem')
 local protected_call = require('gears.protected_call')
 
 -- helper functions
-local utils = require('rc.utils')
+local utils = require('utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

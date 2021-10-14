@@ -3,15 +3,12 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-07-28 14:31:16 (Marcel Arpogaus)
--- @Changed: 2021-08-10 09:09:10 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 20:27:15 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
 -- ...
 --------------------------------------------------------------------------------
--- [ required modules ] --------------------------------------------------------
-local utils = require('rc.utils')
-
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
@@ -19,8 +16,7 @@ local module = {}
 module.init = function(s, warg)
     warg.value = 'up'
 
-    return utils.require_submodule('decorations/widgets/arcs', 'net').init(s,
-                                                                           warg)
+    return require('decorations.widgets.arcs.net').init(s, warg)
 end
 
 -- [ return module ] -----------------------------------------------------------

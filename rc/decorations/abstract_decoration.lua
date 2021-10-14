@@ -23,7 +23,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
-local abstract_element = require('rc.decorations.abstract_element')
+local abstract_element = require('decorations.abstract_element')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

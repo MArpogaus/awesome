@@ -27,8 +27,8 @@ local beautiful = require('beautiful')
 
 local vicious = require('vicious')
 
-local utils = require('rc.decorations.widgets.utils')
-local widgets = require('rc.decorations.widgets')
+local utils = require('decorations.widgets.utils')
+local widgets = require('decorations.widgets')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

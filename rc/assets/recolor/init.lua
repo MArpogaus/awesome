@@ -25,7 +25,7 @@
 -- [ required modules ] --------------------------------------------------------
 local beautiful = require('beautiful')
 local theme_assets = require('beautiful.theme_assets')
-local utils = require('rc.utils')
+local utils = require('utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

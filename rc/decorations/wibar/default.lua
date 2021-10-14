@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-10-11 12:05:48 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 20:28:49 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -25,12 +25,11 @@
 -- [ required modules ] --------------------------------------------------------
 local awful = require('awful')
 local wibox = require('wibox')
-local gears = require('gears')
 
-local abstract_decoration = require('rc.decorations.abstract_decoration')
+local abstract_decoration = require('decorations.abstract_decoration')
 
 -- helper functions
-local utils = require('rc.utils')
+local utils = require('utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -67,9 +66,8 @@ module.init = function(config)
             for _, p in ipairs(config.elements) do
                 local element_container = {layout = wibox.layout.fixed[layout]}
                 for d, cfg in utils.value_with_cfg(p, true) do
-                    local w = utils.require_submodule(
-                                  'decorations/wibar/elements', d).init(s, cfg):register(
-                        wibar.elements, wibar)
+                    local w = require('decorations.wibar.elements.' .. d).init(
+                        s, cfg):register(wibar.elements, wibar)
                     table.insert(element_container, w)
                 end
                 table.insert(wibar_args, element_container)

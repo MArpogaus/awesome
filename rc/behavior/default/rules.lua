@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 15:57:16 (Marcel Arpogaus)
--- @Changed: 2021-02-08 15:34:04 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 20:17:46 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -13,11 +13,16 @@
 local beautiful = require('beautiful')
 local awful = require('awful')
 
+local key_bindings = require('key_bindings')
+local mouse_bindings = require('mouse_bindings')
+
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(_, client_buttons, client_keys)
+module.init = function(_)
+    local client_buttons = mouse_bindings.client_buttons
+    local client_keys = key_bindings.client_keys
     return {
         -- All clients will match this rule.
         all = {

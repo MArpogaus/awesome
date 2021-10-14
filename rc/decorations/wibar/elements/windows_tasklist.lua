@@ -30,7 +30,7 @@ local gears = require('gears')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
 
-local abstract_element = require('rc.decorations.abstract_element')
+local abstract_element = require('decorations.abstract_element')
 
 -- [ local functions ] ---------------------------------------------------------
 local function client_menu_toggle_fn()

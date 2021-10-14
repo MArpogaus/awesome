@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 17:41:25 (Marcel Arpogaus)
--- @Changed: 2021-07-17 11:15:44 (Marcel Arpogaus)
+-- @Changed: 2021-10-13 10:40:52 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -29,9 +29,9 @@ module.init = function(dynamic_tags, _, _)
 
     local rules = {}
     for tag, def in pairs(dynamic_tags) do
-        local rule = gears.table.clone(def.rule)
-        def.rule = nil
-        local new_tag = def
+        local new_tag = gears.table.clone(def)
+        local rule = new_tag.rule
+        new_tag.rule = nil
         new_tag.name = tag
         new_tag.volatile = new_tag.volatile or true
         if not rule.properties then rule.properties = {} end

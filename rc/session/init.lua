@@ -16,7 +16,7 @@ local capi = {awesome = awesome}
 local awful = require('awful')
 
 -- helper function
-local utils = require('rc.utils')
+local utils = require('utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-10-11 12:48:08 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 20:08:48 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -26,12 +26,10 @@
 -- ensure that there's always a client that has focus
 require('awful.autofocus')
 
+local gfs = require('gears.filesystem')
+
 -- helper functions
 local utils = require('rc.utils')
-
--- rc modules
-local error_handling = require('rc.error_handling')
-local session = require('rc.session')
 
 -- [ local objects ] -----------------------------------------------------------
 -- configuration file
@@ -62,7 +60,7 @@ local function filter_keys(t, keys)
 end
 local function init_modules(cfg)
     for mod_name, mod_cfg in utils.value_with_cfg(cfg) do
-        local mod = utils.require_submodule(nil, mod_name)
+        local mod = require(mod_name)
         if mod.depends_on then
             init_modules(filter_keys(cfg, mod.depends_on))
         end
@@ -72,13 +70,31 @@ local function init_modules(cfg)
         end
     end
 end
+local function init_paths()
+    local config_path = gfs.get_configuration_dir()
+    for _, p in ipairs {'rc', 'config'} do
+        local path = string.format(';%s%s/?.lua', config_path, p)
+        path = path .. string.format(';%s%s/?/init.lua', config_path, p)
+        package.path = package.path .. path
+    end
+end
 
 -- [ initialization ] ----------------------------------------------------------
--- Initialize error handling
-error_handling:init()
+local function init()
+    -- propergate pakg paths
+    init_paths()
 
--- Initialize the session
-session:init(config.session, function()
-    config.session = nil
-    init_modules(config)
-end)
+    -- rc modules
+    local error_handling = require('error_handling')
+    local session = require('rc.session')
+
+    -- Initialize error handling
+    error_handling:init()
+
+    -- Initialize the session
+    session:init(config.session, function()
+        config.session = nil
+        init_modules(config)
+    end)
+end
+init()

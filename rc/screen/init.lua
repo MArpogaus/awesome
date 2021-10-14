@@ -6,12 +6,12 @@ local gears = require('gears')
 local awful = require('awful')
 local beautiful = require('beautiful')
 
-local decorations = require('rc.decorations')
-local layouts = require('rc.layouts')
-local tags = require('rc.tags')
+local decorations = require('decorations')
+local layouts = require('layouts')
+local tags = require('tags')
 
 -- helper functions
-local utils = require('rc.utils')
+local utils = require('utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:07:01 (Marcel Arpogaus)
--- @Changed: 2021-10-11 12:05:25 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 20:21:04 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -26,7 +26,7 @@
 local gears = require('gears')
 
 -- helper functions
-local utils = require('rc.utils')
+local utils = require('utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -40,8 +40,9 @@ module.init = function(self, cfg)
     self.config = utils.deep_merge(self.defaults, cfg or {}, 0)
     for _, m in ipairs({'wibar', 'desktop'}) do
         for name, module_cfg in utils.value_with_cfg(self.config[m]) do
-            local dec = utils.require_submodule('decorations/' .. m, name)
-                            .init(module_cfg)
+            local dec =
+                require(string.format('decorations.%s.%s', m, name)).init(
+                    module_cfg)
             decorations[dec] = module_cfg.screens or {}
         end
     end

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-08 15:36:38 (Marcel Arpogaus)
--- @Changed: 2021-10-11 11:34:39 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 20:27:37 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -14,9 +14,9 @@ local gears = require('gears')
 local wibox = require('wibox')
 local beautiful = require('beautiful')
 
-local utils = require('rc.utils')
+local utils = require('utils')
 
-local abstract_element = require('rc.decorations.abstract_element')
+local abstract_element = require('decorations.abstract_element')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -77,8 +77,7 @@ module.init = function(s, config)
                     warg = gears.table.clone(warg)
                     warg.color = warg.color or fg_wibar_widgets[cidx]
                     local widget_container =
-                        utils.require_submodule('decorations/widgets/wibar', w)
-                            .init(s, warg)
+                        require('decorations.widgets.wibar.' .. w).init(s, warg)
                     table.insert(wibar_widget_container, widget_container)
                 elseif type(w) == 'table' and w.is_widget then
                     table.insert(wibar_widget_container, w)

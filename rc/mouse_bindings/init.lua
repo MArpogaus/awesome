@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:14 (Marcel Arpogaus)
--- @Changed: 2021-10-10 20:00:36 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 20:02:17 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -30,7 +30,7 @@ local capi = {client = client, root = root}
 local gears = require('gears')
 local awful = require('awful')
 
-local key_bindings = require('rc.key_bindings')
+local key_bindings = require('key_bindings')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}

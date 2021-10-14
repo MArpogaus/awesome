@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:44 (Marcel Arpogaus)
--- @Changed: 2021-10-09 12:14:14 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 20:20:04 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -30,7 +30,7 @@ local awful = require('awful')
 local gears = require('gears')
 
 -- helper functions
-local utils = require('rc.utils')
+local utils = require('utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -49,15 +49,12 @@ module.init = function(self, cfg)
     local keys = {}
     local actions = {}
     for binding, bind_cfg in utils.value_with_cfg(self.config.keymaps, true) do
-        keys = utils.deep_merge(keys,
-                                utils.require_submodule('key_bindings',
-                                                        binding .. '/keys')
-                                    .init(self.config, bind_cfg))
-        actions = utils.deep_merge(actions,
-                                   utils.require_submodule('key_bindings',
-                                                           binding ..
-                                                               '/actions')
-                                       .init(self.config, bind_cfg))
+        keys = utils.deep_merge(keys, require(
+                                    'key_bindings.' .. binding .. '.keys').init(
+            self.config, bind_cfg))
+        actions = utils.deep_merge(actions, require(
+                                       'key_bindings.' .. binding .. '.actions').init(
+            self.config, bind_cfg))
     end
 
     for level, level_keys in pairs(keys) do

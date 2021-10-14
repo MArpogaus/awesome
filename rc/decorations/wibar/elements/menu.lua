@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-09 14:36:47 (Marcel Arpogaus)
--- @Changed: 2021-09-29 20:34:11 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 20:28:30 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -16,9 +16,7 @@ local menubar = require('menubar')
 local wibox = require('wibox')
 local gears = require('gears')
 
-local utils = require('rc.utils')
-
-local abstract_element = require('rc.decorations.abstract_element')
+local abstract_element = require('decorations.abstract_element')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -33,8 +31,8 @@ module.init = function(s, config)
         icon = beautiful[menu_name .. 'menu_icon'] or beautiful.awesome_icon
     end
 
-    local menu = utils.require_submodule('decorations/wibar/elements/menu',
-                                         menu_name).init(config)
+    local menu = require('decorations.wibar.elements.menu.' .. menu_name).init(
+        config)
 
     return abstract_element.new {
         register_fn = function(_)

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 16:02:46 (Marcel Arpogaus)
--- @Changed: 2021-10-09 12:02:38 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 20:23:12 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -20,10 +20,10 @@ local awful = require('awful')
 local beautiful = require('beautiful')
 
 -- helper function
-local utils = require('rc.utils')
+local utils = require('utils')
 
 -- screen module
-local screen = require('rc.screen')
+local screen = require('screen')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -50,9 +50,8 @@ module.init = function(config)
             end,
             -- Add a titlebar if titlebars_enabled is set to true in the rules.
             ['request::titlebars'] = function(c)
-                utils.require_submodule('behavior/default/titlebars',
-                                        config.titlebar.style).init(c,
-                                                                    config.titlebar)
+                require('behavior.default.titlebars.' .. config.titlebar.style).init(
+                    c, config.titlebar)
             end,
             -- Enable sloppy focus, so that focus follows mouse.
             ['mouse::enter'] = function(c)

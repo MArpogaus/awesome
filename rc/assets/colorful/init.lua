@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-19 15:38:22 (Marcel Arpogaus)
--- @Changed: 2021-10-08 17:02:38 (Marcel Arpogaus)
+-- @Changed: 2021-10-14 09:21:25 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -26,7 +26,7 @@
 local beautiful = require('beautiful')
 local xresources = require('beautiful.xresources')
 
-local utils = require('rc.utils')
+local utils = require('utils')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
@@ -57,7 +57,7 @@ local function get_colors()
         }
     }
     local f = io.popen('xrdb -query', 'r')
-    local color_pattern = '#[a-f0-9]+'
+    local color_pattern = '#[a-fA-F0-9]+'
     for l in f:lines() do
         if l:match('^*(color%d+)') then
             local idx = l:match('^*color(%d+)')

@@ -13,8 +13,8 @@
 local awful = require('awful')
 local gears = require('gears')
 
-local abstract_element = require('rc.decorations.abstract_element')
-local layout_popup = require('rc.decorations.wibar.elements.layout.popup')
+local abstract_element = require('decorations.abstract_element')
+local layout_popup = require('decorations.wibar.elements.layout.popup')
 
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
