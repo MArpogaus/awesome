@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-10-14 21:01:54 (Marcel Arpogaus)
+-- @Changed: 2021-10-15 09:41:09 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -37,6 +37,7 @@ module.defaults = {
     theme = {}
 }
 local pkg_name, _ = ...
+local pkg_paths = package.path
 
 -- [ required modules ] --------------------------------------------------------
 -- ensure that there's always a client that has focus
@@ -71,9 +72,10 @@ local function init_modules(cfg)
         end
     end
 end
-local function init_paths()
+local function init_paths(paths)
     local config_path = gfs.get_configuration_dir()
-    for _, p in ipairs {pkg_name, 'config'} do
+    package.path = pkg_paths
+    for _, p in ipairs(paths) do
         local path = string.format(';%s%s/?.lua', config_path, p)
         path = path .. string.format(';%s%s/?/init.lua', config_path, p)
         package.path = package.path .. path
@@ -82,14 +84,15 @@ end
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(self, cfg)
-    self.config = utils.deep_merge(self.defaults, cfg or {})
-
     -- propagate pkg paths
-    init_paths()
+    init_paths {pkg_name, 'config'}
 
     -- rc modules
     local error_handling = require('error_handling')
     local session = require('session')
+
+    -- load config
+    self.config = utils.deep_merge(self.defaults, cfg or {})
 
     -- Initialize error handling
     error_handling:init()
@@ -100,8 +103,6 @@ module.init = function(self, cfg)
         init_modules(self.config)
     end)
 end
-
--- [ sequential code ] ---------------------------------------------------------
 
 -- [ return module ] -----------------------------------------------------------
 return module

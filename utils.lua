@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-10-14 20:30:03 (Marcel Arpogaus)
+-- @Changed: 2021-10-15 09:42:13 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -26,7 +26,6 @@
 -- Standard awesome library
 local awful = require('awful')
 local gears = require('gears')
-local gfs = require('gears.filesystem')
 
 local lgi = require('lgi')
 local cairo = lgi.cairo
@@ -36,25 +35,14 @@ local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 function module.xrdb_set_value(key, value)
-    awful.spawn.with_shell(string.format('xrdb -merge <<< "%s:%s"', key, value))
+    awful.spawn
+        .with_shell(string.format('xrdb -merge <<< "%s:%s"', key, value))
 end
 function module.xconf_property_set(property, value, sleep)
     local xconf = string.format(
-                      'xfconf-query -c xsettings --property %s --set \'%s\'',
-                      property, value)
+        'xfconf-query -c xsettings --property %s --set \'%s\'', property, value)
     if sleep then xconf = string.format('sleep %.1f && %s', sleep, xconf) end
     awful.spawn.with_shell(xconf)
-end
-
--- Load configuration file
-function module.load_config(default_modules, config_file)
-    local config
-    if gfs.file_readable(gfs.get_configuration_dir() ..
-                             (config_file or 'config') .. '.lua') then
-        config = require(config_file or 'config')
-    end
-    for _, k in ipairs(default_modules) do config[k] = config[k] or {} end
-    return config
 end
 
 -- deep merge two tables
