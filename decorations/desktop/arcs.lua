@@ -132,7 +132,8 @@ module.init = function(config)
                         end
                     end
                 })
-            desktop_popups[s].weather_widget = desktop_widgets_weather_container
+            desktop_popups[s].weather_widget =
+                desktop_widgets_weather_container
             desktop_popups[s]:connect_signal('property::visible', function()
                 if desktop_popups[s].visible then
                     desktop_popups[s].arc_widgets.activate()

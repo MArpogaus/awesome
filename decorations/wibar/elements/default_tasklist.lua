@@ -33,7 +33,7 @@ local abstract_element = require('decorations.abstract_element')
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 local tasklist_buttons = gears.table.join(
-                             awful.button({}, 1, function(c)
+    awful.button({}, 1, function(c)
         if c == capi.client.focus then
             c.minimized = true
         else
@@ -42,9 +42,7 @@ local tasklist_buttons = gears.table.join(
     end), awful.button({}, 3, function()
         awful.menu.client_list({theme = {width = 250}})
     end), awful.button({}, 4, function() awful.client.focus.byidx(1) end),
-                             awful.button({}, 5, function()
-        awful.client.focus.byidx(-1)
-    end))
+    awful.button({}, 5, function() awful.client.focus.byidx(-1) end))
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(s, _)

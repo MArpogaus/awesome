@@ -51,10 +51,10 @@ module.init = function(self, cfg)
     for binding, bind_cfg in utils.value_with_cfg(self.config.keymaps, true) do
         keys = utils.deep_merge(keys, require(
                                     'key_bindings.' .. binding .. '.keys').init(
-                                    self.config, bind_cfg))
+            self.config, bind_cfg))
         actions = utils.deep_merge(actions, require(
                                        'key_bindings.' .. binding .. '.actions').init(
-                                       self.config, bind_cfg))
+            self.config, bind_cfg))
     end
 
     for level, level_keys in pairs(keys) do
@@ -97,15 +97,13 @@ module.init = function(self, cfg)
                 if tag then tag:view_only() end
             end, descr_view),
                                          awful.key(
-                                             {self.config.modkey, 'Control'},
-                                             '#' .. i + 9, function()
+                {self.config.modkey, 'Control'}, '#' .. i + 9, function()
                     local s = awful.screen.focused()
                     local tag = s.tags[i]
                     if tag then awful.tag.viewtoggle(tag) end
                 end, descr_toggle),
                                          awful.key(
-                                             {self.config.modkey, 'Shift'},
-                                             '#' .. i + 9, function()
+                {self.config.modkey, 'Shift'}, '#' .. i + 9, function()
                     if capi.client.focus then
                         local tag = capi.client.focus.screen.tags[i]
                         if tag then
@@ -114,9 +112,8 @@ module.init = function(self, cfg)
                     end
                 end, descr_move),
                                          awful.key(
-                                             {
-                    self.config.modkey, 'Control', 'Shift'
-                }, '#' .. i + 9, function()
+                {self.config.modkey, 'Control', 'Shift'}, '#' .. i + 9,
+                function()
                     if capi.client.focus then
                         local tag = capi.client.focus.screen.tags[i]
                         if tag then

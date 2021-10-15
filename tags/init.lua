@@ -29,8 +29,8 @@ local module = {}
 module.defaults = {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 -- [ module functions ] --------------------------------------------------------
-module.init =
-    function(self, tagnames) self.tagnames = tagnames or self.defaults end
+module.init = function(self, tagnames) self.tagnames =
+    tagnames or self.defaults end
 
 -- [ return module ] -----------------------------------------------------------
 return module

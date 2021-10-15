@@ -7,7 +7,20 @@
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
--- ...
+-- Copyright (C) 2021 Marcel Arpogaus
+--
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- grab environment
@@ -42,40 +55,51 @@ module.init = function(config)
                 hotkeys_popup.show_help(nil, awful.screen.focused())
             end,
             menubar.utils.lookup_icon('preferences-desktop-keyboard-shortcuts')
-        }, {
-            'manual', terminal .. ' -e man awesome',
+        },
+        {
+            'manual',
+            terminal .. ' -e man awesome',
             menubar.utils.lookup_icon('system-help')
-        }, {
-            'edit config', gui_editor .. ' ' .. capi.awesome.conffile,
+        },
+        {
+            'edit config',
+            gui_editor .. ' ' .. capi.awesome.conffile,
             menubar.utils.lookup_icon('accessories-text-editor')
         },
         {
-            'restart', capi.awesome.restart,
+            'restart',
+            capi.awesome.restart,
             menubar.utils.lookup_icon('system-restart')
-        }, {
-            'quit', function() capi.awesome.quit() end,
+        },
+        {
+            'quit',
+            function() capi.awesome.quit() end,
             menubar.utils.lookup_icon('system-log-out')
         }
     }
 
-    local menu = freedesktop.menu.build({
-        icon_size = 32,
-        before = {
-            {
-                'Terminal', terminal,
-                menubar.utils.lookup_icon('utilities-terminal')
+    local menu = freedesktop.menu.build(
+        {
+            icon_size = 32,
+            before = {
+                {
+                    'Terminal',
+                    terminal,
+                    menubar.utils.lookup_icon('utilities-terminal')
+                },
+                {
+                    'Browser',
+                    browser,
+                    menubar.utils.lookup_icon('internet-web-browser')
+                },
+                {
+                    'Files',
+                    filemanager,
+                    menubar.utils.lookup_icon('system-file-manager')
+                }
             },
-            {
-                'Browser', browser,
-                menubar.utils.lookup_icon('internet-web-browser')
-            },
-            {
-                'Files', filemanager,
-                menubar.utils.lookup_icon('system-file-manager')
-            }
-        },
-        after = {{'Awesome', awesomemenu, beautiful.awesome_icon}}
-    })
+            after = {{'Awesome', awesomemenu, beautiful.awesome_icon}}
+        })
 
     return menu
 end

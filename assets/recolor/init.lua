@@ -47,10 +47,10 @@ module.init = function()
     local taglist_square_size = theme.taglist_square_size or 4
     theme.taglist_squares_sel = theme.taglist_squares_sel or
                                     theme_assets.taglist_squares_sel(
-                                        taglist_square_size, theme.fg_normal)
+            taglist_square_size, theme.fg_normal)
     theme.taglist_squares_unsel = theme.taglist_squares_unsel or
                                       theme_assets.taglist_squares_unsel(
-                                          taglist_square_size, theme.fg_normal)
+            taglist_square_size, theme.fg_normal)
 
     -- Recolor titlebar icons:
     theme = theme_assets.recolor_titlebar(theme, theme.fg_normal, 'normal')

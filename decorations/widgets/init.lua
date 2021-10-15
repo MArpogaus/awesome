@@ -79,7 +79,8 @@ module.new = function(wtype, widget_def_fn)
         local widget_def = widget_def_fn(s, wargs)
         local timeout = wargs.timeout or widget_def.default_timeout
         if wtype == 'wibar' then
-            return create_widget(widget_def, utils.create_wibar_widget, timeout)
+            return
+                create_widget(widget_def, utils.create_wibar_widget, timeout)
         elseif wtype == 'arc' then
             return create_widget(widget_def, utils.create_arc_widget, timeout)
         else

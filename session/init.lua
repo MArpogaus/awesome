@@ -3,11 +3,24 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-01 10:55:49 (Marcel Arpogaus)
--- @Changed: 2021-10-09 11:53:20 (Marcel Arpogaus)
+-- @Changed: 2021-10-15 13:38:30 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
--- ...
+-- Copyright (C) 2021 Marcel Arpogaus
+--
+-- This program is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 --------------------------------------------------------------------------------
 -- [ required modules ] --------------------------------------------------------
 -- Standard awesome library
@@ -22,7 +35,11 @@ local utils = require('utils')
 local module = {}
 
 -- [ defaults ] ----------------------------------------------------------------
-module.defaults = {environment = 'awesome', autostart = {}, startup_delay = 0.2}
+module.defaults = {
+    environment = 'awesome',
+    autostart = {},
+    startup_delay = 0.2
+}
 
 -- [ local functions ] ---------------------------------------------------------
 local desktop_entry_execution = function(environment)
@@ -43,8 +60,7 @@ module.init = function(self, cfg, callback)
         end
         utils.xrdb_set_value(xrdb_key, 'true')
         awful.spawn.easy_async_with_shell(
-            string.format('sleep %.1f', self.config.startup_delay),
-            function() capi.awesome.restart() end)
+            string.format('sleep %.1f', self.config.startup_delay), callback)
     else
         callback()
     end

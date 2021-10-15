@@ -44,30 +44,29 @@ module.init = function(self)
     local modkey = key_bindings.config.modkey
 
     self.taglist_buttons = gears.table.join(
-                               awful.button({}, 1, function(t)
-            t:view_only()
-        end), awful.button({modkey}, 1, function(t)
+        awful.button({}, 1, function(t) t:view_only() end),
+        awful.button({modkey}, 1, function(t)
             if capi.client.focus then
                 capi.client.focus:move_to_tag(t)
             end
         end), awful.button({}, 3, awful.tag.viewtoggle),
-                               awful.button({modkey}, 3, function(t)
-            if capi.client.focus then capi.client.focus:toggle_tag(t) end
-        end), awful.button({}, 4, function(t)
-            awful.tag.viewnext(t.screen)
-        end), awful.button({}, 5, function(t)
-            awful.tag.viewprev(t.screen)
-        end))
+        awful.button({modkey}, 3, function(t)
+            if capi.client.focus then
+                capi.client.focus:toggle_tag(t)
+            end
+        end),
+        awful.button({}, 4, function(t) awful.tag.viewnext(t.screen) end),
+        awful.button({}, 5, function(t) awful.tag.viewprev(t.screen) end))
 
     self.client_buttons = gears.table.join(
-                              awful.button({}, 1, function(c)
+        awful.button({}, 1, function(c)
             capi.client.focus = c;
             c:raise()
             if awful.screen.focused().main_menu then
                 awful.screen.focused().main_menu:hide()
             end
-        end), awful.button({modkey}, 1, awful.mouse.client.move), awful.button(
-                                  {modkey}, 3, awful.mouse.client.resize))
+        end), awful.button({modkey}, 1, awful.mouse.client.move),
+        awful.button({modkey}, 3, awful.mouse.client.resize))
 
     local root = gears.table.join(awful.button({}, 1, function()
         if awful.screen.focused().main_menu then

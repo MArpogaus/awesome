@@ -42,7 +42,7 @@ module.init = function(_)
                                time_font_size / 3
     local create_deskop_clock_box = function()
         local deskop_clock = wibox.widget.textclock(
-                                 utils.markup {
+            utils.markup {
                 font = utils.set_font_size(beautiful.font, time_font_size),
                 fg_color = beautiful.fg_desktop_widgets_clock_time or
                     beautiful.fg_normal,
@@ -58,7 +58,7 @@ module.init = function(_)
     local create_desktop_widgets_clock_date =
         function()
             return wibox.widget.textclock(
-                       utils.markup {
+                utils.markup {
                     font = utils.set_font_size(beautiful.font, date_font_size),
                     fg_color = beautiful.fg_desktop_widgets_clock or
                         beautiful.fg_normal,

@@ -97,11 +97,13 @@ local function client_stack_toggle_fn()
                 if cl.class == c.class and gears.table.hasitem(cl:tags(), t) then
                     client_num = client_num + 1
                     client_list[i] = {
-                        client_label(cl), function()
+                        client_label(cl),
+                        function()
                             capi.client.focus = cl
                             cl:tags()[1]:view_only()
                             cl:raise()
-                        end, cl.icon
+                        end,
+                        cl.icon
                     }
                 end
             end
@@ -122,11 +124,10 @@ end
 -- [ local objects ] -----------------------------------------------------------
 local module = {}
 local tasklist_buttons = gears.table.join(
-                             awful.button({}, 1, client_stack_toggle_fn()),
-                             awful.button({}, 3, client_menu_toggle_fn()),
-                             awful.button({}, 4, function()
-        awful.client.focus.byidx(1)
-    end), awful.button({}, 5, function() awful.client.focus.byidx(-1) end))
+    awful.button({}, 1, client_stack_toggle_fn()),
+    awful.button({}, 3, client_menu_toggle_fn()),
+    awful.button({}, 4, function() awful.client.focus.byidx(1) end),
+    awful.button({}, 5, function() awful.client.focus.byidx(-1) end))
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(s, _)

@@ -41,7 +41,7 @@ module.init = function(s, _)
     local clock_icon = utils.fa_ico(beautiful.fg_wibar_widgets_calendar, '')
 
     local clock_widget = wibox.widget.textclock(
-                             utils.markup {
+        utils.markup {
             font = beautiful.font,
             fg_color = beautiful.fg_wibar_widgets_calendar,
             text = '%A %d %B'

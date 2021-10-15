@@ -44,7 +44,8 @@ module.init = function(self, cfg)
     self.config = utils.deep_merge(self.defaults, cfg or {})
     if self.config.name then
         for _, path in ipairs {
-            config_path .. 'config/themes', config_path .. 'rc/themes',
+            config_path .. 'config/themes',
+            config_path .. 'rc/themes',
             themes_path
         } do
             local theme_file = string.format('%s/%s/theme.lua', path,

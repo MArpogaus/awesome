@@ -43,9 +43,13 @@ module.init = function(config, _)
             ['go back'] = {{config.modkey}, 'Tab'},
             ['jump to urgent client'] = {{config.modkey}, 'u'},
             ['restore minimized'] = {{config.modkey, 'Control'}, 'n'},
-            ['swap with next client by index'] = {{config.modkey, 'Shift'}, 'j'},
+            ['swap with next client by index'] = {
+                {config.modkey, 'Shift'},
+                'j'
+            },
             ['swap with previous client by index'] = {
-                {config.modkey, 'Shift'}, 'k'
+                {config.modkey, 'Shift'},
+                'k'
             }
         },
         launcher = {
@@ -56,17 +60,21 @@ module.init = function(config, _)
         layout = {
             ['decrease master width factor'] = {{config.modkey}, 'h'},
             ['decrease the number of columns'] = {
-                {config.modkey, 'Control'}, 'l'
+                {config.modkey, 'Control'},
+                'l'
             },
             ['decrease the number of master clients'] = {
-                {config.modkey, 'Shift'}, 'l'
+                {config.modkey, 'Shift'},
+                'l'
             },
             ['increase master width factor'] = {{config.modkey}, 'l'},
             ['increase the number of columns'] = {
-                {config.modkey, 'Control'}, 'h'
+                {config.modkey, 'Control'},
+                'h'
             },
             ['increase the number of master clients'] = {
-                {config.modkey, 'Shift'}, 'h'
+                {config.modkey, 'Shift'},
+                'h'
             },
             ['select next'] = {{config.modkey}, 'space'},
             ['select previous'] = {{config.modkey, 'Shift'}, 'space'}

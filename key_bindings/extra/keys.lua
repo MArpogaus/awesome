@@ -44,7 +44,10 @@ module.init = function(config, _)
         },
         layout = {
             ['select next'] = {{config.modkey, 'Shift'}, 'space'},
-            ['select previous'] = {{config.modkey, 'Control', 'Shift'}, 'space'}
+            ['select previous'] = {
+                {config.modkey, 'Control', 'Shift'},
+                'space'
+            }
         },
         screenshot = {
             ['capture a screenshot of active window'] = {{'Control'}, 'Print'},

@@ -88,8 +88,8 @@ local titlebar_button_shapes = {
             local shape_size = 0.4 * size
             local thickness = shape_size / 4
             local shape = gears.shape.transform(gears.shape.cross):translate(
-                              size / 2, size / 2):rotate(math.pi / 4):translate(
-                              -shape_size / 2, -shape_size / 2)
+                size / 2, size / 2):rotate(math.pi / 4):translate(
+                -shape_size / 2, -shape_size / 2)
             shape(cr, shape_size, shape_size, thickness)
             cr:fill()
         end
@@ -173,7 +173,8 @@ local titlebar_button_shapes = {
 local titlebar_button = function(theme, state, postfix)
     local size = gmath.round(beautiful.get_font_height(beautiful.font) * 1.5)
     local titlebar_buttons = {
-        {shape = 'close', state = state}, {shape = 'minimize', state = state}
+        {shape = 'close', state = state},
+        {shape = 'minimize', state = state}
     }
     for _, a in ipairs({true, false}) do
         table.insert(titlebar_buttons,
@@ -230,8 +231,7 @@ module.init = function()
     -- exit icon
     theme.exitmenu_icon = exit_icon(beautiful.wibar_height or
                                         gmath.round(
-                                            beautiful.get_font_height(
-                                                beautiful.font) * 1.5),
+            beautiful.get_font_height(beautiful.font) * 1.5),
                                     beautiful.fg_normal, beautiful.bg_normal)
     return theme
 end

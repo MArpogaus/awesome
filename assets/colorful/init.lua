@@ -38,10 +38,22 @@ local function get_colors()
         bg = xrdb.background,
         fg = xrdb.foreground,
         colors = {
-            xrdb.color0, xrdb.color1, xrdb.color2, xrdb.color3, xrdb.color4,
-            xrdb.color5, xrdb.color6, xrdb.color7, xrdb.color8, xrdb.color9,
-            xrdb.color10, xrdb.color11, xrdb.color12, xrdb.color13,
-            xrdb.color14, xrdb.color15
+            xrdb.color0,
+            xrdb.color1,
+            xrdb.color2,
+            xrdb.color3,
+            xrdb.color4,
+            xrdb.color5,
+            xrdb.color6,
+            xrdb.color7,
+            xrdb.color8,
+            xrdb.color9,
+            xrdb.color10,
+            xrdb.color11,
+            xrdb.color12,
+            xrdb.color13,
+            xrdb.color14,
+            xrdb.color15
         }
     }
     local f = io.popen('xrdb -query', 'r')
@@ -85,8 +97,13 @@ module.init = function()
         utils.reduce_contrast(theme.titlebar_sticky_button_bg_focus, 50)
 
     theme.fg_wibar_widgets = {
-        cs.colors[2], cs.colors[3], cs.colors[4], cs.colors[10], cs.colors[6],
-        cs.colors[5], cs.colors[7]
+        cs.colors[2],
+        cs.colors[3],
+        cs.colors[4],
+        cs.colors[10],
+        cs.colors[6],
+        cs.colors[5],
+        cs.colors[7]
     }
     theme.fg_wibar_widgets_clock = cs.colors[4]
     theme.fg_wibar_widgets_calendar = cs.colors[16]

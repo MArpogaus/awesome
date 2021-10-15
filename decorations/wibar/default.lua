@@ -67,7 +67,7 @@ module.init = function(config)
                 local element_container = {layout = wibox.layout.fixed[layout]}
                 for d, cfg in utils.value_with_cfg(p, true) do
                     local w = require('decorations.wibar.elements.' .. d).init(
-                                  s, cfg):register(wibar.elements, wibar)
+                        s, cfg):register(wibar.elements, wibar)
                     table.insert(element_container, w)
                 end
                 table.insert(wibar_args, element_container)

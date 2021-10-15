@@ -63,7 +63,7 @@ local function weather_widget_container(args)
     local weather_temp_max = args.weather_temp_max
     local weather_descr = args.weather_descr
     local weather_unit = wibox.widget.textbox(
-                             markup_color_size(font_size, color, '°C'))
+        markup_color_size(font_size, color, '°C'))
 
     weather_widget.align = 'center'
     weather_descr.align = 'center'
@@ -155,8 +155,8 @@ module.init = widgets.new('desktop', function(_, warg)
                     local sunset = args['{sunset}']
 
                     return utils.owf_markup(
-                               beautiful.fg_desktop_widgets_weather, weather,
-                               sunrise, sunset, font_size)
+                        beautiful.fg_desktop_widgets_weather, weather, sunrise,
+                        sunset, font_size)
                 end
             },
             weather_widget = {
@@ -174,7 +174,7 @@ module.init = widgets.new('desktop', function(_, warg)
                 warg = {city_id = city_id, app_id = app_id},
                 format = function(_, args)
                     local temp_min = math.floor(
-                                         tonumber(args['{temp min c}']) or 0)
+                        tonumber(args['{temp min c}']) or 0)
                     return markup_color_size(font_size_range,
                                              beautiful.fg_desktop_widgets_weather,
                                              temp_min .. ' / ')
@@ -185,7 +185,7 @@ module.init = widgets.new('desktop', function(_, warg)
                 warg = {city_id = city_id, app_id = app_id},
                 format = function(_, args)
                     local temp_max = math.ceil(
-                                         tonumber(args['{temp max c}']) or 0)
+                        tonumber(args['{temp max c}']) or 0)
                     return markup_color_size(font_size_range,
                                              beautiful.fg_desktop_widgets_weather,
                                              temp_max)
