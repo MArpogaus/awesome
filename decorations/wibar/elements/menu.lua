@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-09 14:36:47 (Marcel Arpogaus)
--- @Changed: 2021-10-14 20:28:30 (Marcel Arpogaus)
+-- @Changed: 2021-10-15 09:50:54 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -23,16 +23,16 @@ local module = {}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(s, config)
-    local menu_name = config.name or 'default'
+    local menu_kind = config.kind or 'default'
     local icon
     if type(config.icon) == 'string' then
         icon = menubar.utils.lookup_icon(config.icon)
     else
-        icon = beautiful[menu_name .. 'menu_icon'] or beautiful.awesome_icon
+        icon = beautiful[menu_kind .. 'menu_icon'] or beautiful.awesome_icon
     end
 
-    local menu = require('decorations.wibar.elements.menu.' .. menu_name).init(
-                     config)
+    local menu = require('decorations.wibar.elements.menu.' .. menu_kind).init(
+        config)
 
     return abstract_element.new {
         register_fn = function(_)
