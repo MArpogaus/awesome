@@ -31,18 +31,6 @@ module.init = function(self, cfg)
         -- If wallpaper is a function, call it with the screen
         if type(wallpaper) == 'function' then
             gears.wallpaper.maximized(wallpaper(s), s, true)
-        elseif wallpaper == 'xfconf-query' then
-            local command =
-                'xfconf-query -c xfce4-desktop -p /backdrop/screen0/monitor0/image-path'
-            awful.spawn.easy_async_with_shell(command,
-                                              function(stdout, _, _, exit_code)
-                if exit_code == 0 then
-                    local file_name = string.gsub(stdout, '\n', '')
-                    gears.wallpaper.maximized(file_name, s, true)
-                else
-                    gears.wallpaper.maximized(beautiful.wallpaper(s), s, true)
-                end
-            end)
         else
             gears.wallpaper.maximized(wallpaper, s, true)
         end
