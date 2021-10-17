@@ -3,7 +3,7 @@ std = "min"
 
 include_files = {
     "*.lua",
-    "rc/**/**/*.lua"
+    "**/**/*.lua"
 }
 
 -- Warnings to be ignored
