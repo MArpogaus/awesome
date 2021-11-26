@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 17:51:53 (Marcel Arpogaus)
--- @Changed: 2021-10-14 20:19:10 (Marcel Arpogaus)
+-- @Changed: 2021-10-18 15:21:57 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -33,7 +33,7 @@ module.depends_on = {'theme'}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(self, assets)
-    if assets then
+    if assets and #assets > 0 then
         self.apply = function()
             for asset, asset_cfg in utils.value_with_cfg(assets) do
                 require('assets.' .. asset).init(asset_cfg)
@@ -42,6 +42,7 @@ module.init = function(self, assets)
         self.apply()
     end
 end
+module.reset = function(self) self.apply = nil end
 
 -- [ return module ] -----------------------------------------------------------
 return module

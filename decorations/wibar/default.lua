@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-10-14 20:28:49 (Marcel Arpogaus)
+-- @Changed: 2021-10-18 16:10:56 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -40,7 +40,7 @@ local wibars_visible = true
 module.defaults = {
     position = 'top',
     elements = {
-        {'1-menu', '2-taglist', '3-promptbox'}, -- left
+        {['1-menu'] = {main_menu = true}, '2-taglist', '3-promptbox'}, -- left
         {'default_tasklist'}, -- middle
         {'1-keyboardlayout', '2-systray', '3-widgets', '4-layout'} -- right
     }

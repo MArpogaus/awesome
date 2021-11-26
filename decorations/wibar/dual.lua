@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-10-09 12:26:02 (Marcel Arpogaus)
+-- @Changed: 2021-10-18 21:58:35 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,7 +36,7 @@ local module = {}
 module.defaults = {
     elements = {
         top = {
-            {'1-menu', '2-taglist', '3-promptbox'}, -- left
+            {['1-menu'] = {main_menu = true}, '2-taglist', '3-promptbox'}, -- left
             {}, -- middle
             {'widgets'} -- right
         },
@@ -50,7 +50,7 @@ module.defaults = {
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
-    config = utils.deep_merge(module.defaults, config, 1)
+    config = utils.deep_merge(module.defaults, config, 2)
 
     local top_wibar = default_wibar.init {
         position = 'top',

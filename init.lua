@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:56:54 (Marcel Arpogaus)
--- @Changed: 2021-10-15 09:41:09 (Marcel Arpogaus)
+-- @Changed: 2021-10-18 15:15:15 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- This file is part of my modular awesome WM configuration.
 -- [ license ] -----------------------------------------------------------------
@@ -60,17 +60,20 @@ local function filter_keys(t, keys)
     end
     return res
 end
-local function init_modules(cfg)
+local function init_modules(cfg, modules)
+    modules = modules or {}
     for mod_name, mod_cfg in utils.value_with_cfg(cfg) do
         local mod = require(mod_name)
         if mod.depends_on then
-            init_modules(filter_keys(cfg, mod.depends_on))
+            init_modules(filter_keys(cfg, mod.depends_on), modules)
         end
         if not mod.initialized then
             mod:init(mod_cfg)
+            table.insert(modules, mod)
             mod.initialized = true
         end
     end
+    return modules
 end
 local function init_paths(paths)
     local config_path = gfs.get_configuration_dir()
@@ -92,7 +95,8 @@ module.init = function(self, cfg)
     local session = require('session')
 
     -- load config
-    self.config = utils.deep_merge(self.defaults, cfg or {})
+    self.config = utils.deep_merge(self.defaults, cfg or {}, 0)
+    print(require('gears.debug').dump_return(self.config))
 
     -- Initialize error handling
     error_handling:init()
@@ -100,8 +104,16 @@ module.init = function(self, cfg)
     -- Initialize the session
     session:init(self.config.session, function()
         self.config.session = nil
-        init_modules(self.config)
+        self.modules = init_modules(self.config)
     end)
+end
+module.reset = function(self)
+    for _, m in ipairs(self.modules or {}) do
+        m:reset()
+        m.initialized = false
+    end
+    self.modules = nil
+    self.config = nil
 end
 
 -- [ return module ] -----------------------------------------------------------

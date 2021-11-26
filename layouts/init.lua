@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 20:34:11 (Marcel Arpogaus)
--- @Changed: 2021-10-10 19:22:57 (Marcel Arpogaus)
+-- @Changed: 2021-10-18 16:07:44 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -57,12 +57,17 @@ module.defaults = {
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(self, cfg)
-    self.config = utils.deep_merge(self.defaults, cfg or {}, 1)
+    self.config = utils.deep_merge(self.defaults, cfg or {}, 0)
 
     -- Table of layouts to cover with awful.layout.inc, order matters.
     awful.layout.layouts = self.config.layouts
 
     self.default = awful.layout.layouts[self.config.default_layout]
+end
+module.reset = function(self)
+    self.config = nil
+    awful.layout.layouts = nil
+    self.default = nil
 end
 
 -- [ return module ] -----------------------------------------------------------

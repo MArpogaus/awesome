@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-08 16:17:12 (Marcel Arpogaus)
--- @Changed: 2021-10-03 17:58:53 (Marcel Arpogaus)
+-- @Changed: 2021-10-18 16:13:25 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -41,16 +41,15 @@ module.init = function(s, config)
             -- Create an imagebox widget which will contain an icon indicating which layout we're using.
             -- We need one layoutbox per screen.
             layoutbox = awful.widget.layoutbox(s)
+            layoutbox:buttons(gears.table.join(
+                awful.button({}, 4, function()
+                    awful.layout.inc(1)
+                end), awful.button({}, 5, function()
+                    awful.layout.inc(-1)
+                end)))
             if use_popup then
                 popup = layout_popup.init()
                 popup:bind_to_widget(layoutbox)
-                layoutbox:buttons(gears.table.join(
-                    awful.button({}, 4, function()
-                        awful.layout.inc(1)
-                    end),
-                    awful.button({}, 5, function()
-                        awful.layout.inc(-1)
-                    end)))
             end
             return layoutbox
         end,

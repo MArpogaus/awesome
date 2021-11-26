@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:14 (Marcel Arpogaus)
--- @Changed: 2021-10-14 20:02:17 (Marcel Arpogaus)
+-- @Changed: 2021-10-17 17:14:03 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -79,6 +79,11 @@ module.init = function(self)
     end), awful.button({}, 4, awful.tag.viewnext),
                                   awful.button({}, 5, awful.tag.viewprev))
     capi.root.buttons(root)
+end
+module.reset = function(self)
+    self.client_buttons = nil
+    self.taglist_buttons = nil
+    capi.root.buttons({})
 end
 
 -- [ return module ] -----------------------------------------------------------

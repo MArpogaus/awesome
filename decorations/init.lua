@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:07:01 (Marcel Arpogaus)
--- @Changed: 2021-10-14 20:21:04 (Marcel Arpogaus)
+-- @Changed: 2021-10-17 16:13:57 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -55,6 +55,10 @@ module.get = function(s)
         end
     end
     return ret
+end
+module.reset = function(self)
+    decorations = {}
+    self.config = nil
 end
 
 -- [ return module ] -----------------------------------------------------------

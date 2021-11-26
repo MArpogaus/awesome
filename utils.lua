@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-10-15 09:42:13 (Marcel Arpogaus)
+-- @Changed: 2021-10-19 18:12:21 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -111,9 +111,9 @@ end
 function module.reduce_contrast(color, ratio)
     ratio = ratio or 50
     if module.is_dark(color) then
-        return module.darker(color, -ratio)
-    else
         return module.darker(color, ratio)
+    else
+        return module.darker(color, -ratio)
     end
 end
 function module.set_alpha(color, alpha)
@@ -136,7 +136,7 @@ function module.update_theme()
     local theme = require('theme')
 
     theme.update()
-    assets.apply()
+    if assets.apply then assets.apply() end
     screen.update_all()
 
     collectgarbage()

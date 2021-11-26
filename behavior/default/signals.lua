@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 16:02:46 (Marcel Arpogaus)
--- @Changed: 2021-10-14 20:23:12 (Marcel Arpogaus)
+-- @Changed: 2021-10-18 16:40:40 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -46,7 +46,7 @@ module.defaults = {titlebar = {style = 'default'}}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
-    config = utils.deep_merge(module.defaults, config)
+    config = utils.deep_merge(module.defaults, config, 1)
     return {
         -- Signal function to execute when a new client appears.
         client = {

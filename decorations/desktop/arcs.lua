@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-10-14 20:24:55 (Marcel Arpogaus)
+-- @Changed: 2021-10-18 17:39:26 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -114,7 +114,8 @@ module.init = function(config)
                         type = 'desktop',
                         screen = s,
                         placement = awful.placement.centered,
-                        input_passthrough = true
+                        input_passthrough = true,
+                        vidible = false
                     }
 
                 desktop_popups[s] = awful.popup(desktop_popup_arg)

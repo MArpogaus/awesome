@@ -38,7 +38,8 @@ module.init = function(self, cfg)
 
     -- Enable the automatic calculation of the screen DPI (experimental).
     awful.screen.set_auto_dpi_enabled(self.config.auto_dpi)
-    local init_screen = function(s)
+    local init_screen
+    init_screen = function(s)
         -- Each screen has its own tag table.
         awful.tag(tags.tagnames, s, layouts.default)
 
@@ -79,16 +80,17 @@ module.init = function(self, cfg)
             s.decorations = nil
             s.init = nil
             s.initialized = nil
-            s.move_all_clients = nil
+            s.manage_all_clients = nil
             s.reregister_decorations = nil
             s.unregister_decorations = nil
             s.update_decorations = nil
             s.reset = nil
+            for _, t in ipairs(s.tags) do t:delete() end
+            s:disconnect_signal('added', init_screen)
         end
 
-        s.move_all_clients = function()
+        s.manage_all_clients = function()
             for _, c in pairs(s:get_all_clients()) do
-                c:move_to_screen()
                 c:emit_signal('manage', 'screen', {})
             end
         end
@@ -100,12 +102,21 @@ module.init = function(self, cfg)
     awful.screen.connect_for_each_screen(init_screen)
 
 end
-module.update = function(s) s.reregister_decorations() end
+module.update = function(s)
+    module.set_wallpaper(s)
+    s.reregister_decorations()
+end
 module.remove = function(s)
-    s.move_all_clients()
+    s.manage_all_clients()
     s.reset()
     collectgarbage()
 end
+module.reset = function(self)
+    self.config = nil
+    self.set_wallpaper = nil
+    for s in capi.screen do s.reset() end
+end
 module.update_all = function() for s in capi.screen do module.update(s) end end
+
 -- [ return module ] -----------------------------------------------------------
 return module

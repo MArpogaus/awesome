@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:53:48 (Marcel Arpogaus)
--- @Changed: 2021-10-09 11:18:57 (Marcel Arpogaus)
+-- @Changed: 2021-10-18 15:22:56 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -29,8 +29,13 @@ local module = {}
 module.defaults = {'1', '2', '3', '4', '5', '6', '7', '8', '9'}
 
 -- [ module functions ] --------------------------------------------------------
-module.init = function(self, tagnames) self.tagnames =
-    tagnames or self.defaults end
-
+module.init = function(self, tagnames)
+    if tagnames and #tagnames > 0 then
+        self.tagnames = tagnames
+    else
+        self.tagnames = self.defaults
+    end
+end
+module.reset = function(self) self.tagnames = nil end
 -- [ return module ] -----------------------------------------------------------
 return module

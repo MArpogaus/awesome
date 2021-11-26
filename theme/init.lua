@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:02 (Marcel Arpogaus)
--- @Changed: 2021-10-09 12:03:34 (Marcel Arpogaus)
+-- @Changed: 2021-10-18 22:20:37 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -37,7 +37,7 @@ local themes_path = gfs.get_themes_dir()
 local config_path = gfs.get_configuration_dir()
 
 -- [ defaults ] ----------------------------------------------------------------
-module.defaults = {name = 'default'}
+module.defaults = {name = 'default', overload = {}}
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(self, cfg)
@@ -74,6 +74,12 @@ module.init = function(self, cfg)
             gears.table.crush(beautiful.get(), self.config.overload)
         end
     end
+end
+module.reset = function(self)
+    self.config = nil
+    self.load_theme = nil
+    self.update = nil
+    beautiful.init(themes_path .. '/default/theme.lua')
 end
 
 -- [ return module ] -----------------------------------------------------------

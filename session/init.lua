@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-08-01 10:55:49 (Marcel Arpogaus)
--- @Changed: 2021-10-15 13:38:30 (Marcel Arpogaus)
+-- @Changed: 2021-10-18 17:17:24 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -38,7 +38,8 @@ local module = {}
 module.defaults = {
     environment = 'awesome',
     autostart = {},
-    startup_delay = 0.2
+    startup_delay = 0.2,
+    disable_dex = false
 }
 
 -- [ local functions ] ---------------------------------------------------------
@@ -51,16 +52,20 @@ end
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(self, cfg, callback)
-    self.config = utils.deep_merge(self.defaults, cfg or {}, 1)
+    self.config = utils.deep_merge(self.defaults, cfg or {}, 0)
     local xrdb_key = 'awesome.started'
-    if not capi.awesome.xrdb_get_value('', xrdb_key) then
-        desktop_entry_execution(self.config.environment)
+    if not self.config.disable_autostart and
+        not capi.awesome.xrdb_get_value('', xrdb_key) then
+        if not self.config.disable_dex then
+            desktop_entry_execution(self.config.environment)
+        end
         for _, p in ipairs(self.config.autostart) do
             awful.spawn.with_shell(p)
         end
         utils.xrdb_set_value(xrdb_key, 'true')
         awful.spawn.easy_async_with_shell(
-            string.format('sleep %.1f', self.config.startup_delay), callback)
+            string.format('sleep %.1f', self.config.startup_delay),
+            function() capi.awesome.restart() end)
     else
         callback()
     end

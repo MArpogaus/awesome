@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:44 (Marcel Arpogaus)
--- @Changed: 2021-10-14 20:20:04 (Marcel Arpogaus)
+-- @Changed: 2021-10-18 16:09:37 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -45,7 +45,7 @@ module.defaults = {
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(self, cfg)
-    self.config = utils.deep_merge(self.defaults, cfg or {}, 1)
+    self.config = utils.deep_merge(self.defaults, cfg or {}, 0)
     local keys = {}
     local actions = {}
     for binding, bind_cfg in utils.value_with_cfg(self.config.keymaps, true) do
@@ -126,6 +126,12 @@ module.init = function(self, cfg)
 
     -- register global key bindings
     capi.root.keys(self.global_keys)
+end
+module.reset = function(self)
+    self.global_keys = nil
+    self.client_keys = nil
+    self.config = nil
+    capi.root.keys({})
 end
 
 -- [ return module ] -----------------------------------------------------------
