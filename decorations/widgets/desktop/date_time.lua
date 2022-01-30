@@ -41,13 +41,12 @@ module.init = function(_)
     local date_font_size = beautiful.desktop_widgets_date_font_size or
                                time_font_size / 3
     local create_deskop_clock_box = function()
-        local deskop_clock = wibox.widget.textclock(
-            utils.markup {
-                font = utils.set_font_size(beautiful.font, time_font_size),
-                fg_color = beautiful.fg_desktop_widgets_clock_time or
-                    beautiful.fg_normal,
-                text = '%H:%M'
-            })
+        local deskop_clock = wibox.widget.textclock(utils.markup {
+            font = utils.set_font_size(beautiful.font, time_font_size),
+            fg_color = beautiful.fg_desktop_widgets_clock_time or
+                beautiful.fg_normal,
+            text = '%H:%M'
+        })
         return utils.create_boxed_widget(deskop_clock,
                                          beautiful.bg_desktop_widgets_clock or
                                              beautiful.bg_focus,
@@ -55,46 +54,44 @@ module.init = function(_)
                                          date_font_size * 1.5)
     end
 
-    local create_desktop_widgets_clock_date =
-        function()
-            return wibox.widget.textclock(
-                utils.markup {
-                    font = utils.set_font_size(beautiful.font, date_font_size),
-                    fg_color = beautiful.fg_desktop_widgets_clock or
-                        beautiful.fg_normal,
-                    text = 'Today is '
-                } .. utils.markup {
-                    font = utils.set_font_size(beautiful.font, date_font_size),
-                    fg_color = beautiful.fg_desktop_widgets_clock_day or
-                        beautiful.fg_normal,
-                    text = '%A'
-                } .. utils.markup {
-                    font = utils.set_font_size(beautiful.font, date_font_size),
-                    fg_color = beautiful.fg_desktop_widgets_clock or
-                        beautiful.fg_normal,
-                    text = ', the '
-                } .. utils.markup {
-                    font = utils.set_font_size(beautiful.font, date_font_size),
-                    fg_color = beautiful.fg_desktop_widgets_clock_date or
-                        beautiful.fg_normal,
-                    text = '%d.'
-                } .. utils.markup {
-                    font = utils.set_font_size(beautiful.font, date_font_size),
-                    fg_color = beautiful.fg_desktop_widgets_clock or
-                        beautiful.fg_normal,
-                    text = ' of '
-                } .. utils.markup {
-                    font = utils.set_font_size(beautiful.font, date_font_size),
-                    fg_color = beautiful.fg_desktop_widgets_clock_month or
-                        beautiful.fg_normal,
-                    text = '%B'
-                } .. utils.markup {
-                    font = utils.set_font_size(beautiful.font, date_font_size),
-                    fg_color = beautiful.fg_desktop_widgets_clock or
-                        beautiful.fg_normal,
-                    text = '.'
-                })
-        end
+    local create_desktop_widgets_clock_date = function()
+        return wibox.widget.textclock(utils.markup {
+            font = utils.set_font_size(beautiful.font, date_font_size),
+            fg_color = beautiful.fg_desktop_widgets_clock or
+                beautiful.fg_normal,
+            text = 'Today is '
+        } .. utils.markup {
+            font = utils.set_font_size(beautiful.font, date_font_size),
+            fg_color = beautiful.fg_desktop_widgets_clock_day or
+                beautiful.fg_normal,
+            text = '%A'
+        } .. utils.markup {
+            font = utils.set_font_size(beautiful.font, date_font_size),
+            fg_color = beautiful.fg_desktop_widgets_clock or
+                beautiful.fg_normal,
+            text = ', the '
+        } .. utils.markup {
+            font = utils.set_font_size(beautiful.font, date_font_size),
+            fg_color = beautiful.fg_desktop_widgets_clock_date or
+                beautiful.fg_normal,
+            text = '%d.'
+        } .. utils.markup {
+            font = utils.set_font_size(beautiful.font, date_font_size),
+            fg_color = beautiful.fg_desktop_widgets_clock or
+                beautiful.fg_normal,
+            text = ' of '
+        } .. utils.markup {
+            font = utils.set_font_size(beautiful.font, date_font_size),
+            fg_color = beautiful.fg_desktop_widgets_clock_month or
+                beautiful.fg_normal,
+            text = '%B'
+        } .. utils.markup {
+            font = utils.set_font_size(beautiful.font, date_font_size),
+            fg_color = beautiful.fg_desktop_widgets_clock or
+                beautiful.fg_normal,
+            text = '.'
+        })
+    end
 
     return wibox.widget {
         nil,

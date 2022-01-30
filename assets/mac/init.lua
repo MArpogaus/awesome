@@ -161,8 +161,8 @@ local titlebar_button_shapes = {
             local shape_size = 0.3 * size
             local shape =
                 gears.shape.transform(gears.shape.isosceles_triangle):translate(
-                    size / 2, size / 2):rotate(math.pi):translate(
-                    -shape_size / 2, -shape_size / 2)
+                    size / 2, size / 2):rotate(math.pi)
+                    :translate(-shape_size / 2, -shape_size / 2)
             shape(cr, shape_size, shape_size)
             cr:fill()
         end

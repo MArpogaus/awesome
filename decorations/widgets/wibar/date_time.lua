@@ -40,20 +40,19 @@ os.setlocale(os.getenv('LANG')) -- to localize the clock
 module.init = function(s, _)
     local clock_icon = utils.fa_ico(beautiful.fg_wibar_widgets_calendar, '')
 
-    local clock_widget = wibox.widget.textclock(
-        utils.markup {
-            font = beautiful.font,
-            fg_color = beautiful.fg_wibar_widgets_calendar,
-            text = '%A %d %B'
-        } .. utils.markup {
-            font = beautiful.font,
-            fg_color = beautiful.fg_normal,
-            text = ' | '
-        } .. utils.markup {
-            font = beautiful.font,
-            fg_color = beautiful.fg_wibar_widgets_clock,
-            text = '%H:%M'
-        })
+    local clock_widget = wibox.widget.textclock(utils.markup {
+        font = beautiful.font,
+        fg_color = beautiful.fg_wibar_widgets_calendar,
+        text = '%A %d %B'
+    } .. utils.markup {
+        font = beautiful.font,
+        fg_color = beautiful.fg_normal,
+        text = ' | '
+    } .. utils.markup {
+        font = beautiful.font,
+        fg_color = beautiful.fg_wibar_widgets_clock,
+        text = '%H:%M'
+    })
 
     -- popup calendar
     local cal_widget = awful.widget.calendar_popup.month {

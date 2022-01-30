@@ -78,28 +78,27 @@ module.init = function(config)
         }
     }
 
-    local menu = freedesktop.menu.build(
-        {
-            icon_size = 32,
-            before = {
-                {
-                    'Terminal',
-                    terminal,
-                    menubar.utils.lookup_icon('utilities-terminal')
-                },
-                {
-                    'Browser',
-                    browser,
-                    menubar.utils.lookup_icon('internet-web-browser')
-                },
-                {
-                    'Files',
-                    filemanager,
-                    menubar.utils.lookup_icon('system-file-manager')
-                }
+    local menu = freedesktop.menu.build({
+        icon_size = 32,
+        before = {
+            {
+                'Terminal',
+                terminal,
+                menubar.utils.lookup_icon('utilities-terminal')
             },
-            after = {{'Awesome', awesomemenu, beautiful.awesome_icon}}
-        })
+            {
+                'Browser',
+                browser,
+                menubar.utils.lookup_icon('internet-web-browser')
+            },
+            {
+                'Files',
+                filemanager,
+                menubar.utils.lookup_icon('system-file-manager')
+            }
+        },
+        after = {{'Awesome', awesomemenu, beautiful.awesome_icon}}
+    })
 
     return menu
 end
