@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 11:14:55 (Marcel Arpogaus)
--- @Changed: 2021-10-11 12:43:45 (Marcel Arpogaus)
+-- @Changed: 2022-01-30 20:28:10 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -133,7 +133,7 @@ local function inc_dpi(inc)
         utils.xconf_property_set('/Xft/DPI', math.floor(s.dpi))
     end
 end
-local function dec_dpi(dec) module.inc_dpi(-dec) end
+local function dec_dpi(dec) inc_dpi(-dec) end
 
 -- [ module functions ] --------------------------------------------------------
 module.init = function(_, config)
