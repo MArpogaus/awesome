@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 09:11:30 (Marcel Arpogaus)
--- @Changed: 2021-10-18 16:10:56 (Marcel Arpogaus)
+-- @Changed: 2022-01-30 21:31:05 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -66,8 +66,9 @@ module.init = function(config)
             for _, p in ipairs(config.elements) do
                 local element_container = {layout = wibox.layout.fixed[layout]}
                 for d, cfg in utils.value_with_cfg(p, true) do
-                    local w = require('decorations.wibar.elements.' .. d).init(
-                        s, cfg):register(wibar.elements, wibar)
+                    local w = require(utils.get_pkg_name(
+                        'decorations.wibar.elements.', d)).init(s, cfg):register(
+                        wibar.elements, wibar)
                     table.insert(element_container, w)
                 end
                 table.insert(wibar_args, element_container)

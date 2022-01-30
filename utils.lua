@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:54:31 (Marcel Arpogaus)
--- @Changed: 2021-10-19 18:12:21 (Marcel Arpogaus)
+-- @Changed: 2022-01-30 21:22:30 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -126,6 +126,11 @@ function module.set_alpha(color, alpha)
     else
         return color
     end
+end
+function module.get_pkg_name(prefix, pkg, postfix)
+    if not pkg:find('%.') then pkg = prefix .. pkg end
+    if postfix ~= nil then pkg = pkg .. postfix end
+    return pkg
 end
 
 -- hot reload theme

@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-25 17:51:53 (Marcel Arpogaus)
--- @Changed: 2021-10-18 15:21:57 (Marcel Arpogaus)
+-- @Changed: 2022-01-30 21:53:27 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,7 +36,7 @@ module.init = function(self, assets)
     if assets and #assets > 0 then
         self.apply = function()
             for asset, asset_cfg in utils.value_with_cfg(assets) do
-                require('assets.' .. asset).init(asset_cfg)
+                require(utils.get_pkg_name('assets.', asset)).init(asset_cfg)
             end
         end
         self.apply()

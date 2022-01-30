@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 13:55:07 (Marcel Arpogaus)
--- @Changed: 2021-10-18 16:25:08 (Marcel Arpogaus)
+-- @Changed: 2022-01-30 21:21:56 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -47,10 +47,12 @@ module.init = function(self, cfg)
     self.config = utils.deep_merge(module.defaults, cfg, 0)
     local all_rules = {}
     for behavior, behavior_cfg in utils.value_with_cfg(self.config) do
-        local rules = protected_call(require,
-                                     'behavior.' .. behavior .. '.rules')
-        local signals = protected_call(require,
-                                       'behavior.' .. behavior .. '.signals')
+        local rules = protected_call(require, utils.get_pkg_name('behavior.',
+                                                                 behavior,
+                                                                 '.rules'))
+        local signals = protected_call(require, utils.get_pkg_name('behavior.',
+                                                                   behavior,
+                                                                   '.signals'))
         if not rules and not signals then
             error('Behavior module \'' .. behavior .. '\' not found.\'')
         end

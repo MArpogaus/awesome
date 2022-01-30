@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:44 (Marcel Arpogaus)
--- @Changed: 2021-10-18 16:09:37 (Marcel Arpogaus)
+-- @Changed: 2022-01-30 21:28:42 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -49,11 +49,15 @@ module.init = function(self, cfg)
     local keys = {}
     local actions = {}
     for binding, bind_cfg in utils.value_with_cfg(self.config.keymaps, true) do
-        keys = utils.deep_merge(keys, require(
-                                    'key_bindings.' .. binding .. '.keys').init(
+        keys = utils.deep_merge(keys,
+                                require(
+                                    utils.get_pkg_name('key_bindings.',
+                                                       binding, '.keys')).init(
             self.config, bind_cfg))
-        actions = utils.deep_merge(actions, require(
-                                       'key_bindings.' .. binding .. '.actions').init(
+        actions = utils.deep_merge(actions,
+                                   require(
+                                       utils.get_pkg_name('key_bindings.',
+                                                          binding, '.actions')).init(
             self.config, bind_cfg))
     end
 

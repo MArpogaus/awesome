@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-22 08:48:11 (Marcel Arpogaus)
--- @Changed: 2021-11-26 10:06:34 (Marcel Arpogaus)
+-- @Changed: 2022-01-30 21:23:04 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -54,11 +54,10 @@ module.init = function(config)
     local decoration = abstract_decoration.new {
         register_fn = function(s)
             -- Create the desktop widget popup
-            local arc_widget_containers =
-                {
-                    spacing = beautiful.desktop_widgets_arc_spacing or 110,
-                    layout = wibox.layout.fixed.horizontal
-                }
+            local arc_widget_containers = {
+                spacing = beautiful.desktop_widgets_arc_spacing or 110,
+                layout = wibox.layout.fixed.horizontal
+            }
             local fg_arcs
             if beautiful.fg_desktop_widgets_arcs and
                 #beautiful.fg_desktop_widgets_arcs then
@@ -78,61 +77,60 @@ module.init = function(config)
                 warg = gears.table.clone(warg)
                 warg.fg_color = warg.fg_color or fg_color
                 warg.bg_color = warg.bg_color or bg_color
-                local widget_container =
-                    require('decorations.widgets.arcs.' .. w).init(s, warg)
+
+                local widget_container = require(
+                                             utils.get_pkg_name(
+                        'decorations.widgets.arcs.', w)).init(s, warg)
                 table.insert(arc_widget_containers, widget_container)
             end
-            local desktop_widgets_clock_container =
-                require('decorations.widgets.desktop.date_time').init()
-            local desktop_widgets_weather_container =
-                require('decorations.widgets.desktop.weather').init(s,
-                                                                    widgets_args.weather)
+            local desktop_widgets_clock_container = require(
+                                                        'decorations.widgets.desktop.date_time').init()
+            local desktop_widgets_weather_container = require(
+                                                          'decorations.widgets.desktop.weather').init(
+                s, widgets_args.weather)
 
             local desktop_widgets_vertical_spacing =
                 beautiful.desktop_widgets_vertical_spacing or 170
-            local desktop_popup_widget =
-                wibox.widget {
+            local desktop_popup_widget = wibox.widget {
+                {
+                    -- Align widgets vertically
+                    arc_widget_containers,
                     {
-                        -- Align widgets vertically
-                        arc_widget_containers,
-                        {
-                            desktop_widgets_clock_container,
-                            widget = wibox.container.margin,
-                            top = desktop_widgets_vertical_spacing,
-                            bottom = desktop_widgets_vertical_spacing
-                        },
-                        desktop_widgets_weather_container,
-                        layout = wibox.layout.align.vertical
+                        desktop_widgets_clock_container,
+                        widget = wibox.container.margin,
+                        top = desktop_widgets_vertical_spacing,
+                        bottom = desktop_widgets_vertical_spacing
                     },
-                    widget = wibox.container.margin,
-                    margins = desktop_widgets_vertical_spacing / 2
-                }
+                    desktop_widgets_weather_container,
+                    layout = wibox.layout.align.vertical
+                },
+                widget = wibox.container.margin,
+                margins = desktop_widgets_vertical_spacing / 2
+            }
             if desktop_popups[s] == nil then
-                local desktop_popup_arg =
-                    {
-                        widget = desktop_popup_widget,
-                        type = 'desktop',
-                        screen = s,
-                        placement = awful.placement.centered,
-                        input_passthrough = true,
-                        visible = false
-                    }
+                local desktop_popup_arg = {
+                    widget = desktop_popup_widget,
+                    type = 'desktop',
+                    screen = s,
+                    placement = awful.placement.centered,
+                    input_passthrough = true,
+                    visible = false
+                }
 
                 desktop_popups[s] = awful.popup(desktop_popup_arg)
             else
                 desktop_popups[s]:set_widget(desktop_popup_widget)
                 desktop_popups[s].bg = beautiful.bg_normal
             end
-            desktop_popups[s].arc_widgets =
-                setmetatable({}, {
-                    __index = function(_, fn)
-                        return function()
-                            for _, w in ipairs(arc_widget_containers) do
-                                w[fn]()
-                            end
+            desktop_popups[s].arc_widgets = setmetatable({}, {
+                __index = function(_, fn)
+                    return function()
+                        for _, w in ipairs(arc_widget_containers) do
+                            w[fn]()
                         end
                     end
-                })
+                end
+            })
             desktop_popups[s].weather_widget =
                 desktop_widgets_weather_container
             desktop_popups[s]:connect_signal('property::visible', function()
