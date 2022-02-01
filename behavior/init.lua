@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-02-03 13:55:07 (Marcel Arpogaus)
--- @Changed: 2022-01-30 21:21:56 (Marcel Arpogaus)
+-- @Changed: 2022-02-01 20:47:55 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -72,8 +72,9 @@ module.init = function(self, cfg)
 end
 module.reset = function(self)
     for behavior, behavior_cfg in utils.value_with_cfg(self.config) do
-        local signals = protected_call(require,
-                                       'behavior.' .. behavior .. '.signals')
+        local signals = protected_call(require, utils.get_pkg_name('behavior.',
+                                                                   behavior,
+                                                                   '.signals'))
         if signals then
             for target, sigs in pairs(signals.init(behavior_cfg)) do
                 for sig_name, sig_fn in pairs(sigs) do
