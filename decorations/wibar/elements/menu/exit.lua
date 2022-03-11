@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-09-29 08:18:44 (Marcel Arpogaus)
--- @Changed: 2021-09-29 20:41:47 (Marcel Arpogaus)
+-- @Changed: 2022-03-11 16:14:25 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -36,13 +36,15 @@ local module = {}
 -- [ module functions ] --------------------------------------------------------
 module.init = function(config)
     local lock_command = config.lock_command or 'light-locker-command -l'
+    local exit_command = config.exit_command or
+                             'loginctl terminate-session self'
+    local suspend_command = config.suspend_command or 'systemctl suspend'
+    local hibernate_command = config.hibernate_command or 'systemctl hibernate'
+    local reboot_command = config.reboot_command or 'systemctl reboot'
+    local poweroff_command = config.poweroff_command or 'poweroff'
 
     local exitmenu = {
-        {
-            'log out',
-            function() capi.awesome.quit() end,
-            menubar.utils.lookup_icon('system-log-out')
-        },
+        {'log out', exit_command, menubar.utils.lookup_icon('system-log-out')},
         {
             'lock screen',
             lock_command,
@@ -50,20 +52,20 @@ module.init = function(config)
         },
         {
             'suspend',
-            'systemctl suspend',
+            suspend_command,
             menubar.utils.lookup_icon('system-suspend')
         },
         {
             'hibernate',
-            'systemctl hibernate',
+            hibernate_command,
             menubar.utils.lookup_icon('system-suspend-hibernate')
         },
+        {'reboot', reboot_command, menubar.utils.lookup_icon('system-reboot')},
         {
-            'reboot',
-            'systemctl reboot',
-            menubar.utils.lookup_icon('system-reboot')
-        },
-        {'shutdown', 'poweroff', menubar.utils.lookup_icon('system-shutdown')}
+            'shutdown',
+            poweroff_command,
+            menubar.utils.lookup_icon('system-shutdown')
+        }
     }
     local menu = awful.menu({items = exitmenu})
     return menu
