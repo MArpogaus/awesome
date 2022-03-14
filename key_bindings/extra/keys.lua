@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-27 10:39:56 (Marcel Arpogaus)
--- @Changed: 2021-10-11 12:43:54 (Marcel Arpogaus)
+-- @Changed: 2022-03-14 14:25:26 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -39,7 +39,6 @@ module.init = function(config, _)
         },
         launcher = {
             ['launch Browser'] = {{config.modkey}, 'b'},
-            ['launch org capture'] = {{config.modkey}, 'a'},
             ['launch rofi'] = {{config.modkey}, 'space'}
         },
         layout = {
