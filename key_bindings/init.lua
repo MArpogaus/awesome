@@ -3,7 +3,7 @@
 -- @Author : Marcel Arpogaus <marcel dot arpogaus at gmail dot com>
 --
 -- @Created: 2021-01-26 16:52:44 (Marcel Arpogaus)
--- @Changed: 2022-01-30 21:28:42 (Marcel Arpogaus)
+-- @Changed: 2022-03-14 14:41:19 (Marcel Arpogaus)
 -- [ description ] -------------------------------------------------------------
 -- ...
 -- [ license ] -----------------------------------------------------------------
@@ -61,14 +61,15 @@ module.init = function(self, cfg)
             self.config, bind_cfg))
     end
 
-    for level, level_keys in pairs(keys) do
+    for level, level_keys in pairs(actions) do
         local key_tables = {}
-        for group, group_keys in pairs(level_keys) do
-            for desc, key in pairs(group_keys) do
-                table.insert(key_tables,
-                             awful.key(key[1], key[2],
-                                       actions[level][group][desc],
-                                       {description = desc, group = group}))
+        for group, group_actions in pairs(level_keys) do
+            for desc, action in pairs(group_actions) do
+                key = keys[level][group][desc]
+                table.insert(key_tables, awful.key(key[1], key[2], action, {
+                    description = desc,
+                    group = group
+                }))
             end
         end
         module[level .. '_keys'] = gears.table.join(table.unpack(key_tables))

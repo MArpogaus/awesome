@@ -59,7 +59,7 @@ module.init = function(self, cfg)
         end
     end
     if not self.load_theme then
-        beautiful.init(themes_path .. '/default/theme.lua')
+        beautiful.init()
     else
         beautiful.init(self.load_theme())
     end
